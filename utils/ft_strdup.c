@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:44:01 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/07 17:00:34 by cparodi          ###   ########.fr       */
+/*   Created: 2024/11/09 17:39:54 by cparodi           #+#    #+#             */
+/*   Updated: 2024/11/09 17:40:38 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	*ft_realloc(void *ptr, size_t new_size)
+char	*ft_strdup(char *src)
 {
-	void *new_ptr;
-	size_t old_size;
+	char	*dest;
+	int		i;
 
-	new_ptr = malloc(new_size);
-
-
-	free(ptr);
-	return (new_ptr);
+	i = 0;
+	while (src[i])
+		i++;
+	dest = (char *)malloc(sizeof(char) * (i + 1));
+	i = 0;
+	while (src[i])
+	{
+	   dest[i] = src[i];
+	   i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

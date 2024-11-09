@@ -6,7 +6,7 @@
 #    By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 09:14:16 by cparodi           #+#    #+#              #
-#    Updated: 2024/11/07 18:08:08 by cparodi          ###   ########.fr        #
+#    Updated: 2024/11/09 19:33:50 by cparodi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,20 @@
 EXE = minishell
 
 # Files
-SRC =	srcs/main.c
+SRC =	srcs/main.c \
+		srcs/init_struct.c \
+		srcs/parsing.c \
+		utils/split_command.c \
+		utils/ft_strncpy.c \
+		utils/ft_strdup.c \
+		utils/add_architect.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
 
 # Variables
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3
+CFLAGS	= -Wall -Wextra -g3
 LDFLAGS = -lreadline
 RM		= rm -f
 
@@ -36,7 +42,7 @@ GREEN		= \e[0;1;32m
 _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
-FILE_TOTAL	= 1
+FILE_TOTAL	= 7
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_REST	= ${shell expr 23 - ${BAR_LOAD}}

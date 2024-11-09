@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_struct.c                                      :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:37:13 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/09 19:54:18 by cparodi          ###   ########.fr       */
+/*   Created: 2024/11/09 18:20:38 by cparodi           #+#    #+#             */
+/*   Updated: 2024/11/09 18:20:51 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void init_struct(t_global *global)
+char *ft_strncpy(char *s1, char *s2, int n)
 {
-	global->token = NULL;
-	global->architect = NULL;
+	int i = -1;
+
+	while (++i < n && s2[i])
+		s1[i] = s2[i];
+	s1[i] = '\0';
+	return (s1);
 }

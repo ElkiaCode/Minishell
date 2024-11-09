@@ -6,7 +6,7 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:38:32 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/07 18:57:14 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/09 19:54:30 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 
 void split_token(t_tokens tokens, char *command)
 {
-	int i;
-
-	i = 0;
-	while (command[i])
-	{
-		
-	}
+	
 }
 
-void tokenization(t_tokens tokens, char *command)
+void tokenization(t_global *global, char *command)
 {
-
+	char **result;
+	int i;
+	
+	i = 0;
+	result = split_command(command);
+	while (result[i])
+	{
+		add_architect(&global->architect, result[i]);
+		i++;
+	}
 }
