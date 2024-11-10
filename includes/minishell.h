@@ -35,6 +35,7 @@ typedef struct s_architect
 typedef struct s_tokens
 {
 	char				**tokens;
+	int					size;
 	struct s_tokens		*next;
 }	t_tokens;
 
@@ -47,14 +48,12 @@ typedef struct s_global
 //init
 
 void		init_struct(t_global *global);
-t_tokens	*create_list_tokens(void);
-t_architect	*create_list_architect(void);
 
 
 // srcs
 
 void		tokenization(t_global *global, char *command);
-void		split_token(t_tokens tokens, char *command);
+void		split_token(t_global *global);
 
 
 
@@ -66,7 +65,7 @@ char		*ft_strdup(char *src);
 char		*ft_strncpy(char *s1, char *s2, int n);
 void		add_architect(t_architect **list, char *str);
 t_architect	*lst_new_architect(char *str);
-void		add_token(t_tokens **list, char *str);
+void		add_token(t_tokens **list, char *str, int size);
 t_tokens	*lst_new_tokens(char *str);
 
 #endif
