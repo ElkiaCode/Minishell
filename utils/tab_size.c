@@ -1,45 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tab_size.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:10:20 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/12 13:44:59 by cparodi          ###   ########.fr       */
+/*   Created: 2024/11/12 11:17:43 by cparodi           #+#    #+#             */
+/*   Updated: 2024/11/12 12:31:35 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int pipe_nb(char *line)
+int *tab_size(char **tab_line)
 {
+	int *size;
 	int i;
-	int nb;
+	int j;
+	int	k;
 
 	i = 0;
-	nb = 1;
-	while (line[i])
+	k = 0;
+	j = 0;
+	while (tab_line[i])
 	{
-		if (line[i] == '|')
-			nb++;
+		if (*tab_line[i] == '|')
+			j++;
 		i++;
 	}
-	return (nb);
-}
-
-int main()
-{
-	t_global global;
-	char *line;
-	int tokens_size;
-	
-	while (1)
+	size = malloc(sizeof(int) * (j + 1));
+	while (k <= j)
 	{
-		line = readline("minishell> ");
-		tokens_size = pipe_nb(line);
-		init_struct(&global, tokens_size);
-		tokenizer(global.token, line, tokens_size);
+		size[k] = 0;
+		k++;
 	}
-	return (0);
+	i = 0;
+	j = 0;
+	while (tab_line[i])
+	{
+		if (*tab_line[i] == '|')
+			j++;
+		else
+			size[j] += 1;
+		i++;
+	}
+	return (size);
 }

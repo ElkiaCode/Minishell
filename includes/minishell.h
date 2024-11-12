@@ -6,7 +6,7 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:11:16 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/09 19:53:01 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/12 12:07:50 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,36 +26,24 @@
 
 // structs
 
-typedef struct s_architect
-{
-	char				*str;
-	struct s_architect	*next;
-}	t_architect;
-
 typedef struct s_tokens
 {
 	char				**tokens;
 	int					size;
-	struct s_tokens		*next;
 }	t_tokens;
 
 typedef struct s_global
 {
 	t_tokens			*token;
-	t_architect			*architect;
 }	t_global;
 
 //init
 
-void		init_struct(t_global *global);
-
+void	init_struct(t_global **global, int tokens_size);
 
 // srcs
 
-void		tokenization(t_global *global, char *command);
-void		split_token(t_global *global);
-
-
+void tokenizer(t_tokens **token, char *line, int tokens_size);
 
 // utils
 
@@ -63,9 +51,7 @@ void		*ft_memcpy(void *dest, const void *src, size_t n);
 char		**split_command(char *str);
 char		*ft_strdup(char *src);
 char		*ft_strncpy(char *s1, char *s2, int n);
-void		add_architect(t_architect **list, char *str);
-t_architect	*lst_new_architect(char *str);
-void		add_token(t_tokens **list, char *str, int size);
-t_tokens	*lst_new_tokens(char *str);
+int			*tab_size(char **tab_line);
+
 
 #endif

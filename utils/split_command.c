@@ -6,7 +6,7 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 17:53:38 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/09 19:22:09 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/11 09:14:39 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	word_count(char *str)
 		if (str[i] == '"' || str[i] == '\'')
 		{
 			i++;
-			while (str[i] && (str[i] != '"' || str[i] != '\''))
+			while (str[i] && (str[i] != '"' && str[i] != '\''))
 				i++;
 		}
 		while (str[i] && (str[i] != ' '))
@@ -58,9 +58,8 @@ char	**split_command(char *str)
 		if (str[i] == '"' || str[i] == '\'')
 		{
 			i++;
-			while (str[i] && (str[i] != '"' || str[i] != '\''))
+			while (str[i] && (str[i] != '"' && str[i] != '\''))
 				i++;
-			i++;
 		}
 		while (str[i] && (str[i] != ' '))
 			i++;
@@ -69,7 +68,7 @@ char	**split_command(char *str)
 			result[n] = (char *)malloc(sizeof(char) * ((i - j) + 1));
 			ft_strncpy(result[n++], &str[j], i - j);
 		}
-		result[n] = NULL;
 	}
+	result[n] = NULL;
 	return (result);
 }
