@@ -6,7 +6,7 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:10:20 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/12 13:44:59 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/12 16:29:09 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int pipe_nb(char *line)
 
 int main()
 {
-	t_global global;
+	t_global *global;
 	char *line;
 	int tokens_size;
 	
@@ -39,7 +39,7 @@ int main()
 		line = readline("minishell> ");
 		tokens_size = pipe_nb(line);
 		init_struct(&global, tokens_size);
-		tokenizer(global.token, line, tokens_size);
+		tokenizer(global->token, line, tokens_size);
 	}
 	return (0);
 }

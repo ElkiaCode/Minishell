@@ -6,7 +6,7 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 11:17:43 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/12 12:31:35 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/12 14:39:35 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int *tab_size(char **tab_line)
 		if (*tab_line[i] == '|')
 			j++;
 		else
-			size[j] += 1;
+			size[j]++;
 		i++;
 	}
 	return (size);

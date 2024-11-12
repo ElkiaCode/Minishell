@@ -6,13 +6,13 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:23:41 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/12 13:45:45 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/12 16:57:15 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void tokenizer(t_tokens **token, char *line, int tokens_size)
+void tokenizer(t_tokens *token, char *line, int tokens_size)
 {
 	int		i;
 	int		j;
@@ -25,34 +25,51 @@ void tokenizer(t_tokens **token, char *line, int tokens_size)
 	n = 0;
 	line_tab = split_command(line);
 	size = tab_size(line_tab);
-	printf("%d\n", j);
-	token[j]->tokens = malloc(sizeof(char *) * (size[j] + 1));
+	while (j < tokens_size)
+	{
+		printf("Allocating tokens for token[%d] with size %d\n", j, size[j]);
+		token[j].tokens = (char **)malloc(sizeof(char *) * (size[j] + 1));
+		if (token[j].tokens == NULL)
+		{
+			fprintf(stderr, "Memory allocation failed\n");
+			return;
+		}
+		token[j].tokens[size[j]] = NULL;
+		j++;
+	}
+	j = 0;
 	while (line_tab[n] && j < tokens_size)
 	{
-		token[j]->tokens[i] = ft_strdup(line_tab[n]);
 		if (*line_tab[n] == '|')
 		{
-			token[j]->tokens[i] = NULL;
 			j++;
 			i = 0;
-			printf("%d\n", j);
-			token[j]->tokens = malloc(sizeof(char *) * (size[j] + 1));
+			n++;
 		}
+		token[j].tokens[i] = ft_strdup(line_tab[n]);
 		i++;
 		n++;
 	}
-	token[j]->tokens[i] = NULL;
 	j = 0;
 	i = 0;
 	while (j < tokens_size)
 	{
-		printf("%s\n", token[j]->tokens[i]);
-		i++;
-		if (token[j]->tokens[i] == NULL)
-		{
-			i = 0;
+		printf("Group %d:\n", j);
+		i = 0;
+		if (token[j].tokens == NULL) {
+			printf("  token[%d].tokens is NULL, skipping\n", j);
 			j++;
-			printf("-----------------\n");
+			continue;
 		}
+		while (token[j].tokens[i] != NULL)
+		{
+			if (token[j].tokens[i] != NULL)
+				printf("  %s\n", token[j].tokens[i]);
+			else
+				printf("  token[%d].tokens[%d] is NULL\n", j, i);
+			i++;
+		}
+		printf("-----------------\n");
+		j++;
 	}
 }

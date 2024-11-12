@@ -6,7 +6,7 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:37:13 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/12 13:45:09 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/12 16:40:40 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void init_tokens(t_tokens *token, int tokens_size)
 	while (i < tokens_size)
 	{
 		token[i].tokens = NULL;
-		token[i].size = 0;
 		i++;
 	}
 }

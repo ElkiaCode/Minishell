@@ -6,7 +6,7 @@
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 16:11:16 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/12 12:07:50 by cparodi          ###   ########.fr       */
+/*   Updated: 2024/11/12 16:28:58 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 typedef struct s_tokens
 {
 	char				**tokens;
-	int					size;
 }	t_tokens;
 
 typedef struct s_global
@@ -43,7 +42,7 @@ void	init_struct(t_global **global, int tokens_size);
 
 // srcs
 
-void tokenizer(t_tokens **token, char *line, int tokens_size);
+void tokenizer(t_tokens *token, char *line, int tokens_size);
 
 // utils
 
