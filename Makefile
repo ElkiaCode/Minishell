@@ -30,7 +30,7 @@ OBJECTS =		${SOURCES:.c=.o}
 
 # Variables
 CC		= cc
-CFLAGS	= -Wall -Wextra -g3 
+CFLAGS	= -Wall -Wextra -g3
 LDFLAGS = -lreadline
 RM		= rm -f
 
@@ -56,7 +56,6 @@ all:		${EXE}
 ${EXE}:		${OBJECTS}
 		@${CC} ${CFLAGS} ${OBJECTS} -o ${EXE} ${LDFLAGS}
 		@echo "\n\n${GREEN}[✓] - ${_GREEN}Minishell${GREEN} Successfully Compiled!${RESET}"
-		@${RM} ${OBJECTS}
 
 %.o:		%.c
 		@${eval FILE_COUNT = ${shell expr ${FILE_COUNT} + 1}}
