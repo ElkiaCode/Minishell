@@ -1,22 +1,25 @@
 void redirect_io(t_data *data)
 {
-	if (data->input_file)
+	if (data->type == INPUTFILE)
 	{
 		data->fd_in = open(data->input_file, O_RDONLY);
 		if (data->fd_in < 0)
-			exit_error(data, "open", data->input_file);
+			exit(EXIT_FAILURE);
 		dup2(data->fd_in, STDIN_FILENO);
 	}
-	if (data->output_file)
+	if (data->type == OUTPUTFILE)
 	{
-		if (data->output_type == 1)
-			data->fd_out = open(data->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (data->output_type == 2)
-			data->fd_out = open(data->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		data->fd_out = open(data->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (data->fd_out < 0)
-			exit_error(data, "open", data->output_file);
+			exit(EXIT_FAILURE);
 		dup2(data->fd_out, STDOUT_FILENO);
 	}
+	if (data->type == APPENDFILE)
+	{
+		data->fd_out = open(data->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (data->fd_out < 0)
+			exit(EXIT_FAILURE);
+		dup2(data->fd_out, STDOUT_FILENO);
 }
 
 void	free_split(char **split)
@@ -25,10 +28,7 @@ void	free_split(char **split)
 
 	i = 0;
 	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
+		free(split[i++]);
 	free(split);
 }
 
@@ -49,22 +49,18 @@ char	*get_path(char *cmd, char **env)
 		temp = ft_strjoin(path[i], "/");
 		path_cmd = ft_strjoin(temp, cmd);
 		free(temp);
-		if (access(path_cmd, F_OK) == 0)
-		{
-			free_split(path);
-			return (path_cmd);
-		}
+		if (!access(path_cmd, X_OK))
+			return (free_split(path), path_cmd);
 		free(path_cmd);
 		i++;
 	}
-	free_split(path);
-	return (NULL);
+	return (free_split(path), NULL);
 }
 void	exec(t_data *data)
 {
 	char	*path;
 
-	if (access(data->cmd[0], F_OK) == 0)
+	if (!access(data->cmd[0], X_OK))
 		path = ft_strdup(data->cmd[0]);
 	else
 		path = get_path(data->cmd[0], data->env);
@@ -94,7 +90,7 @@ void parent_process(t_data *data)
     else if (WIFSIGNALED(status))
         data->exit_status = 128 + WTERMSIG(status);
 
-    if (data->is_pipe)
+    if (data->type == PIPE)
     {
         if (data->pipe_in > 0)
             close(data->pipe_in);
@@ -110,7 +106,7 @@ void parent_process(t_data *data)
 
 void child_process(t_data *data)
 {
-	if (data->is_pipe)
+	if (data->type == PIPE)
 	{
 		if (data->pipe_in != STDIN_FILENO)
 		{
@@ -143,7 +139,7 @@ void fork_process(t_data *data)
 {
     int pipe_fds[2];
 
-    if (data->is_pipe && do_pipe(pipe_fds) == -1)
+    if (data->type == PIPE && do_pipe(pipe_fds) == -1)
         exit(EXIT_FAILURE);
 
     data->pipe_in = pipe_fds[0];
