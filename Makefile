@@ -6,7 +6,7 @@
 #    By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 09:14:16 by cparodi           #+#    #+#              #
-#    Updated: 2024/11/12 12:20:04 by cparodi          ###   ########.fr        #
+#    Updated: 2024/11/25 09:34:07 by cparodi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,18 @@ SRC =	srcs/main.c \
 		utils/ft_strncpy.c \
 		utils/ft_strdup.c \
 		srcs/tokenizer.c \
-		utils/tab_size.c
+		utils/tab_size.c \
+		utils/ft_split_2input.c \
+		utils/ft_strncmp.c \
+		utils/get_token_type.c \
+		utils/malloc_token.c
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
 
 # Variables
 CC		= cc
-CFLAGS	= -Wall -Wextra -g3 -fsanitize=address,leak,undefined
+CFLAGS	= -Wall -Wextra -g3 -fsanitize=address,leak
 LDFLAGS = -lreadline
 RM		= rm -f
 
@@ -43,7 +47,7 @@ GREEN		= \e[0;1;32m
 _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
-FILE_TOTAL	= 8
+FILE_TOTAL	= 12
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_REST	= ${shell expr 23 - ${BAR_LOAD}}
