@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int ft_is_cmd(char *cmd)
+static int	ft_is_cmd(char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 4) == 0)
 		return (1);
@@ -17,11 +17,11 @@ static int ft_is_cmd(char *cmd)
 	if (ft_strncmp(cmd, "unset", 5) == 0)
 		return (1);
 	return (0);
-} 
+}
 
-void get_token_type(t_tokens *token, int token_size)
+t_tokens	*get_token_type(t_tokens *token, int token_size)
 {
-	int i;
+	int	i;
 	int	j;
 
 	i = -1;
@@ -51,4 +51,5 @@ void get_token_type(t_tokens *token, int token_size)
 				token[i].type[j] = T_ERR;
 		}
 	}
+	return (token);
 }

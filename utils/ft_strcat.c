@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:38:32 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/25 10:20:04 by cparodi          ###   ########.fr       */
+/*   Created: 2024/04/26 16:41:55 by cparodi           #+#    #+#             */
+/*   Updated: 2024/04/27 12:09:50 by cparodi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	parsing(t_tokens *token, char *line, int tokens_size)
+char	*ft_strcat(char *dst, const char *src)
 {
-	int		*size;
-	char	**line_tab;
+	int	i;
+	int	dst_len;
 
-	if (check_error(line) == 1)
-		return ;
-	line_tab = split_command(line);
-	line_tab = ft_split(line_tab, "'<>|\"");
-	line_tab = union_tab(line_tab, 0);
-	size = tab_size(line_tab);
-	tokenizer(token, line_tab, tokens_size, size);
+	i = 0;
+	dst_len = 0;
+	while (dst[dst_len] != '\0')
+		dst_len++;
+	while (src[i] != '\0')
+	{
+		dst[dst_len + i] = src[i];
+		i++;
+	}
+	dst[dst_len + i] = '\0';
+	return (dst);
 }

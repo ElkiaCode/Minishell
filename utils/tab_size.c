@@ -12,11 +12,11 @@
 
 #include "../includes/minishell.h"
 
-int *tab_size(char **tab_line)
+int	*tab_size(char **tab_line)
 {
-	int *size;
-	int i;
-	int j;
+	int	*size;
+	int	i;
+	int	j;
 	int	k;
 
 	i = 0;

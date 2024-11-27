@@ -12,10 +12,10 @@
 
 #include "../includes/minishell.h"
 
-int pipe_nb(char *line)
+int	pipe_nb(char *line)
 {
-	int i;
-	int nb;
+	int	i;
+	int	nb;
 
 	i = 0;
 	nb = 1;
@@ -28,10 +28,10 @@ int pipe_nb(char *line)
 	return (nb);
 }
 
-int main()
+int	main(void)
 {
-	t_global *global;
-	int tokens_size;
+	t_global	*global;
+	int			tokens_size;
 
 	tokens_size = 0;
 	while (1)

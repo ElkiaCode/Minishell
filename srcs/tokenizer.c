@@ -14,9 +14,9 @@
 
 void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 {
-	int		i;
-	int		j;
-	int		n;
+	int	i;
+	int	j;
+	int	n;
 
 	i = 0;
 	j = 0;
@@ -34,17 +34,19 @@ void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 		i++;
 		n++;
 	}
-	get_token_type(token, tokens_size);
+	token = get_token_type(token, tokens_size);
+	search_for_args(token, tokens_size);
 	j = 0;
 	i = 0;
 	while (j < tokens_size)
 	{
 		printf("Group %d:\n", j);
 		i = 0;
-		if (token[j].tokens == NULL) {
+		if (token[j].tokens == NULL)
+		{
 			printf("  token[%d].tokens is NULL, skipping\n", j);
 			j++;
-			continue;
+			continue ;
 		}
 		while (token[j].tokens[i] != NULL)
 		{

@@ -14,8 +14,8 @@
 
 static int	word_count(char *str)
 {
-	int i;
-	int wc;
+	int	i;
+	int	wc;
 
 	wc = 0;
 	i = 0;
@@ -39,11 +39,11 @@ static int	word_count(char *str)
 
 char	**split_command(char *str)
 {
-	int i;
-	int j;
-	int n;
-	int wc;
-	char **result;
+	int		i;
+	int		j;
+	int		n;
+	int		wc;
+	char	**result;
 
 	i = 0;
 	j = 0;

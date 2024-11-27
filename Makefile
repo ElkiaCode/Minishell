@@ -17,15 +17,20 @@ EXE = minishell
 SRC =	srcs/main.c \
 		srcs/init_struct.c \
 		srcs/parsing.c \
+		srcs/tokenizer.c \
 		utils/split_command.c \
 		utils/ft_strncpy.c \
 		utils/ft_strdup.c \
-		srcs/tokenizer.c \
 		utils/tab_size.c \
 		utils/ft_split_2input.c \
 		utils/ft_strncmp.c \
 		utils/get_token_type.c \
-		utils/malloc_token.c
+		utils/malloc_token.c \
+		utils/union_tab.c \
+		utils/ft_strcat.c \
+		utils/ft_strlen.c \
+		utils/search_for_args.c \
+		utils/check_error.c
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
@@ -47,7 +52,7 @@ GREEN		= \e[0;1;32m
 _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
-FILE_TOTAL	= 12
+FILE_TOTAL	= 17
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_REST	= ${shell expr 23 - ${BAR_LOAD}}
