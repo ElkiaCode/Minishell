@@ -30,7 +30,8 @@ SRC =	srcs/main.c \
 		utils/ft_strcat.c \
 		utils/ft_strlen.c \
 		utils/search_for_args.c \
-		utils/check_error.c
+		utils/check_error.c \
+		utils/expander.c
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
