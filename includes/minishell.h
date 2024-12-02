@@ -80,11 +80,13 @@ char				**ft_split(char **input, char *charset);
 int					pipe_nb(char *line);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 t_tokens			*get_token_type(t_tokens *token, int token_size);
-void				search_for_args(t_tokens *token, int token_size);
+t_tokens			*search_for_args(t_tokens *token, int token_size);
 t_tokens			*malloc_token(t_tokens *token, int *size, int tokens_size);
 char				*ft_strcat(char *dst, const char *src);
 char				**union_tab(char **tab, int size);
 size_t				ft_strlen(const char *s);
 int					check_error(char *line);
+t_tokens 			*main_expand(t_tokens *token, int token_size);
 
 #endif
+
