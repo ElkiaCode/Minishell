@@ -35,7 +35,8 @@ void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 		n++;
 	}
 	token = get_token_type(token, tokens_size);
-	search_for_args(token, tokens_size);
+	token = search_for_args(token, tokens_size);
+	token = main_expand(token, tokens_size);
 	j = 0;
 	i = 0;
 	while (j < tokens_size)
