@@ -12,6 +12,25 @@
 
 #include "../includes/minishell.h"
 
+const char	*tokens_strings[] = {
+	[T_CMD] = "T_CMD",
+	[T_ARG] = "T_ARG",
+	[T_RLESS] = "T_RLESS",
+	[T_RGREAT] = "T_RGREAT",
+	[T_DLESS] = "T_DLESS",
+	[T_DGREAT] = "T_DGREAT",
+	[T_OD_FILE] = "T_OD_FILE",
+	[T_I_FILE] = "T_I_FILE",
+	[T_AND] = "T_AND",
+	[T_OR_FILE] = "T_OR_FILE",
+	[T_NL] = "T_NL",
+	[T_ERR] = "T_ERR",
+	[T_HEREDOC] = "T_HEREDOC",
+	[T_VAR] = "T_VAR",
+	[T_S_QUOTE] = "T_S_QUOTE",
+	[T_D_QUOTE] = "T_D_QUOTE",
+};
+
 void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 {
 	int	i;
@@ -53,7 +72,7 @@ void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 		{
 			if (token[j].tokens[i] != NULL)
 			{
-				printf("  %u\n", token[j].type[i]);
+				printf("  %s\n", tokens_strings[token[j].type[i]]);
 				printf("  %s\n", token[j].tokens[i]);
 			}
 			else

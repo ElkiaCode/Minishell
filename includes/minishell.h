@@ -51,17 +51,20 @@ typedef struct s_tokens
 {
 	char			**tokens;
 	t_token_type	*type;
+	int				token_size;
 }					t_tokens;
 
 typedef struct s_global
 {
 	char			*cmd;
+	char			**isolate_cmd;
+	int				pipe_nb;
 	t_tokens		*token;
 }					t_global;
 
 // init
 
-int					init_struct(t_global **global, int tokens_size);
+void				init_struct(t_global **global);
 
 // srcs
 
@@ -86,7 +89,6 @@ char				*ft_strcat(char *dst, const char *src);
 char				**union_tab(char **tab, int size);
 size_t				ft_strlen(const char *s);
 int					check_error(char *line);
-t_tokens 			*main_expand(t_tokens *token, int token_size);
+t_tokens			*main_expand(t_tokens *token, int token_size);
 
 #endif
-

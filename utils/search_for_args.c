@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	search_for_args(t_tokens *token, int token_size)
+t_tokens	*search_for_args(t_tokens *token, int token_size)
 {
 	int	i;
 	int	j;
@@ -16,7 +16,7 @@ void	search_for_args(t_tokens *token, int token_size)
 			else if (token[i].type[j] == T_D_QUOTE)
 			{
 				j++;
-				while (token[i].type[j] != T_D_QUOTE && !token[i].type[j])
+				while (token[i].type[j] != T_D_QUOTE)
 				{
 					token[i].type[j] = T_ARG;
 					j++;
@@ -26,7 +26,7 @@ void	search_for_args(t_tokens *token, int token_size)
 			else if (token[i].type[j] == T_S_QUOTE)
 			{
 				j++;
-				while (token[i].type[j] != T_S_QUOTE && !token[i].type[j])
+				while (token[i].type[j] != T_S_QUOTE)
 				{
 					token[i].type[j] = T_ARG;
 					j++;
@@ -45,4 +45,5 @@ void	search_for_args(t_tokens *token, int token_size)
 		}
 		i++;
 	}
+	return (token);
 }

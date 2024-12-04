@@ -31,13 +31,11 @@ int	pipe_nb(char *line)
 int	main(void)
 {
 	t_global	*global;
-	int			tokens_size;
 
-	tokens_size = 0;
 	while (1)
 	{
-		tokens_size = init_struct(&global, tokens_size);
-		parsing(global->token, global->cmd, tokens_size);
+		init_struct(&global);
+		parsing(global->token, global->cmd, global->pipe_nb);
 		free(global->cmd);
 	}
 	return (0);
