@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:11:16 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/25 09:03:57 by cparodi          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -90,5 +78,8 @@ char				**union_tab(char **tab, int size);
 size_t				ft_strlen(const char *s);
 int					check_error(char *line);
 t_tokens			*main_expand(t_tokens *token, int token_size);
+int					final_parser(t_tokens *token, int token_size);
+void				print_test(t_tokens *token, int tokens_size);
+void				union_arg(t_tokens **token, int token_size);
 
 #endif

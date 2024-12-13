@@ -1,8 +1,28 @@
 #include "../includes/minishell.h"
 
-static int pipe_error(char *line)
+static int	error_input(char *line)
 {
-	int i;
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] && (line[i] == '&' || line[i] == ';'))
+			return (1);
+		if (line[i] && (line[i] == '"' || line[i] == '\''))
+		{
+			while (line[i] && (line[i] != '"' || line[i] != '\''))
+				i++;
+		}
+		if (line[i])
+			i++;
+	}
+	return (0);
+}
+
+static int	pipe_error(char *line)
+{
+	int	i;
 
 	i = 0;
 	while (line[i])
@@ -20,24 +40,28 @@ static int pipe_error(char *line)
 
 static int	single_quote(char *line)
 {
-	int	i;
-	int	b;
+	int		i;
+	int		b;
+	char	c;
 
 	b = 0;
 	i = 0;
 	while (line[i])
 	{
 		if (line[i] && (line[i] == '"' || line[i] == '\'') && b == 0)
+		{
 			b = 1;
-		else if (line[i] && (line[i] == '"' || line[i] == '\'') && b == 1)
-			b = 0;
+			c = line[i];
+			i++;
+			while (line[i] && line[i] != c)
+				i++;
+			if (line[i] && line[i] == c)
+				b = 0;
+		}
 		i++;
 	}
 	if (b == 1)
-	{
-		printf("error\n");
 		return (1);
-	}
 	return (0);
 }
 
@@ -49,6 +73,11 @@ int	check_error(char *line)
 		return (1);
 	}
 	if (pipe_error(line) == 1)
+	{
+		printf("error\n");
+		return (1);
+	}
+	if (error_input(line))
 	{
 		printf("error\n");
 		return (1);

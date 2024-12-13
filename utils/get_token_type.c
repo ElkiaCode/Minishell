@@ -30,13 +30,10 @@ t_tokens	*get_token_type(t_tokens *token, int token_size)
 		j = -1;
 		while (token[i].tokens[++j])
 		{
-			// ----------------------------------------
-			// voir si tu peux faire en sorte de les reconaitres plus tard
 			if (ft_strncmp(token[i].tokens[j], "<<", 2) == 0)
 				token[i].type[j] = T_DLESS;
 			else if (ft_strncmp(token[i].tokens[j], ">>", 2) == 0)
 				token[i].type[j] = T_DGREAT;
-			// ----------------------------------------
 			else if (ft_strncmp(token[i].tokens[j], "<", 1) == 0)
 				token[i].type[j] = T_RLESS;
 			else if (ft_strncmp(token[i].tokens[j], ">", 1) == 0)
@@ -49,6 +46,8 @@ t_tokens	*get_token_type(t_tokens *token, int token_size)
 				token[i].type[j] = T_CMD;
 			else
 				token[i].type[j] = T_ERR;
+			if (token[i].type[0] == T_ERR)
+				token[i].type[0] = T_CMD;
 		}
 	}
 	return (token);
