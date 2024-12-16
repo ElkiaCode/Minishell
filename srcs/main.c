@@ -24,6 +24,7 @@ int	main(void)
 	{
 		init_struct(&global);
 		parsing(global->token, global->cmd, global->pipe_nb);
+		prepare_exec(global);
 		free(global->cmd);
 	}
 	return (0);

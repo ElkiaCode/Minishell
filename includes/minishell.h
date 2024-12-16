@@ -47,6 +47,11 @@ typedef struct s_global
 	char			*cmd;
 	char			**isolate_cmd;
 	int				pipe_nb;
+	int				infile_fd;
+	int				outfile_fd;
+	int				is_heredoc;
+	char			*delimiter;
+	int				status;
 	t_tokens		*token;
 }					t_global;
 
