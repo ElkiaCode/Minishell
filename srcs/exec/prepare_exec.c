@@ -60,7 +60,6 @@ void	treat_token(t_global *data, char *token, int type, int *k)
 	}
 }
 
-
 void	prepare_exec(t_global *data)
 {
 	int	i;
@@ -82,10 +81,7 @@ void	prepare_exec(t_global *data)
 		j = -1;
 		k = 0;
 		while (data->token[i].tokens[++j])
-		{
 			treat_token(data, data->token[i].tokens[j], data->token[i].type[j], &k);
-		}
-		data->isolate_cmd[k] = NULL;
 		do_exec(data);
 		data->infile_fd = -2;
 		data->outfile_fd = -2;

@@ -23,10 +23,10 @@ typedef enum e_token_type
 	T_RGREAT,
 	T_DLESS,
 	T_DGREAT,
-	T_OD_FILE,
+	T_OD_FILE, // append
 	T_I_FILE,
 	T_AND,
-	T_OR_FILE,
+	T_OR_FILE, // truncate
 	T_NL,
 	T_ERR,
 	T_HEREDOC,
