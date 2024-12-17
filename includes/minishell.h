@@ -15,7 +15,7 @@
 
 // structs
 
-typedef enum e_token_type
+typedef enum e_token_type // les differents types
 {
 	T_CMD,
 	T_ARG,
@@ -37,17 +37,18 @@ typedef enum e_token_type
 
 typedef struct s_tokens
 {
-	char			**tokens;
-	t_token_type	*type;
-	int				token_size;
+	char			**tokens; // les tokens
+	t_token_type	*type; // type (chaque token =  1 type)
+	int				token_size; // taille du tableau
 }					t_tokens;
 
 typedef struct s_global
 {
-	char			*cmd;
-	char			**isolate_cmd;
-	int				pipe_nb;
-	t_tokens		*token;
+	char			*cmd; // la ligne d'entree
+	char			**isolate_cmd; // pas encore d'uttiliter
+	int				pipe_nb; // permet de savoir combien de | donc de cmd
+	t_tokens		*token; // une pour chaque pipe et c'est bien un tableau de struct je suis juste mauvais pour les noms
+	// imagine ca comme une liste chainee
 }					t_global;
 
 // init
