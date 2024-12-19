@@ -12,8 +12,17 @@
 # include <sys/stat.h>
 # include <termios.h>
 # include <unistd.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 
 // structs
+
+typedef struct s_index
+{
+	int				i;
+	int				j;
+	int				k;
+}					t_index;
 
 typedef enum e_token_type
 {
@@ -48,7 +57,7 @@ typedef struct s_cmd
 	char			**args;
 	int				infile_fd;
 	int				outfile_fd;
-	pit_t			pid;
+	pid_t			pid;
 }					t_cmd;
 
 typedef struct s_global

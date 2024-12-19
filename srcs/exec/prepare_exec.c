@@ -1,5 +1,68 @@
 #include "minishell.h"
 
+void	wait_all_pids(t_global *data)
+{
+	t_cmd	*cmd_ptr;
+	int		tmp;
+
+	cmd_ptr = data->cmds;
+	while (cmd_ptr)
+	{
+		waitpid(cmd_ptr->pid, &tmp, 0);
+		cmd_ptr = cmd_ptr->next;
+	}
+	if (WIFEXITED(tmp))
+		if (WEXITSTATUS(tmp) > data->status)
+			data->status = WEXITSTATUS(tmp);
+}
+
+void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
+{
+	close(fd[0]);
+	dup2(cmd_ptr->infile_fd, STDIN_FILENO);
+	if (cmd_ptr->outfile_fd != -2)
+		dup2(cmd_ptr->outfile_fd, STDOUT_FILENO);
+	else
+		dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+	close(cmd_ptr->infile_fd);
+	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env) == -1)
+		exec_error(data, cmd_ptr->args[0]);
+}
+
+void	parent_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
+{
+	close(fd[1]);
+	close(cmd_ptr->infile_fd);
+	cmd_ptr->infile_fd = dup(fd[0]);
+	close(fd[0]);
+}
+
+void	do_cmds(t_global *data)
+{
+	int		fd[2];
+	t_cmd	*cmd_ptr;
+
+	cmd_ptr = data->cmd;
+	while (cmd_ptr)
+	{
+		if (cmd_ptr->cmd_path != NULL)
+		{
+			if (pipe(fd) < 0)
+				data->status = 1;
+			cmd_ptr->pid = fork();
+			if (cmd_ptr->pid < 0)
+				data->status = 1;
+			if (cmd_ptr->pid == 0)
+				child_process(data, cmd_ptr, fd);
+			else
+				parent_process(data, cmd_ptr, fd);
+		}
+		cmd_ptr = cmd_ptr->next;
+	}
+	wait_all_pids(data);
+}
+
 void	free_tab(char ***tab)
 {
 	int	i;
@@ -89,22 +152,22 @@ int	prepare_outfile(t_global *data, char *file, int type)
 	return (fd);
 }
 
-void	treat_token(t_global *data, char *token, int type, int *k)
+void	treat_token(t_global *data, char *token, int type, t_index *index)
 {
 	if (type == T_CMD || type == T_ARG)
 	{
-		data->isolate_cmd[*k] = ft_strdup(token);
-		(*k)++;
+		data->isolate_cmd[index->k] = ft_strdup(token);
+		index->k++;
 	}
 	else if (type == T_I_FILE || type == T_HEREDOC)
 		data->isolate_infile = prepare_infile(data, token, type);
 	else if (type == T_OD_FILE || type == T_OR_FILE)
 		data->isolateoutfile = prepare_outfile(data, token, type);
-	else if (type == T_DELIMITER)
+	if (type == T_HEREDOC)
 	{
 		if (data->delimiter)
 			free(data->delimiter);
-		data->delimiter = ft_strdup(token);
+		data->delimiter = ft_strdup(data->token[i]->tokens[index->j + 1]);
 	}
 }
 
@@ -236,28 +299,27 @@ void	cmd_add_back(t_cmd **cmd, t_cmd *new)
 
 void	prepare_exec(t_global *data)
 {
-	int	i;
-	int	j;
-	int	k;
+	t_index	index;
 
-	i = -1;
-	while (data->token[++i])
+	index.i = -1;
+	while (data->token[index.++i])
 	{
 		if (data->isolate_cmd)
 			free_tab(&data->isolate_cmd);
-		j = 0;
-		while (data->token[i].tokens[j])
-			j++;
-		data->isolate_cmd = malloc(sizeof(char *) * (j + 1));
+		index.j = 0;
+		while (data->token[index.i].tokens[index.j])
+			index.j++;
+		data->isolate_cmd = malloc(sizeof(char *) * (index.j + 1));
 		if (!data->isolate_cmd)
 			return ;
-		data->isolate_cmd[j] = NULL;
-		j = -1;
-		k = 0;
-		while (data->token[i].tokens[++j])
-			treat_token(data, data->token[i].tokens[j], data->token[i].type[j], &k);
+		data->isolate_cmd[index.j] = NULL;
+		index.j = -1;
+		index.k = 0;
+		while (data->token[index.i].tokens[index.++j])
+			treat_token(data, data->token[index.i].tokens[index.j], data->token[index.i].type[index.j], &index);
 		cmd_add_back(&data->cmd, new_cmd(data));
 		data->isolate_infile = -2;
 		data->isolate_outfile = -2;
 	}
+	do_cmds(data);
 }
