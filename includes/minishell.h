@@ -42,17 +42,26 @@ typedef struct s_tokens
 	int				token_size;
 }					t_tokens;
 
+typedef struct s_cmd
+{
+	char			*cmd_path;
+	char			**args;
+	int				infile_fd;
+	int				outfile_fd;
+	pit_t			pid;
+}					t_cmd;
+
 typedef struct s_global
 {
 	char			*cmd;
 	char			**isolate_cmd;
 	int				pipe_nb;
-	int				infile_fd;
-	int				outfile_fd;
-	int				is_heredoc;
+	int				isolate_infile;
+	int				isolate_outfile;
 	char			*delimiter;
 	int				status;
 	t_tokens		*token;
+	t_cmd			*cmd;
 }					t_global;
 
 // init

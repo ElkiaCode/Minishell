@@ -21,7 +21,7 @@ int	do_heredoc(t_global data)
 	char	*line;
 	char	*tmp;
 
-	heredoc_fd = open(".heredoc", O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	heredoc_fd = open(".heredocA9gF3kL7X2rW6pZ4", O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
@@ -37,7 +37,9 @@ int	do_heredoc(t_global data)
 		free(line);
 	if (tmp)
 		free(tmp);
-	return (open(".heredoc", O_RDONLY));
+	heredoc_fd = open(".heredocA9gF3kL7X2rW6pZ4", O_RDONLY);
+	unlink(".heredocA9gF3kL7X2rW6pZ4");
+	return (heredoc_fd);
 }
 
 void	init_heredoc(t_global *data)
