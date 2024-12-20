@@ -62,6 +62,7 @@ typedef struct s_cmd
 
 typedef struct s_global
 {
+	char			**env;
 	char			*cmd;
 	char			**isolate_cmd;
 	int				pipe_nb;
@@ -75,7 +76,7 @@ typedef struct s_global
 
 // init
 
-void				init_struct(t_global **global);
+void				init_struct(t_global **global, char **env);
 
 // srcs
 

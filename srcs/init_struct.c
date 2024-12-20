@@ -33,7 +33,7 @@ void copy_env(t_global *global, char **env)
 	global->env[i] = NULL;
 }
 
-void	init_struct(t_global **global)
+void	init_struct(t_global **global, char **env)
 {
 	*global = malloc(sizeof(t_global));
 	if (!*global)

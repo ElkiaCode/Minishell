@@ -91,6 +91,7 @@ int	do_heredoc(t_global data)
 		tmp = ft_strjoin(data.delimiter, "\n");
 		if (!ft_strcmp(line, tmp))
 			break ;
+		line = expand_heredoc(data, line);
 		write(heredoc_fd, line, ft_strlen(line));
 		free(line);
 		free(tmp);
