@@ -43,7 +43,7 @@ void	do_cmds(t_global *data)
 	int		fd[2];
 	t_cmd	*cmd_ptr;
 
-	cmd_ptr = data->cmd;
+	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
 		if (cmd_ptr->cmd_path != NULL)
@@ -84,7 +84,7 @@ int	do_heredoc(t_global data)
 	char	*line;
 	char	*tmp;
 
-	heredoc_fd = open(".heredocA9gF3kL7X2rW6pZ4", O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4", O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
@@ -100,15 +100,9 @@ int	do_heredoc(t_global data)
 		free(line);
 	if (tmp)
 		free(tmp);
-	heredoc_fd = open(".heredocA9gF3kL7X2rW6pZ4", O_RDONLY);
-	unlink(".heredocA9gF3kL7X2rW6pZ4");
+	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4", O_RDONLY);
+	unlink("/tmp/.heredocA9gF3kL7X2rW6pZ4");
 	return (heredoc_fd);
-}
-
-void	init_heredoc(t_global *data)
-{
-	data->is_heredoc = 1;
-	return (do_heredoc(*data));
 }
 
 int	prepare_infile(t_global *data, char *file, int type)
@@ -125,9 +119,7 @@ int	prepare_infile(t_global *data, char *file, int type)
 		}
 	}
 	if (type == T_HEREDOC)
-	{
-		fd = init_heredoc(data);
-	}
+		fd = do_heredoc(*data);
 	return (fd);
 }
 
@@ -155,10 +147,7 @@ int	prepare_outfile(t_global *data, char *file, int type)
 void	treat_token(t_global *data, char *token, int type, t_index *index)
 {
 	if (type == T_CMD || type == T_ARG)
-	{
-		data->isolate_cmd[index->k] = ft_strdup(token);
-		index->k++;
-	}
+		data->isolate_cmd[index->k++] = ft_strdup(token);
 	else if (type == T_I_FILE || type == T_HEREDOC)
 		data->isolate_infile = prepare_infile(data, token, type);
 	else if (type == T_OD_FILE || type == T_OR_FILE)
@@ -171,7 +160,7 @@ void	treat_token(t_global *data, char *token, int type, t_index *index)
 	}
 }
 
-int	is_directory(t_pipex *data, char *cmd)
+int	is_directory(t_global *data, char *cmd)
 {
 	int	tmp_fd;
 
@@ -182,7 +171,7 @@ int	is_directory(t_pipex *data, char *cmd)
 	return (0);
 }
 
-char	**get_paths(t_pipex *data)
+char	**get_paths(t_global *data)
 {
 	int		i;
 	char	**paths;
@@ -317,7 +306,7 @@ void	prepare_exec(t_global *data)
 		index.k = 0;
 		while (data->token[index.i].tokens[index.++j])
 			treat_token(data, data->token[index.i].tokens[index.j], data->token[index.i].type[index.j], &index);
-		cmd_add_back(&data->cmd, new_cmd(data));
+		cmd_add_back(&data->cmds, new_cmd(data));
 		data->isolate_infile = -2;
 		data->isolate_outfile = -2;
 	}

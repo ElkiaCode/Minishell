@@ -14,9 +14,31 @@ void	init_tokens(t_tokens *token, int tokens_size)
 	}
 }
 
+void copy_env(t_global *global, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		i++;
+	global->env = malloc(sizeof(char *) * (i + 1));
+	if (!global->env)
+		return ;
+	i = 0;
+	while (env[i])
+	{
+		global->env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	global->env[i] = NULL;
+}
+
 void	init_struct(t_global **global)
 {
 	*global = malloc(sizeof(t_global));
+	if (!*global)
+		return ;
+	copy_env(*global, env);
 	(*global)->cmd = readline("minishell> ");
 	if (ft_strncmp((*global)->cmd, "exit", 4) == 0)
 	{

@@ -70,7 +70,7 @@ typedef struct s_global
 	char			*delimiter;
 	int				status;
 	t_tokens		*token;
-	t_cmd			*cmd;
+	t_cmd			*cmds;
 }					t_global;
 
 // init
