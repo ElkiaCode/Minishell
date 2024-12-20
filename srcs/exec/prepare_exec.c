@@ -46,18 +46,15 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		if (cmd_ptr->cmd_path != NULL)
-		{
-			if (pipe(fd) < 0)
-				data->status = 1;
-			cmd_ptr->pid = fork();
-			if (cmd_ptr->pid < 0)
-				data->status = 1;
-			if (cmd_ptr->pid == 0)
-				child_process(data, cmd_ptr, fd);
-			else
-				parent_process(data, cmd_ptr, fd);
-		}
+		if (pipe(fd) < 0)
+			data->status = 1;
+		cmd_ptr->pid = fork();
+		if (cmd_ptr->pid < 0)
+			data->status = 1;
+		if (cmd_ptr->pid == 0)
+			child_process(data, cmd_ptr, fd);
+		else
+			parent_process(data, cmd_ptr, fd);
 		cmd_ptr = cmd_ptr->next;
 	}
 	wait_all_pids(data);
@@ -77,14 +74,14 @@ void	free_tab(char ***tab)
 	*tab = NULL;
 }
 
-
 int	do_heredoc(t_global data)
 {
 	int		heredoc_fd;
 	char	*line;
 	char	*tmp;
 
-	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4", O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4",
+			O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
@@ -109,7 +106,7 @@ int	do_heredoc(t_global data)
 int	prepare_infile(t_global *data, char *file, int type)
 {
 	int	fd;
-	int old_fd;
+	int	old_fd;
 
 	old_fd = global->isolate_infile;
 	if (type == T_I_FILE)
@@ -131,7 +128,7 @@ int	prepare_infile(t_global *data, char *file, int type)
 int	prepare_outfile(t_global *data, char *file, int type)
 {
 	int	fd;
-	int old_fd;
+	int	old_fd;
 
 	old_fd = global->isolate_outfile;
 	if (type == T_OD_FILE)
@@ -243,9 +240,9 @@ char	*cmd_path(t_global *data, char *cmd)
 	return (exec_path);
 }
 
-void cmd_cpy(t_global *data, t_cmd *cmd)
+void	cmd_cpy(t_global *data, t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (data->isolate_cmd[i])
@@ -316,7 +313,8 @@ void	prepare_exec(t_global *data)
 		index.j = -1;
 		index.k = 0;
 		while (data->token[index.i].tokens[index.++j])
-			treat_token(data, data->token[index.i].tokens[index.j], data->token[index.i].type[index.j], &index);
+			treat_token(data, data->token[index.i].tokens[index.j],
+				data->token[index.i].type[index.j], &index);
 		cmd_add_back(&data->cmds, new_cmd(data));
 		data->isolate_infile = -2;
 		data->isolate_outfile = -2;
