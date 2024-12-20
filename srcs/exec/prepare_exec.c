@@ -108,9 +108,9 @@ int	do_heredoc(t_global data)
 int	prepare_infile(t_global *data, char *file, int type)
 {
 	int	fd;
+	int old_fd;
 
-	if (global->isolate_infile != -2)
-		close(global->isolate_infile);
+	old_fd = global->isolate_infile;
 	if (type == T_I_FILE)
 	{
 		fd = open(file, O_RDONLY);
@@ -122,15 +122,17 @@ int	prepare_infile(t_global *data, char *file, int type)
 	}
 	if (type == T_HEREDOC)
 		fd = do_heredoc(*data);
+	if (old_fd != -2)
+		close(old_fd);
 	return (fd);
 }
 
 int	prepare_outfile(t_global *data, char *file, int type)
 {
 	int	fd;
+	int old_fd;
 
-	if (global->isolate_outfile != -2)
-		close(global->isolate_outfile);
+	old_fd = global->isolate_outfile;
 	if (type == T_OD_FILE)
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -145,6 +147,8 @@ int	prepare_outfile(t_global *data, char *file, int type)
 	}
 	if (fd == -1)
 		data->status = 1;
+	if (old_fd != -2)
+		close(old_fd);
 	return (fd);
 }
 
