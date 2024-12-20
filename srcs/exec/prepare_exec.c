@@ -109,6 +109,8 @@ int	prepare_infile(t_global *data, char *file, int type)
 {
 	int	fd;
 
+	if (global->isolate_infile != -2)
+		close(global->isolate_infile);
 	if (type == T_I_FILE)
 	{
 		fd = open(file, O_RDONLY);
@@ -127,6 +129,8 @@ int	prepare_outfile(t_global *data, char *file, int type)
 {
 	int	fd;
 
+	if (global->isolate_outfile != -2)
+		close(global->isolate_outfile);
 	if (type == T_OD_FILE)
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -151,7 +155,7 @@ void	treat_token(t_global *data, char *token, int type, t_index *index)
 	else if (type == T_I_FILE || type == T_HEREDOC)
 		data->isolate_infile = prepare_infile(data, token, type);
 	else if (type == T_OD_FILE || type == T_OR_FILE)
-		data->isolateoutfile = prepare_outfile(data, token, type);
+		data->isolate_outfile = prepare_outfile(data, token, type);
 	if (type == T_HEREDOC)
 	{
 		if (data->delimiter)
@@ -293,6 +297,8 @@ void	prepare_exec(t_global *data)
 	index.i = -1;
 	while (data->token[index.++i])
 	{
+		if (!data->cmds)
+			data->isolate_infile = open("/dev/null", O_RDONLY);
 		if (data->isolate_cmd)
 			free_tab(&data->isolate_cmd);
 		index.j = 0;
