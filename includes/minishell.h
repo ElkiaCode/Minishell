@@ -7,8 +7,10 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+# include <stdbool.h>
 # include <stdlib.h>
 # include <string.h>
+# include <limits.h>
 # include <sys/stat.h>
 # include <termios.h>
 # include <unistd.h>
