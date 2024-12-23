@@ -114,5 +114,6 @@ t_tokens			*main_expand(t_tokens *token, int token_size);
 int					final_parser(t_tokens *token, int token_size);
 void				print_test(t_tokens *token, int tokens_size);
 void				union_arg(t_tokens **token, int token_size);
+void				update_env(t_global *data, char *name, char *value);
 
 #endif
