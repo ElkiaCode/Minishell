@@ -53,6 +53,13 @@ typedef struct s_tokens
 	int				token_size;
 }					t_tokens;
 
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
 typedef struct s_cmd
 {
 	char			*cmd_path;
@@ -64,7 +71,7 @@ typedef struct s_cmd
 
 typedef struct s_global
 {
-	char			**env;
+	t_env			*env;
 	char			*cmd;
 	char			**isolate_cmd;
 	int				pipe_nb;

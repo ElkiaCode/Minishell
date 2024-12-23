@@ -2,11 +2,13 @@
 
 int ft_env(t_global *data)
 {
-	int i;
+	t_env *tmp;
 
-	i = -1;
-	while (data->env && data->env[++i])
-		if (ft_strchr(data->env[i], '='))
-			ft_putendl_fd(data->env[i], 1);
+	tmp = data->env;
+	while (tmp)
+	{
+		printf("%s=%s\n", tmp->name, tmp->value);
+		tmp = tmp->next;
+	}
 	return (0);
 }
