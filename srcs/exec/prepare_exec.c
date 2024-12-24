@@ -60,20 +60,6 @@ void	do_cmds(t_global *data)
 	wait_all_pids(data);
 }
 
-void	free_tab(char ***tab)
-{
-	int	i;
-
-	i = 0;
-	while (*tab[i])
-	{
-		free(*tab[i]);
-		i++;
-	}
-	free(*tab);
-	*tab = NULL;
-}
-
 int	do_heredoc(t_global data)
 {
 	int		heredoc_fd;
@@ -177,27 +163,6 @@ int	is_directory(t_global *data, char *cmd)
 	return (0);
 }
 
-char	**get_paths(t_global *data)
-{
-	int		i;
-	char	**paths;
-
-	i = 0;
-	paths = NULL;
-	while (data->env[i])
-	{
-		if (ft_strncmp(data->env[i], "PATH=", 5) == 0)
-		{
-			paths = ft_split(data->env[i] + 5, ':');
-			break ;
-		}
-		i++;
-	}
-	if (!paths)
-		data->status = 127;
-	return (paths);
-}
-
 char	*find_exec(char *cmd, char **paths)
 {
 	int		i;
@@ -235,8 +200,8 @@ char	*cmd_path(t_global *data, char *cmd)
 		return (NULL);
 	}
 	paths = get_paths(data);
-	exec_path = find_exec(cmd, paths);
-	free_tab(&paths);
+	exec_path = find_exec(cmd, ft_getenv(data, "PATH"));
+	free_tab(paths);
 	return (exec_path);
 }
 
@@ -302,7 +267,7 @@ void	prepare_exec(t_global *data)
 		if (!data->cmds)
 			data->isolate_infile = open("/dev/null", O_RDONLY);
 		if (data->isolate_cmd)
-			free_tab(&data->isolate_cmd);
+			free_tab(data->isolate_cmd);
 		index.j = 0;
 		while (data->token[index.i].tokens[index.j])
 			index.j++;

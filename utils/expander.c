@@ -1,23 +1,5 @@
 #include "../includes/minishell.h"
 
-char *ft_getenv(t_global *data, char *name)
-{
-	t_env *tmp;
-	char *res;
-
-	tmp = data->env;
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->name, name, INT_MAX))
-		{
-			res = ft_strdup(tmp->value);
-			return (res);
-		}
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
 static char *expand_tilde(char *token)
 {
     char *temp;
