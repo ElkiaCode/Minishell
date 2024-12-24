@@ -7,7 +7,10 @@ int ft_env(t_global *data)
 	tmp = data->env;
 	while (tmp)
 	{
-		printf("%s=%s\n", tmp->name, tmp->value);
+		if (tmp->value)
+			printf("%s=%s\n", tmp->name, tmp->value);
+		else
+			printf("%s=\n", tmp->name);
 		tmp = tmp->next;
 	}
 	return (0);

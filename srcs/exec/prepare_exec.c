@@ -16,6 +16,36 @@ void	wait_all_pids(t_global *data)
 			data->status = WEXITSTATUS(tmp);
 }
 
+void	make_env_tab(t_global *data)
+{
+	t_env	*env_ptr;
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	env_ptr = data->env;
+	while (env_ptr)
+	{
+		i++;
+		env_ptr = env_ptr->next;
+	}
+	data->env_tab = malloc(sizeof(char *) * (i + 1));
+	if (!data->env_tab)
+		return ;
+	i = 0;
+	env_ptr = data->env;
+	while (env_ptr)
+	{
+		data->env_tab[i] = ft_strjoin(env_ptr->name, "=");
+		tmp = ft_strjoin(data->env_tab[i], env_ptr->value);
+		free(data->env_tab[i]);
+		data->env_tab[i] = tmp;
+		env_ptr = env_ptr->next;
+		i++;
+	}
+	data->env_tab[i] = NULL;
+}
+
 void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 {
 	close(fd[0]);
@@ -26,7 +56,10 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	close(cmd_ptr->infile_fd);
-	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env) == -1)
+	if (data->env_tab)
+		free_tab(data->env_tab);
+	make_env_tab(data);
+	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
 		exec_error(data, cmd_ptr->args[0]);
 }
 
@@ -140,16 +173,16 @@ void	treat_token(t_global *data, char *token, int type, t_index *index)
 {
 	if (type == T_CMD || type == T_ARG)
 		data->isolate_cmd[index->k++] = ft_strdup(token);
-	else if (type == T_I_FILE || type == T_HEREDOC)
-		data->isolate_infile = prepare_infile(data, token, type);
-	else if (type == T_OD_FILE || type == T_OR_FILE)
-		data->isolate_outfile = prepare_outfile(data, token, type);
 	if (type == T_HEREDOC)
 	{
 		if (data->delimiter)
 			free(data->delimiter);
 		data->delimiter = ft_strdup(data->token[i]->tokens[index->j + 1]);
 	}
+	else if (type == T_I_FILE || type == T_HEREDOC)
+		data->isolate_infile = prepare_infile(data, token, type);
+	else if (type == T_OD_FILE || type == T_OR_FILE)
+		data->isolate_outfile = prepare_outfile(data, token, type);
 }
 
 int	is_directory(t_global *data, char *cmd)
@@ -194,7 +227,7 @@ char	*cmd_path(t_global *data, char *cmd)
 		return (NULL);
 	if (!access(cmd, X_OK) && !is_directory(data, cmd))
 		return (ft_strdup(cmd));
-	if (!data->*env)
+	if (!data->env)
 	{
 		perror(cmd);
 		return (NULL);
