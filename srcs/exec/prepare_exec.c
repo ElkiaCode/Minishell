@@ -68,8 +68,11 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	if (data->env_tab)
 		free_tab(data->env_tab);
 	make_env_tab(data);
-	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
-		exec_error(data, cmd_ptr->args[0]);
+	if (cmd_is_builtin(cmd_ptr->args[0])) // TODO: implement cmd_is_builtin and exec_builtin
+		exec_builtin(data, cmd_ptr);
+	else
+		if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
+			exec_error(data, cmd_ptr->args[0]);
 }
 
 void	parent_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
