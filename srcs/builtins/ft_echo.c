@@ -9,10 +9,10 @@ static void	print_echo(int count, int i, bool nl, char **args)
 	}
 	while (i < count)
 	{
-			printf("%s", args[i]);
-			if (i + 1 < count)
-				printf(" ");
-			i++;
+		printf("%s", args[i]);
+		if (i + 1 < count)
+			printf(" ");
+		i++;
 	}
 	if (nl)
 		printf("\n");

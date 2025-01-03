@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void update_oldpwd(t_global *data)
+void	update_oldpwd(t_global *data)
 {
-	t_env *curr;
-	char *oldpwd;
+	t_env	*curr;
+	char	*oldpwd;
 
 	curr = data->env;
 	while (curr)
@@ -19,10 +19,10 @@ void update_oldpwd(t_global *data)
 	}
 }
 
-void update_pwd(t_global *data, char *path)
+void	update_pwd(t_global *data, char *path)
 {
-	char cwd[PATH_MAX];
-	char *pwd;
+	char	cwd[PATH_MAX];
+	char	*pwd;
 
 	update_oldpwd(data);
 	if (!getcwd(cwd, PATH_MAX))
@@ -37,9 +37,9 @@ void update_pwd(t_global *data, char *path)
 	free(pwd);
 }
 
-int ft_cd(t_global *data, char **args)
+int	ft_cd(t_global *data, char **args)
 {
-	int status;
+	int	status;
 
 	if (count_args(args) == 2)
 	{

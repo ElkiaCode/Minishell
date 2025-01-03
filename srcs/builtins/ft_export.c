@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-static int print_export(t_global *data)
+static int	print_export(t_global *data)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = data->env;
 	while (tmp)
@@ -16,9 +16,9 @@ static int print_export(t_global *data)
 	return (0);
 }
 
-static int is_valid_export(char *arg)
+static int	is_valid_export(char *arg)
 {
-	int i;
+	int	i;
 
 	count_equal = 0;
 	i = 0;
@@ -34,10 +34,10 @@ static int is_valid_export(char *arg)
 	return (1);
 }
 
-char **get_name_value(char *arg)
+char	**get_name_value(char *arg)
 {
-	char **tmp;
-	int i;
+	char	**tmp;
+	int		i;
 
 	i = 0;
 	tmp = malloc(sizeof(char *) * 3);
@@ -51,11 +51,11 @@ char **get_name_value(char *arg)
 	return (tmp);
 }
 
-int ft_export(t_global *data, char **args)
+int	ft_export(t_global *data, char **args)
 {
-	int i;
-	int exit_status;
-	char **tmp;
+	int		i;
+	int		exit_status;
+	char	**tmp;
 
 	i = 0;
 	if (count_args(args) == 1)

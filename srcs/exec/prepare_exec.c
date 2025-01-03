@@ -46,10 +46,10 @@ void	make_env_tab(t_global *data)
 	data->env_tab[i] = NULL;
 }
 
-bool cmd_is_builtin(char *cmd)
+bool	cmd_is_builtin(char *cmd)
 {
-	char **builtins;
-	int i;
+	char	**builtins;
+	int		i;
 
 	builtins = ft_split("echo cd pwd export unset env exit", ' ');
 	if (!builtins)
@@ -109,9 +109,8 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	make_env_tab(data);
 	if (cmd_is_builtin(cmd_ptr->args[0]))
 		exec_builtin(data, cmd_ptr);
-	else
-		if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
-			exec_error(data, cmd_ptr->args[0]);
+	else if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
+		exec_error(data, cmd_ptr->args[0]);
 }
 
 void	parent_process(t_global *data, t_cmd *cmd_ptr, int fd[2])

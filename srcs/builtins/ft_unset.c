@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-int unset_var(t_global *data, char *var)
+int	unset_var(t_global *data, char *var)
 {
-	t_env *tmp;
-	t_env *prev;
+	t_env	*tmp;
+	t_env	*prev;
 
 	tmp = data->env;
 	prev = NULL;
@@ -26,25 +26,25 @@ int unset_var(t_global *data, char *var)
 	return (1);
 }
 
-int is_valid_arg(char *arg)
+int	is_valid_arg(char *arg)
 {
-    int i;
+	int	i;
 
-    if (!arg)
-        return (0);
-    if (!ft_isalpha(arg[0]) && arg[0] != '_')
-        return (0);
-    i = 0;
+	if (!arg)
+		return (0);
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+		return (0);
+	i = 0;
 	while (arg[++i])
-        if (!ft_isalnum(arg[i]) && arg[i] != '_')
-            return (0);
-    return (1);
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
+	return (1);
 }
 
-int ft_unset(t_global *data, char **args)
+int	ft_unset(t_global *data, char **args)
 {
-	int i;
-	int status;
+	int	i;
+	int	status;
 
 	i = 0;
 	status = 0;

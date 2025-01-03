@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int ft_pwd(t_global *data)
+int	ft_pwd(t_global *data)
 {
-	char pwd[PATH_MAX];
+	char	pwd[PATH_MAX];
 
 	if (!getcwd(pwd, PATH_MAX))
 	{

@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int ft_env(t_global *data)
+int	ft_env(t_global *data)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = data->env;
 	while (tmp)
