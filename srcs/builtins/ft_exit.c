@@ -37,7 +37,7 @@ void	ft_exit(t_global *data, char **args)
 	exit_code = 0;
 	error = false;
 	if (count_args(args) == 1)
-		exit_shell(data, data->exit_code);
+		exit_shell(data, data->exit_code); // TODO : implement exit_shell
 	if (args[1]])
 	{
 		exit_code = get_exit_code(args[1], &error);

@@ -46,6 +46,45 @@ void	make_env_tab(t_global *data)
 	data->env_tab[i] = NULL;
 }
 
+bool cmd_is_builtin(char *cmd)
+{
+	char **builtins;
+	int i;
+
+	builtins = ft_split("echo cd pwd export unset env exit", ' ');
+	if (!builtins)
+		return (false);
+	i = -1;
+	while (builtins[++i])
+	{
+		if (!ft_strncmp(builtins[i], cmd, INT_MAX))
+		{
+			free_tab(builtins);
+			return (true);
+		}
+	}
+	free_tab(builtins);
+	return (false);
+}
+
+void	exec_builtin(t_global *data, t_cmd *cmd_ptr)
+{
+	if (!ft_strncmp(cmd_ptr->args[0], "echo", INT_MAX))
+		data->status = ft_echo(cmd_ptr->args);
+	else if (!ft_strncmp(cmd_ptr->args[0], "cd", INT_MAX))
+		data->status = ft_cd(data, cmd_ptr->args);
+	else if (!ft_strncmp(cmd_ptr->args[0], "pwd", INT_MAX))
+		data->status = ft_pwd(data);
+	else if (!ft_strncmp(cmd_ptr->args[0], "export", INT_MAX))
+		data->status = ft_export(data, cmd_ptr->args);
+	else if (!ft_strncmp(cmd_ptr->args[0], "unset", INT_MAX))
+		data->status = ft_unset(data, cmd_ptr->args);
+	else if (!ft_strncmp(cmd_ptr->args[0], "env", INT_MAX))
+		data->status = ft_env(data);
+	else if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
+		ft_exit(data, cmd_ptr->args);
+}
+
 void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 {
 	close(fd[0]);
@@ -68,7 +107,7 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	if (data->env_tab)
 		free_tab(data->env_tab);
 	make_env_tab(data);
-	if (cmd_is_builtin(cmd_ptr->args[0])) // TODO: implement cmd_is_builtin and exec_builtin
+	if (cmd_is_builtin(cmd_ptr->args[0]))
 		exec_builtin(data, cmd_ptr);
 	else
 		if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
