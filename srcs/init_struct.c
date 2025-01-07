@@ -69,11 +69,10 @@ void	init_struct(t_global **global, char **env)
 		return ;
 	copy_env(*global, env);
 	(*global)->cmd = readline("minishell> ");
-	if (ft_strncmp((*global)->cmd, "exit", 4) == 0)
-	{
-		rl_clear_history();
-		exit(EXIT_SUCCESS);
-	}
+	if (!(*global)->cmd)
+		exit_shell(*global);
+	(*global)->cmd = ft_strtrim((*global)->cmd, " ");
+	(*global)->cmd = ft_strjoin((*global)->cmd, " ");
 	(*global)->pipe_nb = pipe_nb((*global)->cmd);
 	(*global)->token = malloc(sizeof(t_tokens) * ((*global)->pipe_nb));
 	init_tokens((*global)->token, (*global)->pipe_nb);

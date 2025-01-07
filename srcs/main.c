@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+pid_t	g_signal_pid;
+
 int	pipe_nb(char *line)
 {
 	int	i;
@@ -24,6 +26,8 @@ int	main(int ac, char **av, char **env)
 
 	while (1)
 	{
+		g_signal_pid = 0;
+		signals();
 		init_struct(&global, env);
 		parsing(global->token, global->cmd, global->pipe_nb);
 //		prepare_exec(global);

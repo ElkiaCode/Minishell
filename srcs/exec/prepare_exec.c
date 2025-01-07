@@ -4,16 +4,24 @@ void	wait_all_pids(t_global *data)
 {
 	t_cmd	*cmd_ptr;
 	int		tmp;
+	pid_t	pid;
 
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		waitpid(cmd_ptr->pid, &tmp, 0);
+		pid = waitpid(0, &tmp, 0);
+		if (pid == g_signal_pid)
+		{
+			if (WIFEXITED(tmp))
+				if (WEXITSTATUS(tmp) > data->status)
+					data->status = WEXITSTATUS(tmp);
+		}
+		if (cmd_ptr->infile_fd > 0)
+			close(cmd_ptr->infile_fd);
+		if (cmd_ptr->outfile_fd > 0)
+			close(cmd_ptr->outfile_fd);
 		cmd_ptr = cmd_ptr->next;
 	}
-	if (WIFEXITED(tmp))
-		if (WEXITSTATUS(tmp) > data->status)
-			data->status = WEXITSTATUS(tmp);
 }
 
 void	make_env_tab(t_global *data)
@@ -95,10 +103,6 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	else
 		dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
-	if (cmd_ptr->infile_fd != -2)
-		close(cmd_ptr->infile_fd);
-	if (cmd_ptr->outfile_fd != -2)
-		close(cmd_ptr->outfile_fd);
 	if (data->env_tab)
 	{
 		free_tab(data->env_tab);
@@ -109,8 +113,12 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	make_env_tab(data);
 	if (cmd_is_builtin(cmd_ptr->args[0]))
 		exec_builtin(data, cmd_ptr);
-	else if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
-		exec_error(data, cmd_ptr->args[0]);
+	else
+	{
+		signals_child();
+		if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
+			exec_error(data, cmd_ptr->args[0]);
+	}
 }
 
 void	parent_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
@@ -132,10 +140,10 @@ void	do_cmds(t_global *data)
 	{
 		if (pipe(fd) < 0)
 			data->status = 1;
-		cmd_ptr->pid = fork();
-		if (cmd_ptr->pid < 0)
+		g_signal_pid = fork();
+		if (g_signal_pid < 0)
 			data->status = 1;
-		if (cmd_ptr->pid == 0)
+		else if (g_signal_pid == 0)
 			child_process(data, cmd_ptr, fd);
 		else
 			parent_process(data, cmd_ptr, fd);
