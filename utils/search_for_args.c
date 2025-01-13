@@ -22,7 +22,7 @@ t_tokens	*search_for_args(t_tokens *token, int token_size)
 			else if (token[i].type[j] == T_DGREAT && token[i].type[j
 				+ 1] == T_ERR)
 				token[i].type[j + 1] = T_OD_FILE;
-			else if (token[i].type[j] == T_D_QUOTE)
+			if (token[i].type[j] == T_D_QUOTE)
 			{
 				j++;
 				while (token[i].type[j] != T_D_QUOTE && token[i].tokens[j])
@@ -32,7 +32,7 @@ t_tokens	*search_for_args(t_tokens *token, int token_size)
 				}
 				j++;
 			}
-			else if (token[i].type[j] == T_S_QUOTE)
+			if (token[i].type[j] == T_S_QUOTE)
 			{
 				j++;
 				while (token[i].type[j] != T_S_QUOTE && token[i].tokens[j])
@@ -42,6 +42,9 @@ t_tokens	*search_for_args(t_tokens *token, int token_size)
 				}
 				j++;
 			}
+			if (token[i].type[j] == T_ERR && (token[i].type[j + 1] == T_D_QUOTE
+					|| token[i].type[j + 1] == T_S_QUOTE))
+				token[i].type[j] = T_ARG;
 			if (token[i].type[j] == T_CMD && (token[i].type[j + 1] != T_D_QUOTE
 					|| token[i].type[j + 1] != T_S_QUOTE) && token[i].type[j
 				+ 1] == T_ERR)

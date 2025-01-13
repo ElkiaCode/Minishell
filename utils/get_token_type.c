@@ -38,7 +38,7 @@ t_tokens	*get_token_type(t_tokens *token, int token_size)
 				token[i].type[j] = T_RLESS;
 			else if (ft_strncmp(token[i].tokens[j], ">", 1) == 0)
 				token[i].type[j] = T_RGREAT;
-			else if (ft_strncmp(token[i].tokens[j], "'", 1) == 0)
+			else if (token[i].tokens[j][0] == '\'')
 				token[i].type[j] = T_S_QUOTE;
 			else if (token[i].tokens[j][0] == '"')
 				token[i].type[j] = T_D_QUOTE;

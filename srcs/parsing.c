@@ -17,7 +17,9 @@ void	parsing(t_tokens *token, char *line, int tokens_size)
 	token = get_token_type(token, tokens_size); // le typage des separateur et des cmd simple
 	token = search_for_args(token, tokens_size); // typage des arguments et des expander
 	token = main_expand(token, tokens_size); // les expanders
-	union_arg(&token, tokens_size);
+	union_arg(&token, tokens_size, 0);
+	del_quote(&token, tokens_size);
+	union_arg(&token, tokens_size, 1);
 	if (final_parser(token, tokens_size) == 1) // parsing final et pas encore fini
 		return ;
 	print_test(token, tokens_size); //le print pour le test

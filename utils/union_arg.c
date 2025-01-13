@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-t_tokens	*union_arg_res(t_tokens *token)
+t_tokens	*union_arg_res(t_tokens *token, int key)
 {
 	t_tokens	*result;
 	int			i;
@@ -24,9 +24,12 @@ t_tokens	*union_arg_res(t_tokens *token)
 				temp = malloc(ft_strlen(merged) + ft_strlen(token->tokens[i
 							+ 1]) + 2);
 				ft_strncpy(temp, merged, ft_strlen(merged));
-				if (ft_strncmp(token->tokens[i + 1], "'", 1)
-					&& ft_strncmp(token->tokens[i], "'", 1))
-					ft_strcat(temp, " ");
+				if (!ft_strncmp(token->tokens[i + 1], "'", 1)
+					&& !ft_strncmp(token->tokens[i], "'", 1))
+					{
+						if (key == 0)
+							ft_strcat(temp, " ");
+					}
 				ft_strcat(temp, token->tokens[i + 1]);
 				free(merged);
 				merged = temp;
@@ -48,17 +51,17 @@ t_tokens	*union_arg_res(t_tokens *token)
 	return (result);
 }
 
-void	union_arg(t_tokens **token, int token_size)
+void	union_arg(t_tokens **token, int token_size, int key)
 {
 	t_tokens	*new_token;
 	int			i;
 	int			j;
 
-	j = -1;
 	i = -1;
 	while (++i < token_size)
 	{
-		new_token = union_arg_res(&(*token)[i]);
+		j = -1;
+		new_token = union_arg_res(&(*token)[i], key);
 		while (++j < (*token)[i].token_size)
 			free((*token)[i].tokens[j]);
 		free((*token)[i].tokens);
