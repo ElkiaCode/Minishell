@@ -66,7 +66,6 @@ typedef struct s_cmd
 	char			**args;
 	int				infile_fd;
 	int				outfile_fd;
-	pid_t			pid;
 }					t_cmd;
 
 typedef struct s_global

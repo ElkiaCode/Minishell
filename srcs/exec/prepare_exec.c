@@ -330,7 +330,6 @@ t_cmd	*cmd_new(t_global *data)
 			cmd->cmd_path = ft_strdup(data->isolate_cmd[0]);
 	cmd_cpy(data, cmd);
 	cmd->next = NULL;
-	cmd->pid = -1;
 	return (cmd);
 }
 
