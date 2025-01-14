@@ -36,7 +36,8 @@ SRC =	srcs/main.c \
 		utils/print_test.c \
 		utils/union_arg.c \
 		utils/del_quote.c \
-		utils/ft_strjoin.c
+		utils/ft_strjoin.c \
+		utils/get_args.c
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}

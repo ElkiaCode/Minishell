@@ -24,7 +24,6 @@ void	init_struct(t_global **global)
 		exit(EXIT_SUCCESS);
 	}
 	(*global)->pipe_nb = pipe_nb((*global)->cmd);
-	(*global)->space_nb = 0;
 	(*global)->token = malloc(sizeof(t_tokens) * ((*global)->pipe_nb));
 	init_tokens((*global)->token, (*global)->pipe_nb);
 	add_history((*global)->cmd);
