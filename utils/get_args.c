@@ -5,10 +5,11 @@ t_tokens	*get_args_app(t_tokens *token)
 	t_tokens	*result;
 	int			i;
 	int			new_size;
-	char		*merged;
-	char		*temp;
+	char		*new_token;
+	int			j;
 
 	i = -1;
+	j = 0;
 	new_size = 0;
 	result = malloc(sizeof(t_tokens));
 	result->token_size = 0;
@@ -18,19 +19,21 @@ t_tokens	*get_args_app(t_tokens *token)
 	{
 		if (token->type[i] == T_D_QUOTE)
 		{
-			remove_quotes();
+			new_token = remove_quotes(token->tokens[i], j);
+			result->tokens[new_size] = ft_strdup(new_token);
 			result->type[new_size] = T_ARG;
 		}
 		else if (token->type[i] == T_S_QUOTE)
 		{
-			expander();
-			remove_quotes();
+			// expander();
+			new_token = remove_quotes(token->tokens[i], j);
+			result->tokens[new_size] = ft_strdup(new_token);
 			result->type[new_size] = T_ARG;
 		}
 		else
 		{
-			remove_quotes();
-			result->tokens[new_size] = ft_strdup(token->tokens[i]);
+			new_token = remove_quotes(token->tokens[i], j);
+			result->tokens[new_size] = ft_strdup(new_token);
 			result->type[new_size] = token->type[i];
 		}
 		new_size++;

@@ -82,9 +82,9 @@ int			check_error(char *line);
 t_tokens	*main_expand(t_tokens *token, int token_size);
 int			final_parser(t_tokens *token, int token_size);
 void		print_test(t_tokens *token, int tokens_size);
-void		union_arg(t_tokens **token, int token_size, int key);
-void		del_quote(t_tokens **token, int token_size);
 char		*ft_strjoin(char const *s1, char const *s2);
 void		get_args(t_tokens **token, int token_size);
+char		*remove_quotes(char *token, int j);
+
 
 #endif

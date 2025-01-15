@@ -34,10 +34,9 @@ SRC =	srcs/main.c \
 		utils/expander.c \
 		utils/final_parser.c \
 		utils/print_test.c \
-		utils/union_arg.c \
-		utils/del_quote.c \
 		utils/ft_strjoin.c \
-		utils/get_args.c
+		utils/get_args.c \
+		utils/remove_quotes.c
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
@@ -59,7 +58,7 @@ GREEN		= \e[0;1;32m
 _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
-FILE_TOTAL	= 24
+FILE_TOTAL	= 23
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_REST	= ${shell expr 23 - ${BAR_LOAD}}
