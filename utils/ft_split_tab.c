@@ -87,7 +87,7 @@ static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 	}
 }
 
-char	**ft_split(char **input, char *charset)
+char	**ft_split_tab(char **input, char *charset)
 {
 	char	**strs;
 	size_t	total_words;

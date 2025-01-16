@@ -2,15 +2,15 @@
 
 void	parsing(t_tokens *token, char *line, int tokens_size)
 {
-	int		*size;
-	char	**line_tab;
+	int *size;
+	char **line_tab;
 
 	/* pas vraiment le parsing mais le file conducteur de toute ma partie*/
 	if (check_error(line) == 1) // premier check des erreur simple
 		return ;
 	line_tab = split_command(line);
 	// la mise sous forme de tableau de la ligne de cmd
-	line_tab = ft_split(line_tab, "<>|");
+	line_tab = ft_split_tab(line_tab, "<>|");
 	// les separateurs a prendre en compte individuellement
 	line_tab = union_tab(line_tab, 0);
 	// l'union des > et < qui se suivent

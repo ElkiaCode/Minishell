@@ -22,7 +22,7 @@ SRC =	srcs/main.c \
 		utils/ft_strncpy.c \
 		utils/ft_strdup.c \
 		utils/tab_size.c \
-		utils/ft_split_2input.c \
+		utils/ft_split_tab.c \
 		utils/ft_strncmp.c \
 		utils/get_token_type.c \
 		utils/malloc_token.c \
