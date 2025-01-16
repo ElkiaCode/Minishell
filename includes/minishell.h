@@ -30,13 +30,6 @@ typedef struct s_index
 	int				k;
 }					t_index;
 
-typedef struct s_index
-{
-	int				i;
-	int				j;
-	int				k;
-}					t_index;
-
 typedef enum e_token_type
 {
 	T_CMD,
@@ -77,7 +70,7 @@ typedef struct s_cmd
 	char			**args;
 	int				infile_fd;
 	int				outfile_fd;
-	struct s_cmd	next;
+	struct s_cmd	*next;
 }					t_cmd;
 
 typedef struct s_global
@@ -129,5 +122,36 @@ char				*ft_strjoin(char const *s1, char const *s2);
 void				get_args(t_tokens **token, int token_size);
 void				update_env(t_global *data, char *name, char *value);
 char				*remove_quotes(char *token, int j);
+
+// Exec
+void wait_all_pids(t_global *data);
+void make_env_tab(t_global *data);
+bool cmd_is_builtin(char *cmd);
+void exec_builtin(t_global *data, t_cmd *cmd_ptr);
+void child_process(t_global *data, t_cmd *cmd_ptr, int fd[2]);
+void parent_process(t_cmd *cmd_ptr, int fd[2]);
+void do_cmds(t_global *data);
+int do_heredoc(t_global data);
+int prepare_infile(t_global *data, char *file, int type);
+int prepare_outfile(t_global *data, char *file, int type);
+void treat_token(t_global *data, char *token, int type, t_index *index);
+int is_directory(t_global *data, char *cmd);
+char *find_exec(char *cmd, char **paths);
+char *cmd_path(t_global *data, char *cmd);
+void cmd_cpy(t_global *data, t_cmd *cmd);
+t_cmd *cmd_new(t_global *data);
+void cmd_add_back(t_cmd **cmd, t_cmd *new);
+void prepare_exec(t_global *data);
+void update_oldpwd(t_global *data);
+void update_pwd(t_global *data, char *path);
+int ft_cd(t_global *data, char **args);
+int ft_echo(char **args);
+int ft_env(t_global *data);
+void ft_exit(t_global *data, char **args);
+int get_exit_code(char *arg, bool *error);
+int print_export(t_global *data);
+char *ft_getenv(t_global *data, char *name);
+void update_env(t_global *data, char *name, char *value);
+void	free_tab(char **tab);
 
 #endif

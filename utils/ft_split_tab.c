@@ -38,7 +38,7 @@ static size_t	ft_countwords(char *str, char *sep)
 	return (count);
 }
 
-static void	free_tab(char **tab)
+void	free_tab(char **tab)
 {
 	size_t	i;
 

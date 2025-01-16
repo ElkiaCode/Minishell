@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	wait_all_pids(t_global *data)
 {
@@ -93,6 +93,24 @@ void	exec_builtin(t_global *data, t_cmd *cmd_ptr)
 		ft_exit(data, cmd_ptr->args);
 }
 
+void exec_error(t_global *data, char *cmd)
+{
+	if (errno == ENOENT)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		data->status = 127;
+	}
+	else if (errno == EACCES)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		data->status = 126;
+	}
+}
+
 void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 {
 	close(fd[0]);
@@ -121,7 +139,7 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	}
 }
 
-void	parent_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
+void	parent_process(t_cmd *cmd_ptr, int fd[2])
 {
 	close(fd[1]);
 	if (cmd_ptr->infile_fd != -2)
@@ -146,7 +164,7 @@ void	do_cmds(t_global *data)
 		else if (g_signal_pid == 0)
 			child_process(data, cmd_ptr, fd);
 		else
-			parent_process(data, cmd_ptr, fd);
+			parent_process(cmd_ptr, fd);
 		cmd_ptr = cmd_ptr->next;
 	}
 	wait_all_pids(data);
@@ -209,20 +227,16 @@ int	prepare_outfile(t_global *data, char *file, int type)
 	int	old_fd;
 
 	old_fd = data->isolate_outfile;
+	fd = 0;
 	if (type == T_OD_FILE)
-	{
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd == -1)
-			perror(file);
-	}
-	if (type == T_OR_FILE)
-	{
+	else if (type == T_OR_FILE)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd == -1)
-			perror(file);
-	}
 	if (fd == -1)
+	{
+		perror(file);
 		data->status = 1;
+	}
 	if (old_fd != -2)
 		close(old_fd);
 	return (fd);
@@ -268,18 +282,21 @@ char	*find_exec(char *cmd, char **paths)
 		exec_path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (!access(exec_path, X_OK))
+		{
+			free_tab(paths);
 			return (exec_path);
+		}
 		free(exec_path);
 		exec_path = NULL;
 		i++;
 	}
+	free_tab(paths);
 	perror(cmd);
 	return (NULL);
 }
 
 char	*cmd_path(t_global *data, char *cmd)
 {
-	char	**paths;
 	char	*exec_path;
 
 	if (!cmd)
@@ -291,9 +308,7 @@ char	*cmd_path(t_global *data, char *cmd)
 		perror(cmd);
 		return (NULL);
 	}
-	paths = get_paths(data);
-	exec_path = find_exec(cmd, ft_getenv(data, "PATH"));
-	free_tab(paths);
+	exec_path = find_exec(cmd, ft_split(ft_getenv(data, "PATH")));
 	return (exec_path);
 }
 
@@ -306,7 +321,7 @@ void	cmd_cpy(t_global *data, t_cmd *cmd)
 		i++;
 	cmd->args = malloc(sizeof(char *) * (i + 1));
 	if (!cmd->args)
-		return (NULL);
+		return ;
 	i = -1;
 	while (data->isolate_cmd[++i])
 		cmd->args[i] = ft_strdup(data->isolate_cmd[i]);
@@ -370,7 +385,7 @@ void	prepare_exec(t_global *data)
 		while (data->token[index.i].tokens[++index.j])
 			treat_token(data, data->token[index.i].tokens[index.j],
 				data->token[index.i].type[index.j], &index);
-		cmd_add_back(&data->cmds, new_cmd(data));
+		cmd_add_back(&data->cmds, cmd_new(data));
 		data->isolate_infile = -2;
 		data->isolate_outfile = -2;
 	}
