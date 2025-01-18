@@ -93,7 +93,7 @@ void	exec_builtin(t_global *data, t_cmd *cmd_ptr)
 		ft_exit(data, cmd_ptr->args);
 }
 
-void exec_error(t_global *data, char *cmd)
+void	exec_error(t_global *data, char *cmd)
 {
 	if (errno == ENOENT)
 	{
@@ -184,7 +184,7 @@ int	do_heredoc(t_global data)
 		tmp = ft_strjoin(data.delimiter, "\n");
 		if (!ft_strcmp(line, tmp))
 			break ;
-		line = expand_heredoc(data, line);
+		// line = expand_heredoc(data, line);
 		write(heredoc_fd, line, ft_strlen(line));
 		free(line);
 		free(tmp);
@@ -308,7 +308,7 @@ char	*cmd_path(t_global *data, char *cmd)
 		perror(cmd);
 		return (NULL);
 	}
-	exec_path = find_exec(cmd, ft_split(ft_getenv(data, "PATH")));
+	exec_path = find_exec(cmd, ft_split(ft_getenv(data, "PATH"), ':'));
 	return (exec_path);
 }
 

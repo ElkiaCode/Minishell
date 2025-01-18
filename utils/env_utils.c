@@ -1,10 +1,10 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-void update_env(t_global *data, char *name, char *value)
+void	update_env(t_global *data, char *name, char *value)
 {
-	t_env *curr;
-	char *full;
-	char *tmp;
+	t_env	*curr;
+	char	*full;
+	char	*tmp;
 
 	curr = data->env;
 	while (curr)
@@ -25,10 +25,10 @@ void update_env(t_global *data, char *name, char *value)
 	env_add(data, new_env(full));
 }
 
-char *ft_getenv(t_global *data, char *name)
+char	*ft_getenv(t_global *data, char *name)
 {
-	t_env *tmp;
-	char *res;
+	t_env	*tmp;
+	char	*res;
 
 	tmp = data->env;
 	while (tmp)

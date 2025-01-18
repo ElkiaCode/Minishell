@@ -1,6 +1,6 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-static int	print_export(t_global *data)
+int	print_export(t_global *data)
 {
 	t_env	*tmp;
 
@@ -16,7 +16,7 @@ static int	print_export(t_global *data)
 	return (0);
 }
 
-static int	is_valid_export(char *arg)
+int	is_valid_export(char *arg)
 {
 	int	i;
 

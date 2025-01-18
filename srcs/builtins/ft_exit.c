@@ -1,6 +1,6 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-static int	get_exit_code(char *arg, bool *error)
+int	get_exit_code(char *arg, bool *error)
 {
 	unsigned long long	exit_code;
 	int					i;

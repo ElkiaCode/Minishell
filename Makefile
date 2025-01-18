@@ -37,6 +37,19 @@ SRC =	srcs/main.c \
 		utils/ft_strjoin.c \
 		utils/get_args.c \
 		utils/remove_quotes.c \
+		utils/env_utils.c \
+		utils/ft_substr.c \
+		utils/ft_strchr.c \
+		utils/ft_isalnum.c \
+		utils/ft_isalpha.c \
+		utils/ft_putendl_fd.c \
+		utils/ft_putstr_fd.c \
+		utils/ft_strcmp.c \
+		utils/count_args.c \
+		utils/ft_strtrim.c \
+		utils/ft_split.c \
+		utils/exit_shell.c \
+		utils/gnl/get_next_line.c \
 		srcs/exec/prepare_exec.c \
 		srcs/builtins/ft_cd.c \
 		srcs/builtins/ft_echo.c \
@@ -46,7 +59,6 @@ SRC =	srcs/main.c \
 		srcs/builtins/ft_pwd.c \
 		srcs/builtins/ft_unset.c \
 		srcs/signals/signals.c \
-		utils/env_utils.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
@@ -68,7 +80,7 @@ GREEN		= \e[0;1;32m
 _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
-FILE_TOTAL	= 23
+FILE_TOTAL	= 50
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_REST	= ${shell expr 23 - ${BAR_LOAD}}

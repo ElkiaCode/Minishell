@@ -40,7 +40,7 @@ void	env_add(t_global *global, t_env *new)
 	{
 		new->next = global->env;
 		global->env = new;
-		return;
+		return ;
 	}
 	tmp = global->env;
 	prev = NULL;
@@ -53,7 +53,7 @@ void	env_add(t_global *global, t_env *new)
 	if (prev)
 		prev->next = new;
 }
-void copy_env(t_global *global, char **env)
+void	copy_env(t_global *global, char **env)
 {
 	int	i;
 
@@ -70,7 +70,7 @@ void	init_struct(t_global **global, char **env)
 	copy_env(*global, env);
 	(*global)->cmd = readline("minishell> ");
 	if (!(*global)->cmd)
-		exit_shell(*global);
+		exit_shell(*global, EXIT_SUCCESS);
 	(*global)->cmd = ft_strtrim((*global)->cmd, " ");
 	(*global)->cmd = ft_strjoin((*global)->cmd, " ");
 	(*global)->pipe_nb = pipe_nb((*global)->cmd);

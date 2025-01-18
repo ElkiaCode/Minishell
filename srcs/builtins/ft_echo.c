@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 static void	print_echo(int count, int i, bool nl, char **args)
 {
