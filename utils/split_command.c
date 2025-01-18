@@ -1,21 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split_command.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/09 17:53:38 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/15 16:29:25 by cparodi          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 static int	word_count(char *str)
 {
-	int i;
-	int wc;
+	int	i;
+	int	wc;
 
 	wc = 0;
 	i = 0;
@@ -39,11 +27,11 @@ static int	word_count(char *str)
 
 char	**split_command(char *str)
 {
-	int i;
-	int j;
-	int n;
-	int wc;
-	char **result;
+	int		i;
+	int		j;
+	int		n;
+	int		wc;
+	char	**result;
 
 	i = 0;
 	j = 0;

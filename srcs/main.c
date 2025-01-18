@@ -1,21 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:10:20 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/21 14:58:06 by cparodi          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
-int pipe_nb(char *line)
+pid_t	g_signal_pid;
+
+int	pipe_nb(char *line)
 {
-	int i;
-	int nb;
+	int	i;
+	int	nb;
 
 	i = 0;
 	nb = 1;
@@ -28,16 +18,19 @@ int pipe_nb(char *line)
 	return (nb);
 }
 
-int main()
+int	main(int ac, char **av, char **env)
 {
-	t_global *global;
-	int tokens_size;
+	t_global	*global;
 
-	tokens_size = 0;
+	(void)ac;
+	(void)av;
 	while (1)
 	{
-		tokens_size = init_struct(&global, tokens_size);
-		parsing(global->token, global->cmd, tokens_size);
+		g_signal_pid = 0;
+		signals();
+		init_struct(&global, env);
+		parsing(global->token, global->cmd, global->pipe_nb);
+		prepare_exec(global);
 		free(global->cmd);
 	}
 	return (0);

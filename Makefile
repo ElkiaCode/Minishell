@@ -6,7 +6,7 @@
 #    By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 09:14:16 by cparodi           #+#    #+#              #
-#    Updated: 2024/11/19 18:09:35 by cparodi          ###   ########.fr        #
+#    Updated: 2024/11/25 09:34:07 by cparodi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,20 +17,55 @@ EXE = minishell
 SRC =	srcs/main.c \
 		srcs/init_struct.c \
 		srcs/parsing.c \
+		srcs/tokenizer.c \
 		utils/split_command.c \
 		utils/ft_strncpy.c \
 		utils/ft_strdup.c \
-		srcs/tokenizer.c \
 		utils/tab_size.c \
-		utils/split3.c \
-		utils/ft_strncmp.c
+		utils/ft_split_tab.c \
+		utils/ft_strncmp.c \
+		utils/get_token_type.c \
+		utils/malloc_token.c \
+		utils/union_tab.c \
+		utils/ft_strcat.c \
+		utils/ft_strlen.c \
+		utils/search_for_args.c \
+		utils/check_error.c \
+		utils/expander.c \
+		utils/final_parser.c \
+		utils/print_test.c \
+		utils/ft_strjoin.c \
+		utils/get_args.c \
+		utils/remove_quotes.c \
+		utils/env_utils.c \
+		utils/ft_substr.c \
+		utils/ft_strchr.c \
+		utils/ft_isalnum.c \
+		utils/ft_isalpha.c \
+		utils/ft_putendl_fd.c \
+		utils/ft_putstr_fd.c \
+		utils/ft_strcmp.c \
+		utils/count_args.c \
+		utils/ft_strtrim.c \
+		utils/ft_split.c \
+		utils/exit_shell.c \
+		utils/gnl/get_next_line.c \
+		srcs/exec/prepare_exec.c \
+		srcs/builtins/ft_cd.c \
+		srcs/builtins/ft_echo.c \
+		srcs/builtins/ft_env.c \
+		srcs/builtins/ft_exit.c \
+		srcs/builtins/ft_export.c \
+		srcs/builtins/ft_pwd.c \
+		srcs/builtins/ft_unset.c \
+		srcs/signals/signals.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
 
 # Variables
 CC		= cc
-CFLAGS	= -Wall -Wextra -g3 
+CFLAGS	= -Wall -Wextra -g3
 LDFLAGS = -lreadline
 RM		= rm -f
 
@@ -45,7 +80,9 @@ GREEN		= \e[0;1;32m
 _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
-FILE_TOTAL	= 10
+
+FILE_TOTAL	= 50
+
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_REST	= ${shell expr 23 - ${BAR_LOAD}}

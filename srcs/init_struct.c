@@ -1,48 +1,80 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_struct.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/07 16:37:13 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/19 18:08:54 by cparodi          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
-void init_tokens(t_tokens *token, int tokens_size)
+void	init_tokens(t_tokens *token, int tokens_size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < tokens_size)
 	{
 		token[i].tokens = NULL;
+		token[i].type = NULL;
+		token[i].token_size = 0;
 		i++;
 	}
 }
 
-int	init_struct(t_global **global, int tokens_size)
+t_env	*new_env(char *env)
+{
+	t_env	*new;
+	char	*tmp;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	tmp = ft_strchr(env, '=');
+	if (!tmp)
+		return (free(new), NULL);
+	new->name = ft_substr(env, 0, tmp - env);
+	new->value = ft_strdup(tmp + 1);
+	new->next = NULL;
+	return (new);
+}
+
+void	env_add(t_global *global, t_env *new)
+{
+	t_env	*tmp;
+	t_env	*prev;
+
+	if (!global->env || ft_strcmp(new->name, global->env->name) < 0)
+	{
+		new->next = global->env;
+		global->env = new;
+		return ;
+	}
+	tmp = global->env;
+	prev = NULL;
+	while (tmp && ft_strcmp(new->name, tmp->name) > 0)
+	{
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	new->next = tmp;
+	if (prev)
+		prev->next = new;
+}
+void	copy_env(t_global *global, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		env_add(global, new_env(env[i++]));
+}
+
+void	init_struct(t_global **global, char **env)
 {
 	*global = malloc(sizeof(t_global));
-	if (*global == NULL)
-		return (0);
+	if (!*global)
+		return ;
+	copy_env(*global, env);
 	(*global)->cmd = readline("minishell> ");
-	if (ft_strncmp((*global)->cmd, "exit", 4) == 0)
-	{
-		rl_clear_history();
-		exit(EXIT_SUCCESS);
-	}
-	tokens_size = pipe_nb((*global)->cmd);
-	(* global)->token = malloc(sizeof(t_tokens) * (tokens_size));
-	if ((*global)->token == NULL)
-	{
-		free(*global);
-		return (0);
-	}	
-	init_tokens((* global)->token, tokens_size);
+	if (!(*global)->cmd)
+		exit_shell(*global, EXIT_SUCCESS);
+	(*global)->cmd = ft_strtrim((*global)->cmd, " ");
+	(*global)->cmd = ft_strjoin((*global)->cmd, " ");
+	(*global)->pipe_nb = pipe_nb((*global)->cmd);
+	(*global)->token = malloc(sizeof(t_tokens) * ((*global)->pipe_nb));
+	init_tokens((*global)->token, (*global)->pipe_nb);
 	add_history((*global)->cmd);
-	return (tokens_size);
 }

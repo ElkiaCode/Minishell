@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tab_size.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 11:17:43 by cparodi           #+#    #+#             */
-/*   Updated: 2024/11/12 14:39:35 by cparodi          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
-int *tab_size(char **tab_line)
+int	*tab_size(char **tab_line)
 {
-	int *size;
-	int i;
-	int j;
+	int	*size;
+	int	i;
+	int	j;
 	int	k;
 
 	i = 0;

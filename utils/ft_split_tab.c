@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split3.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cparodi <cparodi@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/25 16:46:35 by lpolizzi          #+#    #+#             */
-/*   Updated: 2024/11/19 16:08:24 by cparodi          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/minishell.h"
 
 static int	is_sep(char c, char *charset)
@@ -50,9 +38,9 @@ static size_t	ft_countwords(char *str, char *sep)
 	return (count);
 }
 
-static void free_tab(char **tab)
+void	free_tab(char **tab)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (tab[i])
@@ -62,8 +50,8 @@ static void free_tab(char **tab)
 
 static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -77,7 +65,7 @@ static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 			if (!strs[*word_idx])
 			{
 				free_tab(strs);
-				return;
+				return ;
 			}
 			ft_strncpy(strs[*word_idx], &str[i], j);
 			strs[*word_idx][j] = '\0';
@@ -89,23 +77,22 @@ static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 			if (!strs[*word_idx])
 			{
 				free_tab(strs);
-				return;
+				return ;
 			}
 			strs[*word_idx][0] = str[i];
 			strs[*word_idx][1] = '\0';
 			i++;
 		}
-		(* word_idx)++;
+		(*word_idx)++;
 	}
 }
 
-
-char	**ft_split(char **input, char *charset)
+char	**ft_split_tab(char **input, char *charset)
 {
 	char	**strs;
-	size_t total_words;
-	size_t word_idx;
-	size_t i;
+	size_t	total_words;
+	size_t	word_idx;
+	size_t	i;
 
 	i = 0;
 	word_idx = 0;
