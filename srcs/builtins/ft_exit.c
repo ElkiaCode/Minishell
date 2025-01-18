@@ -23,8 +23,8 @@ int	get_exit_code(char *arg, bool *error)
 		i++;
 		len_remove++;
 	}
-	if (arg[i] || i - len_remove > 20 || ((sign == 1 && exit_code > LONG_MAX
-				|| (sign == -1 && (exit_code - 1) > LONG_MAX + 1))))
+	if (arg[i] || i - len_remove > 20 || ((sign == 1 && exit_code > LONG_MAX)
+			|| (sign == -1 && (exit_code - 1) > 9223372036854775808ull)))
 		*error = true;
 	return ((int)(exit_code * sign) % 256);
 }
@@ -37,7 +37,7 @@ void	ft_exit(t_global *data, char **args)
 	exit_code = 0;
 	error = false;
 	if (count_args(args) == 1)
-		exit_shell(data, data->status); // TODO : implement exit_shell
+		exit_shell(data, data->status);
 	if (args[1])
 	{
 		exit_code = get_exit_code(args[1], &error);

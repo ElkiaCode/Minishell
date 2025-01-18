@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 14:41:53 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/18 14:41:54 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -107,6 +119,7 @@ void				tokenizer(t_tokens *token, char **line_tab, int tokens_size,
 void				parsing(t_tokens *token, char *line, int tokens_size);
 
 // Exec
+void				signals(void);
 void				wait_all_pids(t_global *data);
 void				make_env_tab(t_global *data);
 bool				cmd_is_builtin(char *cmd);
@@ -140,9 +153,10 @@ void				free_tab(char **tab);
 
 // utils
 
+char				*get_next_line(int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 char				**split_command(char *str);
-char				*ft_strdup(char *src);
+char				*ft_strdup(const char *src);
 char				*ft_strncpy(char *s1, char *s2, int n);
 int					*tab_size(char **tab_line);
 char				**ft_split_tab(char **input, char *charset);
@@ -174,9 +188,16 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char *str, char *charset);
 void				exit_shell(t_global *data, int exit_code);
 
-
 // Exec
 
+int					ft_export(t_global *data, char **args);
+int					ft_echo(char **args);
+int					ft_unset(t_global *data, char **args);
+void				ft_exit(t_global *data, char **args);
+int					ft_pwd(void);
+void				signals_child(void);
+t_env				*new_env(char *env);
+void				env_add(t_global *global, t_env *new);
 void				wait_all_pids(t_global *data);
 void				make_env_tab(t_global *data);
 bool				cmd_is_builtin(char *cmd);

@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-int	ft_pwd(t_global *data)
+int	ft_pwd(void)
 {
 	char	pwd[_PC_PATH_MAX];
 

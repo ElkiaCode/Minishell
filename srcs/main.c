@@ -30,7 +30,7 @@ int	main(int ac, char **av, char **env)
 		signals();
 		init_struct(&global, env);
 		parsing(global->token, global->cmd, global->pipe_nb);
-		// prepare_exec(global);
+		prepare_exec(global);
 		free(global->cmd);
 	}
 	return (0);

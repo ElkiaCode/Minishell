@@ -59,7 +59,7 @@ bool	cmd_is_builtin(char *cmd)
 	char	**builtins;
 	int		i;
 
-	builtins = ft_split("echo cd pwd export unset env exit", ' ');
+	builtins = ft_split("echo cd pwd export unset env exit", " ");
 	if (!builtins)
 		return (false);
 	i = -1;
@@ -82,7 +82,7 @@ void	exec_builtin(t_global *data, t_cmd *cmd_ptr)
 	else if (!ft_strncmp(cmd_ptr->args[0], "cd", INT_MAX))
 		data->status = ft_cd(data, cmd_ptr->args);
 	else if (!ft_strncmp(cmd_ptr->args[0], "pwd", INT_MAX))
-		data->status = ft_pwd(data);
+		data->status = ft_pwd();
 	else if (!ft_strncmp(cmd_ptr->args[0], "export", INT_MAX))
 		data->status = ft_export(data, cmd_ptr->args);
 	else if (!ft_strncmp(cmd_ptr->args[0], "unset", INT_MAX))
@@ -308,7 +308,7 @@ char	*cmd_path(t_global *data, char *cmd)
 		perror(cmd);
 		return (NULL);
 	}
-	exec_path = find_exec(cmd, ft_split(ft_getenv(data, "PATH"), ':'));
+	exec_path = find_exec(cmd, ft_split(ft_getenv(data, "PATH"), ":"));
 	return (exec_path);
 }
 
