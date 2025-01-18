@@ -65,7 +65,7 @@ OBJECTS =		${SOURCES:.c=.o}
 
 # Variables
 CC		= cc
-CFLAGS	= -Wall -Wextra -g3
+CFLAGS	= -Wall -Wextra -g3 -fsanitize=address,undefined,leak
 LDFLAGS = -lreadline
 RM		= rm -f
 

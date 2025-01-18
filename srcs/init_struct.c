@@ -53,6 +53,7 @@ void	env_add(t_global *global, t_env *new)
 	if (prev)
 		prev->next = new;
 }
+
 void	copy_env(t_global *global, char **env)
 {
 	int	i;
@@ -67,6 +68,7 @@ void	init_struct(t_global **global, char **env)
 	*global = malloc(sizeof(t_global));
 	if (!*global)
 		return ;
+	(*global)->env = NULL;
 	copy_env(*global, env);
 	(*global)->cmd = readline("minishell> ");
 	if (!(*global)->cmd)

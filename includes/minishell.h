@@ -119,6 +119,12 @@ void				tokenizer(t_tokens *token, char **line_tab, int tokens_size,
 void				parsing(t_tokens *token, char *line, int tokens_size);
 
 // Exec
+int					ft_pwd(void);
+int					ft_export(t_global *data, char **args);
+int					ft_unset(t_global *data, char **args);
+int					ft_echo(char **args);
+int					ft_env(t_global *data);
+void				signals_child(void);
 void				signals(void);
 void				wait_all_pids(t_global *data);
 void				make_env_tab(t_global *data);
@@ -153,6 +159,8 @@ void				free_tab(char **tab);
 
 // utils
 
+void	env_add(t_global *global, t_env *new);
+t_env				*new_env(char *env);
 char				*get_next_line(int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 char				**split_command(char *str);
