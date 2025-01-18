@@ -19,13 +19,13 @@ t_tokens	*get_args_app(t_tokens *token)
 	{
 		if (token->type[i] == T_D_QUOTE)
 		{
+			// expander();
 			new_token = remove_quotes(token->tokens[i], j);
 			result->tokens[new_size] = ft_strdup(new_token);
 			result->type[new_size] = T_ARG;
 		}
 		else if (token->type[i] == T_S_QUOTE)
 		{
-			// expander();
 			new_token = remove_quotes(token->tokens[i], j);
 			result->tokens[new_size] = ft_strdup(new_token);
 			result->type[new_size] = T_ARG;
