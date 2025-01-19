@@ -370,22 +370,17 @@ void	prepare_exec(t_global *data)
 	index.i = -1;
 	if (!data->token)
 		return ;
-	while (&data->token[++index.i])
+	while (++index.i < data->pipe_nb)
 	{
 		if (data->isolate_cmd)
 			free_tab(data->isolate_cmd);
-		index.j = 0;
-		while (data->token[index.i].tokens && data->token[index.i].tokens[index.j])
-		{
-			printf("token[%d].tokens[%d] = %s\n", index.i, index.j, data->token[index.i].tokens[index.j]); //DEBUG
-			index.j++;
-		}
-		data->isolate_cmd = malloc(sizeof(char *) * (index.j + 1));
+		data->isolate_cmd = malloc(sizeof(char *) * (data->token[index.i].token_size + 1));
 		if (!data->isolate_cmd)
 			return ;
-		data->isolate_cmd[index.j] = NULL;
+		data->isolate_cmd[data->token[index.i].token_size] = NULL;
 		index.j = -1;
 		index.k = 0;
+		printf("%d loop\n", index.i);
 		while (data->token[index.i].tokens && data->token[index.i].tokens[++index.j])
 			treat_token(data, data->token[index.i].tokens[index.j],
 				data->token[index.i].type[index.j], &index);
