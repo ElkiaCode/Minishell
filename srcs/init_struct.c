@@ -63,12 +63,24 @@ void	copy_env(t_global *global, char **env)
 		env_add(global, new_env(env[i++]));
 }
 
+void	make_struct_null(t_global *global)
+{
+	global->env = NULL;
+	global->status = 0;
+	global->env_tab = NULL;
+	global->isolate_cmd = NULL;
+	global->isolate_infile = -2;
+	global->isolate_outfile = -2;
+	global->delimiter = NULL;
+	global->cmds = NULL;
+}
+
 void	init_struct(t_global **global, char **env)
 {
 	*global = malloc(sizeof(t_global));
 	if (!*global)
 		return ;
-	(*global)->env = NULL;
+	make_struct_null(*global);
 	copy_env(*global, env);
 	(*global)->cmd = readline("minishell> ");
 	if (!(*global)->cmd)

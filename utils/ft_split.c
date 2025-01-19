@@ -66,10 +66,10 @@ char	**ft_split(char *str, char *charset)
 {
 	char **strs;
 
-	strs = malloc(sizeof(char *) * ft_countwords(str, charset) + 1);
+	strs = malloc(sizeof(char *) * (ft_countwords(str, charset) + 1));
 	if (!strs)
 		return (NULL);
-	strs[ft_countwords(str, charset)] = 0;
+	strs[ft_countwords(str, charset)] = NULL;
 	write_split(strs, str, charset);
 	return (strs);
 }

@@ -244,15 +244,16 @@ int	prepare_outfile(t_global *data, char *file, int type)
 
 void	treat_token(t_global *data, char *token, int type, t_index *index)
 {
-	if (type == T_CMD || type == T_ARG)
+	if (type == T_CMD || type == T_ARG || type == T_ERR)
 		data->isolate_cmd[index->k++] = ft_strdup(token);
-	if (type == T_HEREDOC)
+	else if (type == T_HEREDOC)
 	{
 		if (data->delimiter)
 			free(data->delimiter);
 		data->delimiter = ft_strdup(data->token[index->i].tokens[index->j + 1]);
+		data->isolate_infile = prepare_infile(data, token, type);
 	}
-	else if (type == T_I_FILE || type == T_HEREDOC)
+	else if (type == T_I_FILE)
 		data->isolate_infile = prepare_infile(data, token, type);
 	else if (type == T_OD_FILE || type == T_OR_FILE)
 		data->isolate_outfile = prepare_outfile(data, token, type);
@@ -367,15 +368,18 @@ void	prepare_exec(t_global *data)
 	t_index	index;
 
 	index.i = -1;
+	if (!data->token)
+		return ;
 	while (&data->token[++index.i])
 	{
-		if (!data->cmds)
-			data->isolate_infile = open("/dev/null", O_RDONLY);
 		if (data->isolate_cmd)
 			free_tab(data->isolate_cmd);
 		index.j = 0;
 		while (data->token[index.i].tokens[index.j])
+		{
+			printf("token[%d].tokens[%d] = %s\n", index.i, index.j, data->token[index.i].tokens[index.j]); //DEBUG
 			index.j++;
+		}
 		data->isolate_cmd = malloc(sizeof(char *) * (index.j + 1));
 		if (!data->isolate_cmd)
 			return ;
