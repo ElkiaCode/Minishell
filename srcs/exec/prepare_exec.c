@@ -386,7 +386,7 @@ void	prepare_exec(t_global *data)
 		data->isolate_cmd[index.j] = NULL;
 		index.j = -1;
 		index.k = 0;
-		while (data->token[index.i].tokens[++index.j])
+		while (data->token[index.i].tokens && data->token[index.i].tokens[++index.j])
 			treat_token(data, data->token[index.i].tokens[index.j],
 				data->token[index.i].type[index.j], &index);
 		cmd_add_back(&data->cmds, cmd_new(data));
