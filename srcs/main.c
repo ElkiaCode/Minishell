@@ -24,11 +24,16 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	global = malloc(sizeof(t_global));
+	if (!global)
+		return (EXIT_FAILURE);
+	make_struct_null(global);
+	copy_env(global, env);
 	while (1)
 	{
 		g_signal_pid = 0;
 		signals();
-		init_struct(&global, env);
+		init_struct(&global);
 		parsing(global->token, global->cmd, global->pipe_nb);
 		prepare_exec(global);
 		free(global->cmd);

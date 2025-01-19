@@ -56,22 +56,20 @@ void	make_env_tab(t_global *data)
 
 bool	cmd_is_builtin(char *cmd)
 {
-	char	**builtins;
-	int		i;
-
-	builtins = ft_split("echo cd pwd export unset env exit", " ");
-	if (!builtins)
-		return (false);
-	i = -1;
-	while (builtins[++i])
-	{
-		if (!ft_strncmp(builtins[i], cmd, INT_MAX))
-		{
-			free_tab(builtins);
-			return (true);
-		}
-	}
-	free_tab(builtins);
+	if (!ft_strncmp(cmd, "echo", INT_MAX))
+		return (true);
+	else if (!ft_strncmp(cmd, "cd", INT_MAX))
+		return (true);
+	else if (!ft_strncmp(cmd, "pwd", INT_MAX))
+		return (true);
+	else if (!ft_strncmp(cmd, "export", INT_MAX))
+		return (true);
+	else if (!ft_strncmp(cmd, "unset", INT_MAX))
+	 	return (true);
+	else if (!ft_strncmp(cmd, "env", INT_MAX))
+		return (true);
+	else if (!ft_strncmp(cmd, "exit", INT_MAX))
+		return (true);
 	return (false);
 }
 
@@ -129,14 +127,13 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	if (data->env_tab)
 		free_tab(data->env_tab);
 	make_env_tab(data);
-	if (cmd_is_builtin(cmd_ptr->args[0]))
-		exec_builtin(data, cmd_ptr);
-	else
-	{
-		signals_child();
-		if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
-			exec_error(data, cmd_ptr->args[0]);
-	}
+	signals_child();
+//	if (cmd_is_builtin(cmd_ptr->args[0]))
+//		exec_builtin(data, cmd_ptr);
+//	else
+	printf("env_tab is %s\n", data->env_tab[0]);
+	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
+		exec_error(data, cmd_ptr->args[0]);
 }
 
 void	parent_process(t_cmd *cmd_ptr, int fd[2])
@@ -156,6 +153,8 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
+		for (int i = 0; cmd_ptr->args[i]; i++)
+			printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
 		if (pipe(fd) < 0)
 			data->status = 1;
 		g_signal_pid = fork();
@@ -380,7 +379,6 @@ void	prepare_exec(t_global *data)
 		data->isolate_cmd[data->token[index.i].token_size] = NULL;
 		index.j = -1;
 		index.k = 0;
-		printf("%d loop\n", index.i);
 		while (data->token[index.i].tokens && data->token[index.i].tokens[++index.j])
 			treat_token(data, data->token[index.i].tokens[index.j],
 				data->token[index.i].type[index.j], &index);

@@ -75,13 +75,8 @@ void	make_struct_null(t_global *global)
 	global->cmds = NULL;
 }
 
-void	init_struct(t_global **global, char **env)
+void	init_struct(t_global **global)
 {
-	*global = malloc(sizeof(t_global));
-	if (!*global)
-		return ;
-	make_struct_null(*global);
-	copy_env(*global, env);
 	(*global)->cmd = readline("minishell> ");
 	if (!(*global)->cmd)
 		exit_shell(*global, EXIT_SUCCESS);
