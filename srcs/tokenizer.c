@@ -14,6 +14,7 @@ void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 	{
 		if (*line_tab[n] == '|')
 		{
+			token[j].tokens[i] = NULL;
 			j++;
 			i = 0;
 			n++;
@@ -22,4 +23,5 @@ void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 		i++;
 		n++;
 	}
+	token[j].tokens[i] = NULL;
 }

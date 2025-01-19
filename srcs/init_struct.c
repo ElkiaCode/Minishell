@@ -5,7 +5,7 @@ void	init_tokens(t_tokens *token, int tokens_size)
 	int	i;
 
 	i = 0;
-	while (i < tokens_size)
+	while (i < (tokens_size + 1))
 	{
 		token[i].tokens = NULL;
 		token[i].type = NULL;
@@ -88,7 +88,7 @@ void	init_struct(t_global **global, char **env)
 	(*global)->cmd = ft_strtrim((*global)->cmd, " ");
 	(*global)->cmd = ft_strjoin((*global)->cmd, " ");
 	(*global)->pipe_nb = pipe_nb((*global)->cmd);
-	(*global)->token = malloc(sizeof(t_tokens) * ((*global)->pipe_nb));
+	(*global)->token = malloc(sizeof(t_tokens) * ((*global)->pipe_nb + 1));
 	init_tokens((*global)->token, (*global)->pipe_nb);
 	add_history((*global)->cmd);
 }
