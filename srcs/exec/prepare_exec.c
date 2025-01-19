@@ -375,7 +375,7 @@ void	prepare_exec(t_global *data)
 		if (data->isolate_cmd)
 			free_tab(data->isolate_cmd);
 		index.j = 0;
-		while (data->token[index.i].tokens[index.j])
+		while (data->token[index.i].tokens && data->token[index.i].tokens[index.j])
 		{
 			printf("token[%d].tokens[%d] = %s\n", index.i, index.j, data->token[index.i].tokens[index.j]); //DEBUG
 			index.j++;
