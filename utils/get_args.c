@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-t_tokens	*get_args_app(t_tokens *token)
+t_tokens	*get_args_app(t_global *data, t_tokens *token)
 {
 	t_tokens	*result;
 	int			i;
@@ -19,8 +19,8 @@ t_tokens	*get_args_app(t_tokens *token)
 	{
 		if (token->type[i] == T_D_QUOTE)
 		{
-			// expander();
-			new_token = remove_quotes(token->tokens[i], j);
+			new_token = final_expander(data, token->tokens[i]);
+			new_token = remove_quotes(new_token, j);
 			result->tokens[new_size] = ft_strdup(new_token);
 			result->type[new_size] = T_ARG;
 		}
@@ -32,7 +32,8 @@ t_tokens	*get_args_app(t_tokens *token)
 		}
 		else
 		{
-			new_token = remove_quotes(token->tokens[i], j);
+			new_token = final_expander(data, token->tokens[i]);
+			new_token = remove_quotes(new_token, j);
 			result->tokens[new_size] = ft_strdup(new_token);
 			result->type[new_size] = token->type[i];
 		}
@@ -43,7 +44,7 @@ t_tokens	*get_args_app(t_tokens *token)
 	return (result);
 }
 
-void	get_args(t_tokens **token, int token_size)
+void	get_args(t_global *data, t_tokens **token, int token_size)
 {
 	t_tokens	*new_token;
 	int			i;
@@ -53,7 +54,7 @@ void	get_args(t_tokens **token, int token_size)
 	while (++i < token_size)
 	{
 		j = -1;
-		new_token = get_args_app(&(*token)[i]);
+		new_token = get_args_app(data, &(*token)[i]);
 		while (++j < (*token)[i].token_size)
 			free((*token)[i].tokens[j]);
 		free((*token)[i].tokens);

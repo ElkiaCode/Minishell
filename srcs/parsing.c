@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	parsing(t_tokens *token, char *line, int tokens_size)
+void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 {
 	int		*size;
 	char	**line_tab;
@@ -13,9 +13,8 @@ void	parsing(t_tokens *token, char *line, int tokens_size)
 	size = tab_size(line_tab);
 	tokenizer(token, line_tab, tokens_size, size);
 	token = get_token_type(token, tokens_size);
-	get_args(&token, tokens_size);
+	get_args(data, &token, tokens_size);
 	token = search_for_args(token, tokens_size);
-	token = main_expand(token, tokens_size);
 	if (final_parser(token, tokens_size) == 1)
 		return ;
 	print_test(token, tokens_size);

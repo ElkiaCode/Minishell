@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **env)
 		g_signal_pid = 0;
 		signals();
 		init_struct(&global);
-		parsing(global->token, global->cmd, global->pipe_nb);
+		parsing(global, global->token, global->cmd, global->pipe_nb);
 		prepare_exec(global);
 		free(global->cmd);
 	}

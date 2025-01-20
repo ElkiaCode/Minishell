@@ -31,7 +31,6 @@ SRC =	srcs/main.c \
 		utils/ft_strlen.c \
 		utils/search_for_args.c \
 		utils/check_error.c \
-		utils/expander.c \
 		utils/final_parser.c \
 		utils/print_test.c \
 		utils/ft_strjoin.c \
@@ -49,6 +48,8 @@ SRC =	srcs/main.c \
 		utils/ft_strtrim.c \
 		utils/ft_split.c \
 		utils/exit_shell.c \
+		utils/final_expander.c \
+		utils/ft_strndup.c \
 		utils/gnl/get_next_line.c \
 		srcs/exec/prepare_exec.c \
 		srcs/builtins/ft_cd.c \

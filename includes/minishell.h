@@ -116,7 +116,7 @@ void				init_struct(t_global **global);
 
 void				tokenizer(t_tokens *token, char **line_tab, int tokens_size,
 						int *size);
-void				parsing(t_tokens *token, char *line, int tokens_size);
+void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size);
 
 // Exec
 int					ft_pwd(void);
@@ -179,11 +179,10 @@ char				*ft_strcat(char *dst, const char *src);
 char				**union_tab(char **tab, int size);
 size_t				ft_strlen(const char *s);
 int					check_error(char *line);
-t_tokens			*main_expand(t_tokens *token, int token_size);
 int					final_parser(t_tokens *token, int token_size);
 void				print_test(t_tokens *token, int tokens_size);
 char				*ft_strjoin(char const *s1, char const *s2);
-void				get_args(t_tokens **token, int token_size);
+void	get_args(t_global *data, t_tokens **token, int token_size);
 void				update_env(t_global *data, char *name, char *value);
 char				*remove_quotes(char *token, int j);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
@@ -197,5 +196,6 @@ int					count_args(char **args);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char *str, char *charset);
 void				exit_shell(t_global *data, int exit_code);
-
+char    *final_expander(t_global *data, char *token);
+char	*ft_strndup(const char *src, int n);
 #endif
