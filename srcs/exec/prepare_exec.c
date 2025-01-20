@@ -116,8 +116,8 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 		dup2(cmd_ptr->infile_fd, STDIN_FILENO);
 	if (cmd_ptr->outfile_fd != -2)
 		dup2(cmd_ptr->outfile_fd, STDOUT_FILENO);
-	else
-		dup2(fd[1], STDOUT_FILENO);
+	else if (cmd_ptr->next)
+			dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	if (data->env_tab)
 	{
@@ -131,6 +131,7 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 //	if (cmd_is_builtin(cmd_ptr->args[0]))
 //		exec_builtin(data, cmd_ptr);
 //	else
+	printf("[DEBUG]");
 	printf("env_tab is %s\n", data->env_tab[0]);
 	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
 		exec_error(data, cmd_ptr->args[0]);
@@ -158,6 +159,7 @@ void	do_cmds(t_global *data)
 		if (pipe(fd) < 0)
 			data->status = 1;
 		g_signal_pid = fork();
+		printf("g_signal_pid = %d\n", g_signal_pid);
 		if (g_signal_pid < 0)
 			data->status = 1;
 		else if (g_signal_pid == 0)

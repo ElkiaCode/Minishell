@@ -42,3 +42,52 @@ char	*ft_getenv(t_global *data, char *name)
 	}
 	return (NULL);
 }
+
+t_env	*new_env(char *env)
+{
+	t_env	*new;
+	char	*tmp;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	tmp = ft_strchr(env, '=');
+	if (!tmp)
+		return (free(new), NULL);
+	new->name = ft_substr(env, 0, tmp - env);
+	new->value = ft_strdup(tmp + 1);
+	new->next = NULL;
+	return (new);
+}
+
+void	env_add(t_global *global, t_env *new)
+{
+	t_env	*tmp;
+	t_env	*prev;
+
+	if (!global->env || ft_strcmp(new->name, global->env->name) < 0)
+	{
+		new->next = global->env;
+		global->env = new;
+		return ;
+	}
+	tmp = global->env;
+	prev = NULL;
+	while (tmp && ft_strcmp(new->name, tmp->name) > 0)
+	{
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	new->next = tmp;
+	if (prev)
+		prev->next = new;
+}
+
+void	copy_env(t_global *global, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		env_add(global, new_env(env[i++]));
+}
