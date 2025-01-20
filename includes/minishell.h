@@ -116,7 +116,8 @@ void				init_value(t_global **global);
 
 void				tokenizer(t_tokens *token, char **line_tab, int tokens_size,
 						int *size);
-void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size);
+void				parsing(t_global *data, t_tokens *token, char *line,
+						int tokens_size);
 
 // Exec
 int					ft_pwd(void);
@@ -182,7 +183,7 @@ int					check_error(char *line);
 int					final_parser(t_tokens *token, int token_size);
 void				print_test(t_tokens *token, int tokens_size);
 char				*ft_strjoin(char const *s1, char const *s2);
-void	get_args(t_global *data, t_tokens **token, int token_size);
+void				get_args(t_global *data, t_tokens **token, int token_size);
 void				update_env(t_global *data, char *name, char *value);
 char				*remove_quotes(char *token, int j);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
@@ -196,6 +197,11 @@ int					count_args(char **args);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char *str, char *charset);
 void				exit_shell(t_global *data, int exit_code);
-char    *final_expander(t_global *data, char *token);
-char	*ft_strndup(const char *src, int n);
+char				*final_expander(t_global *data, char *token);
+char				*ft_strndup(const char *src, int n);
+int					gnl_strchr(const char *s, int c);
+char				*gnl_strjoin(char *s1, const char *s2);
+size_t				gnl_strlen(const char *str);
+char				*gnl_strdup(const char *s);
+
 #endif

@@ -29,8 +29,8 @@ int	main(int ac, char **av, char **env)
 		return (EXIT_FAILURE);
 	make_struct_null(global);
 	copy_env(global, env);
-	for (t_env *tmp = global->env; tmp; tmp = tmp->next)
-		printf("Env key/value pair: %s=%s\n", tmp->name, tmp->value);
+	//for (t_env *tmp = global->env; tmp; tmp = tmp->next)
+	//	printf("Env key/value pair: %s=%s\n", tmp->name, tmp->value);
 	while (1)
 	{
 		g_signal_pid = 0;

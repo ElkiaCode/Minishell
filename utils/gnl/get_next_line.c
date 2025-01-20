@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-char	*ft_remove_line(char *data)
+char	*gnl_remove_line(char *data)
 {
 	char	*new_data;
 	int		i;
@@ -15,7 +15,7 @@ char	*ft_remove_line(char *data)
 		free(data);
 		return (NULL);
 	}
-	new_data = malloc(sizeof(char) * (ft_strlen(data) - i + 1));
+	new_data = malloc(sizeof(char) * (gnl_strlen(data) - i + 1));
 	if (!new_data)
 	{
 		free(data);
@@ -29,7 +29,7 @@ char	*ft_remove_line(char *data)
 	return (new_data);
 }
 
-char	*ft_cut_line(const char *data)
+char	*gnl_cut_line(const char *data)
 {
 	size_t	i;
 	char	*ret;
@@ -54,7 +54,7 @@ char	*ft_cut_line(const char *data)
 	return (ret);
 }
 
-static char	*ft_read_from_file(int fd, char *data)
+static char	*gnl_read_from_file(int fd, char *data)
 {
 	char	*s;
 	int		bytes_read;
@@ -63,7 +63,7 @@ static char	*ft_read_from_file(int fd, char *data)
 	if (!s)
 		return (NULL);
 	bytes_read = 1;
-	while (!ft_strchr(data, '\n') && bytes_read != 0)
+	while (!gnl_strchr(data, '\n') && bytes_read != 0)
 	{
 		bytes_read = read(fd, s, BUFFER_SIZE);
 		if (bytes_read < 0)
@@ -72,7 +72,7 @@ static char	*ft_read_from_file(int fd, char *data)
 			return (NULL);
 		}
 		s[bytes_read] = 0;
-		data = ft_strjoin(data, s);
+		data = gnl_strjoin(data, s);
 	}
 	free(s);
 	return (data);
@@ -83,14 +83,21 @@ char	*get_next_line(int fd)
 	static char	*data[MAX_FD];
 	char		*line;
 
-	if (fd >= MAX_FD || fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		if (data[fd])
+		{
+			free(data[fd]);
+			data[fd] = NULL;
+		}
 		return (NULL);
-	data[fd] = ft_read_from_file(fd, data[fd]);
+	}
+	data[fd] = gnl_read_from_file(fd, data[fd]);
 	if (!data[fd])
 		return (NULL);
-	line = ft_cut_line(data[fd]);
-	data[fd] = ft_remove_line(data[fd]);
-	if (!data[fd] && !ft_strlen(line))
+	line = gnl_cut_line(data[fd]);
+	data[fd] = gnl_remove_line(data[fd]);
+	if (!data[fd] && !gnl_strlen(line))
 	{
 		free(line);
 		return (NULL);
