@@ -110,7 +110,7 @@ typedef struct s_global
 
 // init
 
-void				init_struct(t_global **global);
+void				init_value(t_global **global);
 
 // srcs
 

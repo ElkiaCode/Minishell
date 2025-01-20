@@ -73,9 +73,12 @@ void	make_struct_null(t_global *global)
 	global->isolate_outfile = -2;
 	global->delimiter = NULL;
 	global->cmds = NULL;
+	global->token = NULL;
+	global->pipe_nb = 0;
+	global->cmd = NULL;
 }
 
-void	init_struct(t_global **global)
+void	init_value(t_global **global)
 {
 	(*global)->cmd = readline("minishell> ");
 	if (!(*global)->cmd)

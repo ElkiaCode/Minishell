@@ -33,7 +33,7 @@ int	main(int ac, char **av, char **env)
 	{
 		g_signal_pid = 0;
 		signals();
-		init_struct(&global);
+		init_value(&global);
 		parsing(global, global->token, global->cmd, global->pipe_nb);
 		prepare_exec(global);
 		free(global->cmd);
