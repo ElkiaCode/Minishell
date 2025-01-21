@@ -9,7 +9,7 @@ void	wait_all_pids(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		pid = waitpid(0, &tmp, 0);
+		pid = waitpid(-1, &tmp, 0);
 		if (pid == g_signal_pid)
 		{
 			if (WIFEXITED(tmp))
@@ -65,7 +65,7 @@ bool	cmd_is_builtin(char *cmd)
 	else if (!ft_strncmp(cmd, "export", INT_MAX))
 		return (true);
 	else if (!ft_strncmp(cmd, "unset", INT_MAX))
-	 	return (true);
+		return (true);
 	else if (!ft_strncmp(cmd, "env", INT_MAX))
 		return (true);
 	else if (!ft_strncmp(cmd, "exit", INT_MAX))
@@ -114,10 +114,10 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	close(fd[0]);
 	if (cmd_ptr->infile_fd != -2)
 		dup2(cmd_ptr->infile_fd, STDIN_FILENO);
-	if (cmd_ptr->outfile_fd != -2)
+	if (cmd_ptr->next)
+		dup2(fd[1], STDOUT_FILENO);
+	else if (cmd_ptr->outfile_fd != -2)
 		dup2(cmd_ptr->outfile_fd, STDOUT_FILENO);
-	else if (cmd_ptr->next)
-			dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	if (data->env_tab)
 	{
@@ -128,9 +128,9 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 		free_tab(data->env_tab);
 	make_env_tab(data);
 	signals_child();
-//	if (cmd_is_builtin(cmd_ptr->args[0]))
-//		exec_builtin(data, cmd_ptr);
-//	else
+	//	if (cmd_is_builtin(cmd_ptr->args[0]))
+	//		exec_builtin(data, cmd_ptr);
+	//	else
 	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
 		exec_error(data, cmd_ptr->args[0]);
 }
@@ -152,13 +152,19 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		//for (int i = 0; cmd_ptr->args[i]; i++)
+		// for (int i = 0; cmd_ptr->args[i]; i++)
 		//	printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
 		if (pipe(fd) < 0)
+		{
 			data->status = 1;
+			return ;
+		}
 		g_signal_pid = fork();
 		if (g_signal_pid < 0)
+		{
 			data->status = 1;
+			return ;
+		}
 		else if (g_signal_pid == 0)
 			child_process(data, cmd_ptr, fd);
 		else
@@ -361,6 +367,35 @@ void	cmd_add_back(t_cmd **cmd, t_cmd *new)
 		*cmd = new;
 }
 
+t_cmd	*free_cmd_list(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	while (cmd)
+	{
+		tmp = cmd->next;
+		free_tab(cmd->args);
+		free(cmd->cmd_path);
+		free(cmd);
+		cmd = tmp;
+	}
+	return (NULL);
+}
+
+int	count_cmd_size(t_tokens token)
+{
+	int	i;
+	int	size;
+
+	i = -1;
+	size = 0;
+	while (token.tokens && token.tokens[++i])
+		if (token.type[i] == T_CMD || token.type[i] == T_ARG
+			|| token.type[i] == T_ERR)
+			size++;
+	return (size);
+}
+
 void	prepare_exec(t_global *data)
 {
 	t_index	index;
@@ -372,13 +407,15 @@ void	prepare_exec(t_global *data)
 	{
 		if (data->isolate_cmd)
 			free_tab(data->isolate_cmd);
-		data->isolate_cmd = malloc(sizeof(char *) * (data->token[index.i].token_size + 1));
+		data->isolate_cmd = malloc(sizeof(char *)
+				* (count_cmd_size(data->token[index.i]) + 1));
 		if (!data->isolate_cmd)
 			return ;
-		data->isolate_cmd[data->token[index.i].token_size] = NULL;
+		data->isolate_cmd[count_cmd_size(data->token[index.i])] = NULL;
 		index.j = -1;
 		index.k = 0;
-		while (data->token[index.i].tokens && data->token[index.i].tokens[++index.j])
+		while (data->token[index.i].tokens
+			&& data->token[index.i].tokens[++index.j])
 			treat_token(data, data->token[index.i].tokens[index.j],
 				data->token[index.i].type[index.j], &index);
 		cmd_add_back(&data->cmds, cmd_new(data));
@@ -386,4 +423,5 @@ void	prepare_exec(t_global *data)
 		data->isolate_outfile = -2;
 	}
 	do_cmds(data);
+	data->cmds = free_cmd_list(data->cmds);
 }

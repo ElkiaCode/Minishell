@@ -31,10 +31,10 @@ int	main(int ac, char **av, char **env)
 	copy_env(global, env);
 	//for (t_env *tmp = global->env; tmp; tmp = tmp->next)
 	//	printf("Env key/value pair: %s=%s\n", tmp->name, tmp->value);
+	signals();
 	while (1)
 	{
 		g_signal_pid = 0;
-		signals();
 		init_value(&global);
 		parsing(global, global->token, global->cmd, global->pipe_nb);
 		prepare_exec(global);
