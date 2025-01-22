@@ -68,8 +68,6 @@ bool	cmd_is_builtin(char *cmd)
 		return (true);
 	else if (!ft_strncmp(cmd, "env", INT_MAX))
 		return (true);
-	else if (!ft_strncmp(cmd, "exit", INT_MAX))
-		return (true);
 	return (false);
 }
 
@@ -87,8 +85,6 @@ void	exec_builtin(t_global *data, t_cmd *cmd_ptr)
 		data->status = ft_unset(data, cmd_ptr->args);
 	else if (!ft_strncmp(cmd_ptr->args[0], "env", INT_MAX))
 		data->status = ft_env(data);
-	else if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
-		ft_exit(data, cmd_ptr->args);
 }
 
 void	exec_error(t_global *data, char *cmd)
@@ -126,10 +122,12 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	}
 	make_env_tab(data);
 	signals_child();
-	//	if (cmd_is_builtin(cmd_ptr->args[0]))
-	//		exec_builtin(data, cmd_ptr);
-	//	else
-	if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
+	if (cmd_is_builtin(cmd_ptr->args[0]))
+	{
+		printf("BUILT-IN FUNCTION CALL\n");
+		exec_builtin(data, cmd_ptr);
+	}
+	else if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
 		exec_error(data, cmd_ptr->args[0]);
 }
 
@@ -151,8 +149,8 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		// for (int i = 0; cmd_ptr->args[i]; i++)
-		//	printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
+		if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
+			ft_exit(data, cmd_ptr->args);
 		if (pipe(fd) < 0)
 		{
 			data->status = 1;

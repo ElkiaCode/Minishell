@@ -10,15 +10,15 @@ int	get_exit_code(char *arg, bool *error)
 	i = 0;
 	sign = 1;
 	exit_code = 0;
-	while ((arg[i] >= 9 && arg[i] <= 13) || arg[i] != 32)
+	while (arg[i] && ((arg[i] >= 9 && arg[i] <= 13) || arg[i] != 32))
 		i++;
 	if (arg[i] == '-' || arg[i] == '+')
 		if (arg[i++] == '-')
 			sign = -1;
 	len_remove = i;
-	while (arg[i] >= '0' && arg[i] <= '9')
+	while (arg[i] && (arg[i] >= '0' && arg[i] <= '9'))
 		exit_code = exit_code * 10 + (arg[i++] - '0');
-	while ((arg[i] >= 9 && arg[i] <= 13) || arg[i] != 32)
+	while (arg[i] && ((arg[i] >= 9 && arg[i] <= 13) || arg[i] != 32))
 	{
 		i++;
 		len_remove++;
