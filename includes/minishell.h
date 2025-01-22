@@ -104,6 +104,7 @@ typedef struct s_global
 	int				isolate_outfile;
 	char			*delimiter;
 	int				status;
+	bool			stop_exec;
 	t_tokens		*token;
 	t_cmd			*cmds;
 }					t_global;

@@ -27,6 +27,7 @@ void	make_struct_null(t_global *global)
 	global->token = NULL;
 	global->pipe_nb = 0;
 	global->cmd = NULL;
+	global->stop_exec = false;
 }
 
 void	init_value(t_global **global)

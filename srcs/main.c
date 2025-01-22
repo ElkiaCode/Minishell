@@ -37,8 +37,10 @@ int	main(int ac, char **av, char **env)
 		g_signal_pid = 0;
 		init_value(&global);
 		parsing(global, global->token, global->cmd, global->pipe_nb);
-		prepare_exec(global);
+		if (!global->stop_exec)
+			prepare_exec(global);
 		free(global->cmd);
+		global->stop_exec = false;
 	}
 	return (0);
 }

@@ -67,6 +67,8 @@ static int	single_quote(char *line)
 
 int	check_error(char *line)
 {
+	if (!line || *line == '\0' || *line == ' ')
+		return (1);
 	if (single_quote(line) == 1)
 	{
 		printf("error\n");

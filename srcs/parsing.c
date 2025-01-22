@@ -4,9 +4,12 @@ void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 {
 	int		*size;
 	char	**line_tab;
-
+	
 	if (check_error(line) == 1)
+	{
+		data->stop_exec = true;
 		return ;
+	}
 	line_tab = split_command(line);
 	line_tab = ft_split_tab(line_tab, "<>|");
 	line_tab = union_tab(line_tab, 0);
@@ -17,5 +20,5 @@ void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 	token = search_for_args(token, tokens_size);
 	if (final_parser(token, tokens_size) == 1)
 		return ;
-	print_test(token, tokens_size);
+	// print_test(token, tokens_size);
 }
