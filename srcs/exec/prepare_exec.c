@@ -112,11 +112,11 @@ void	exec_error(t_global *data, char *cmd)
 void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 {
 	close(fd[0]);
-	if (cmd_ptr->infile_fd != -2)
+	if (cmd_ptr->infile_fd > 0)
 		dup2(cmd_ptr->infile_fd, STDIN_FILENO);
 	if (cmd_ptr->next)
 		dup2(fd[1], STDOUT_FILENO);
-	else if (cmd_ptr->outfile_fd != -2)
+	else if (cmd_ptr->outfile_fd > 0)
 		dup2(cmd_ptr->outfile_fd, STDOUT_FILENO);
 	close(fd[1]);
 	if (data->env_tab)
@@ -124,8 +124,6 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 		free_tab(data->env_tab);
 		data->env_tab = NULL;
 	}
-	if (data->env_tab)
-		free_tab(data->env_tab);
 	make_env_tab(data);
 	signals_child();
 	//	if (cmd_is_builtin(cmd_ptr->args[0]))
@@ -138,9 +136,10 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 void	parent_process(t_cmd *cmd_ptr, int fd[2])
 {
 	close(fd[1]);
-	if (cmd_ptr->infile_fd != -2)
+	if (cmd_ptr->infile_fd > 0)
 		close(cmd_ptr->infile_fd);
-	cmd_ptr->infile_fd = dup(fd[0]);
+	if (cmd_ptr->next)
+		cmd_ptr->next->infile_fd = dup(fd[0]);
 	close(fd[0]);
 }
 
