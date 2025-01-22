@@ -103,6 +103,7 @@ void	exec_error(t_global *data, char *cmd)
 		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		data->status = 126;
 	}
+	exit_shell(data, data->status);
 }
 
 void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
@@ -126,6 +127,7 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	{
 		printf("BUILT-IN FUNCTION CALL\n");
 		exec_builtin(data, cmd_ptr);
+		exit_shell(data, data->status);
 	}
 	else if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
 		exec_error(data, cmd_ptr->args[0]);
@@ -149,6 +151,8 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
+		for (int i = 0; cmd_ptr->args[i]; i++)
+			printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
 		if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
 			ft_exit(data, cmd_ptr->args);
 		if (pipe(fd) < 0)
