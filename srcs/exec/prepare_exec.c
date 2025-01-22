@@ -151,8 +151,8 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		for (int i = 0; cmd_ptr->args[i]; i++)
-			printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
+		//for (int i = 0; cmd_ptr->args[i]; i++)
+		//	printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
 		if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
 			ft_exit(data, cmd_ptr->args);
 		if (pipe(fd) < 0)
@@ -179,26 +179,23 @@ int	do_heredoc(t_global data)
 {
 	int		heredoc_fd;
 	char	*line;
-	char	*tmp;
 
 	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4",
 			O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	if (heredoc_fd == -1)
+		return (-1);
 	while (1)
 	{
-		line = get_next_line(STDIN_FILENO);
-		tmp = ft_strjoin(data.delimiter, "\n");
-		if (!ft_strcmp(line, tmp))
+		line = readline("heredoc>");
+		if (!ft_strncmp(line, data.delimiter, INT_MAX))
 			break ;
 		// line = expand_heredoc(data, line);
 		write(heredoc_fd, line, ft_strlen(line));
+		write(heredoc_fd, "\n", 1);
 		free(line);
-		free(tmp);
 	}
 	close(heredoc_fd);
-	if (line)
-		free(line);
-	if (tmp)
-		free(tmp);
+	free(line);
 	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4", O_RDONLY);
 	unlink("/tmp/.heredocA9gF3kL7X2rW6pZ4");
 	return (heredoc_fd);
@@ -255,7 +252,7 @@ void	treat_token(t_global *data, char *token, int type, t_index *index)
 	{
 		if (data->delimiter)
 			free(data->delimiter);
-		data->delimiter = ft_strdup(data->token[index->i].tokens[index->j + 1]);
+		data->delimiter = ft_strdup(data->token[index->i].tokens[index->j]);
 		data->isolate_infile = prepare_infile(data, token, type);
 	}
 	else if (type == T_I_FILE)
