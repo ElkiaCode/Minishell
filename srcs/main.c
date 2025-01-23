@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 22:33:47 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/23 22:33:53 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 pid_t	g_signal_pid;
@@ -29,8 +41,6 @@ int	main(int ac, char **av, char **env)
 		return (EXIT_FAILURE);
 	make_struct_null(global);
 	copy_env(global, env);
-	//for (t_env *tmp = global->env; tmp; tmp = tmp->next)
-	//	printf("Env key/value pair: %s=%s\n", tmp->name, tmp->value);
 	signals();
 	while (1)
 	{

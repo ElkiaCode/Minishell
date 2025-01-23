@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 22:32:48 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/23 22:32:54 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 {
 	int		*size;
 	char	**line_tab;
-	
+
 	if (check_error(line) == 1)
 	{
 		data->stop_exec = true;
@@ -20,5 +32,4 @@ void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 	token = search_for_args(token, tokens_size);
 	if (final_parser(token, tokens_size) == 1)
 		return ;
-	// print_test(token, tokens_size);
 }

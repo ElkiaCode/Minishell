@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 22:41:23 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/23 22:41:24 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 static int	in_set(char c, const char *set)
@@ -16,10 +28,10 @@ static int	in_set(char c, const char *set)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	char *ret;
-	size_t i;
-	size_t start;
-	size_t end;
+	char	*ret;
+	size_t	i;
+	size_t	start;
+	size_t	end;
 
 	if (!s1)
 		return (NULL);

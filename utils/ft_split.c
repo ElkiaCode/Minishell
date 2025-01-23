@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 22:38:25 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/23 22:39:34 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	char_is_sep(char c, char *charset)
@@ -64,7 +76,7 @@ void	write_split(char **strs, char *str, char *charset)
 
 char	**ft_split(char *str, char *charset)
 {
-	char **strs;
+	char	**strs;
 
 	strs = malloc(sizeof(char *) * (ft_countwords(str, charset) + 1));
 	if (!strs)

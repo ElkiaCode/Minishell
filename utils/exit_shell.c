@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit_shell.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 22:38:48 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/23 22:39:37 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	free_env_list(t_env *env)
@@ -14,7 +26,7 @@ void	free_env_list(t_env *env)
 	}
 }
 
-void free_all(t_global *data)
+void	free_all(t_global *data)
 {
 	if (data->env)
 		free_env_list(data->env);

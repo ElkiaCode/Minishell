@@ -32,7 +32,6 @@ SRC =	srcs/main.c \
 		utils/search_for_args.c \
 		utils/check_error.c \
 		utils/final_parser.c \
-		utils/print_test.c \
 		utils/ft_strjoin.c \
 		utils/get_args.c \
 		utils/remove_quotes.c \

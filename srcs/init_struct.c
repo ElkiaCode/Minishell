@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 22:34:09 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/23 22:34:23 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	init_tokens(t_tokens *token, int tokens_size)
@@ -35,8 +47,6 @@ void	init_value(t_global **global)
 	(*global)->cmd = readline("bricoshell> ");
 	if (!(*global)->cmd)
 		exit_shell(*global, EXIT_SUCCESS);
-	//(*global)->cmd = ft_strtrim((*global)->cmd, " ");
-	//(*global)->cmd = ft_strjoin((*global)->cmd, " ");
 	(*global)->pipe_nb = pipe_nb((*global)->cmd);
 	(*global)->token = malloc(sizeof(t_tokens) * ((*global)->pipe_nb + 1));
 	init_tokens((*global)->token, (*global)->pipe_nb);

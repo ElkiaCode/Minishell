@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   final_parser.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 22:38:55 by lpolizzi          #+#    #+#             */
+/*   Updated: 2025/01/23 22:39:39 by lpolizzi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 static int	parser_redirection(t_tokens *token, int token_size)
@@ -25,7 +37,6 @@ static int	parser_redirection(t_tokens *token, int token_size)
 				else if (token[i].type[j] == T_DGREAT && (!token[i].type[j + 1]
 						|| token[i].type[j + 1] != T_OD_FILE))
 					return (1);
-
 			}
 		}
 	}
