@@ -52,6 +52,13 @@ char	**get_name_value(char *arg)
 		return (NULL);
 	while (arg[i] && arg[i] != '=')
 		i++;
+	if (arg[i] == '\0')
+	{
+		tmp[0] = ft_strdup(arg);
+		tmp[1] = NULL;
+		tmp[2] = NULL;
+		return (tmp);
+	}
 	tmp[0] = ft_substr(arg, 0, i - 1);
 	tmp[1] = ft_strdup(arg + i + 1);
 	tmp[2] = NULL;
