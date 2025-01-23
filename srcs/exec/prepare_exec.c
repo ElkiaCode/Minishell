@@ -145,6 +145,25 @@ void	parent_process(t_cmd *cmd_ptr, int fd[2])
 	close(fd[0]);
 }
 
+void	pipe_and_fork(t_global *data, t_cmd *cmd_ptr, int fd[2])
+{
+	if (pipe(fd) == -1)
+	{
+		data->status = 1;
+		return ;
+	}
+	g_signal_pid = fork();
+	if (g_signal_pid < 0)
+	{
+		data->status = 1;
+		return ;
+	}
+	else if (g_signal_pid == 0)
+		child_process(data, cmd_ptr, fd);
+	else
+		parent_process(cmd_ptr, fd);
+}
+
 void	do_cmds(t_global *data)
 {
 	int		fd[2];
@@ -157,18 +176,7 @@ void	do_cmds(t_global *data)
 			&& cmd_is_builtin(cmd_ptr->args[0]))
 			exec_builtin(data, cmd_ptr, cmd_ptr->outfile_fd);
 		else
-		{
-			g_signal_pid = fork();
-			if (pipe(fd) < 0 || g_signal_pid < 0)
-			{
-				data->status = 1;
-				return ;
-			}
-			else if (g_signal_pid == 0)
-				child_process(data, cmd_ptr, fd);
-			else
-				parent_process(cmd_ptr, fd);
-		}
+			pipe_and_fork(data, cmd_ptr, fd);
 		cmd_ptr = cmd_ptr->next;
 	}
 	wait_all_pids(data);

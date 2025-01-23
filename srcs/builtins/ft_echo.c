@@ -27,7 +27,6 @@ int	ft_echo(char **args, int out_fd)
 	bool	nl;
 
 	count = 0;
-	printf("out fd is %d\n", out_fd);
 	while (args[count])
 		count++;
 	nl = true;
