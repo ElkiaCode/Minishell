@@ -38,30 +38,47 @@ static char    *add_result(char *result, char *new)
 
 }
 
-char    *final_expander(t_global *data, char *token)
+static char *expand_variable(t_global *data, char *token, int *i)
+{
+    int j;
+    char *temp;
+    char *name;
+
+    j = *i + 1;
+    while (token[j] && (ft_isalnum(token[j]) || token[j] == '_'))
+        j++;
+    temp = ft_strndup(&token[*i + 1], j - (*i + 1));
+    name = get_env_name(data, temp);
+    free(temp);
+    *i = j;
+    return (name);
+}
+
+static char *append_to_result(char *result, char *new_part)
+{
+    char *temp;
+
+    temp = result;
+    result = add_result(temp, new_part);
+    free(new_part);
+    return (result);
+}
+
+char *final_expander(t_global *data, char *token)
 {
     int i;
     int j;
     char *result;
     char *temp;
-    char *name;
-    
+
     i = 0;
     result = NULL;
-    while(token[i])
+    while (token[i])
     {
         if (token[i] == '$')
         {
-            j = i + 1;
-            while (token[j] && (ft_isalnum(token[j]) || token[j] == '_'))
-                j++;
-            temp = ft_strndup(&token[i + 1], j - (i + 1));
-            name = get_env_name(data, temp);
-            free(temp);
-            temp = result;
-            result = add_result(temp, name);
-            free(name);
-            i = j;
+            temp = expand_variable(data, token, &i);
+            result = append_to_result(result, temp);
         }
         else
         {
@@ -69,9 +86,7 @@ char    *final_expander(t_global *data, char *token)
             while (token[i] && token[i] != '$')
                 i++;
             temp = ft_strndup(&token[j], i - j);
-            name = result;
-            result = add_result(name, temp);
-            free(temp);
+            result = append_to_result(result, temp);
         }
     }
     return (result);
