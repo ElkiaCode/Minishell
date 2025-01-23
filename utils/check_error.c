@@ -60,26 +60,14 @@ static int	single_quote(char *line)
 		}
 		i++;
 	}
-	if (b == 1)
-		return (1);
-	return (0);
+	return (b);
 }
 
 int	check_error(char *line)
 {
 	if (!line || *line == '\0' || *line == ' ')
 		return (1);
-	if (single_quote(line) == 1)
-	{
-		printf("error\n");
-		return (1);
-	}
-	if (pipe_error(line) == 1)
-	{
-		printf("error\n");
-		return (1);
-	}
-	if (error_input(line))
+	if (single_quote(line) == 1 || error_input(line) == 1 || pipe_error(line) == 1)
 	{
 		printf("error\n");
 		return (1);
