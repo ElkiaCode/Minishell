@@ -5,7 +5,7 @@ static int	error_input(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i])
+	while (line && line[i])
 	{
 		if (line[i] && (line[i] == '&' || line[i] == ';'))
 			return (1);
@@ -24,8 +24,8 @@ static int	pipe_error(char *line)
 {
 	int	i;
 
-	i = 0;
-	while (line[i])
+	i = -1;
+	while (line && line[++i])
 	{
 		if (line[0] == '|')
 			return (1);
@@ -33,41 +33,42 @@ static int	pipe_error(char *line)
 			return (1);
 		if (line[i] == '|' && line[i + 1] == '\0')
 			return (1);
-		i++;
 	}
 	return (0);
 }
 
+static int	double_quote(char *line)
+{
+	int	i;
+	int	count;
+
+	i = -1;
+	count = 0;
+	while (line && line[++i])
+		if (line[i] == '"')
+			count++;
+	return (count % 2);
+}
+
 static int	single_quote(char *line)
 {
-	int		i;
-	int		b;
-	char	c;
+	int	i;
+	int	count;
 
-	b = 0;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] && (line[i] == '"' || line[i] == '\'') && b == 0)
-		{
-			b = 1;
-			c = line[i];
-			i++;
-			while (line[i] && line[i] != c)
-				i++;
-			if (line[i] && line[i] == c)
-				b = 0;
-		}
-		i++;
-	}
-	return (b);
+	i = -1;
+	count = 0;
+	while (line && line[++i])
+		if (line[i] == '\'')
+			count++;
+	return (count % 2);
 }
 
 int	check_error(char *line)
 {
 	if (!line || *line == '\0' || *line == ' ')
 		return (1);
-	if (single_quote(line) == 1 || error_input(line) == 1 || pipe_error(line) == 1)
+	if (single_quote(line) || error_input(line) || pipe_error(line)
+		|| double_quote(line) || line[ft_strlen(line) - 1] == '\\')
 	{
 		printf("error\n");
 		return (1);
