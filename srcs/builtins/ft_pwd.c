@@ -2,9 +2,9 @@
 
 int	ft_pwd(void)
 {
-	char	pwd[_PC_PATH_MAX];
+	char	pwd[PATH_MAX];
 
-	if (!getcwd(pwd, _PC_PATH_MAX))
+	if (!getcwd(pwd, PATH_MAX))
 	{
 		perror("pwd");
 		return (1);

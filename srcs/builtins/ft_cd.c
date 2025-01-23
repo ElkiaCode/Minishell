@@ -21,11 +21,11 @@ void	update_oldpwd(t_global *data)
 
 void	update_pwd(t_global *data, char *path)
 {
-	char	cwd[_PC_PATH_MAX];
+	char	cwd[PATH_MAX];
 	char	*pwd;
 
 	update_oldpwd(data);
-	if (!getcwd(cwd, _PC_PATH_MAX))
+	if (!getcwd(cwd, PATH_MAX))
 	{
 		perror(path);
 		return ;
