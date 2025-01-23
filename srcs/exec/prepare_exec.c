@@ -68,23 +68,29 @@ bool	cmd_is_builtin(char *cmd)
 		return (true);
 	else if (!ft_strncmp(cmd, "env", INT_MAX))
 		return (true);
+	else if (!ft_strncmp(cmd, "exit", INT_MAX))
+		return (true);
 	return (false);
 }
 
-void	exec_builtin(t_global *data, t_cmd *cmd_ptr)
+void	exec_builtin(t_global *data, t_cmd *cmd_ptr, int fd_out)
 {
+	if (fd_out < 0)
+		fd_out = STDOUT_FILENO;
 	if (!ft_strncmp(cmd_ptr->args[0], "echo", INT_MAX))
-		data->status = ft_echo(cmd_ptr->args);
+		data->status = ft_echo(cmd_ptr->args, fd_out);
 	else if (!ft_strncmp(cmd_ptr->args[0], "cd", INT_MAX))
 		data->status = ft_cd(data, cmd_ptr->args);
 	else if (!ft_strncmp(cmd_ptr->args[0], "pwd", INT_MAX))
-		data->status = ft_pwd();
+		data->status = ft_pwd(fd_out);
 	else if (!ft_strncmp(cmd_ptr->args[0], "export", INT_MAX))
-		data->status = ft_export(data, cmd_ptr->args);
+		data->status = ft_export(data, cmd_ptr->args, fd_out);
 	else if (!ft_strncmp(cmd_ptr->args[0], "unset", INT_MAX))
 		data->status = ft_unset(data, cmd_ptr->args);
 	else if (!ft_strncmp(cmd_ptr->args[0], "env", INT_MAX))
-		data->status = ft_env(data);
+		data->status = ft_env(data, fd_out);
+	else if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
+		ft_exit(data, cmd_ptr->args);
 }
 
 void	exec_error(t_global *data, char *cmd)
@@ -103,7 +109,6 @@ void	exec_error(t_global *data, char *cmd)
 		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		data->status = 126;
 	}
-	exit_shell(data, data->status);
 }
 
 void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
@@ -124,13 +129,10 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	make_env_tab(data);
 	signals_child();
 	if (cmd_is_builtin(cmd_ptr->args[0]))
-	{
-		printf("BUILT-IN FUNCTION CALL\n");
-		exec_builtin(data, cmd_ptr);
-		exit_shell(data, data->status);
-	}
+		exec_builtin(data, cmd_ptr, STDOUT_FILENO);
 	else if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
 		exec_error(data, cmd_ptr->args[0]);
+	exit_shell(data, data->status);
 }
 
 void	parent_process(t_cmd *cmd_ptr, int fd[2])
@@ -151,25 +153,22 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		// for (int i = 0; cmd_ptr->args[i]; i++)
-		//	printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
-		if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
-			ft_exit(data, cmd_ptr->args);
-		if (pipe(fd) < 0)
-		{
-			data->status = 1;
-			return ;
-		}
-		g_signal_pid = fork();
-		if (g_signal_pid < 0)
-		{
-			data->status = 1;
-			return ;
-		}
-		else if (g_signal_pid == 0)
-			child_process(data, cmd_ptr, fd);
+		if (cmd_ptr == data->cmds && !cmd_ptr->next
+			&& cmd_is_builtin(cmd_ptr->args[0]))
+			exec_builtin(data, cmd_ptr, cmd_ptr->outfile_fd);
 		else
-			parent_process(cmd_ptr, fd);
+		{
+			g_signal_pid = fork();
+			if (pipe(fd) < 0 || g_signal_pid < 0)
+			{
+				data->status = 1;
+				return ;
+			}
+			else if (g_signal_pid == 0)
+				child_process(data, cmd_ptr, fd);
+			else
+				parent_process(cmd_ptr, fd);
+		}
 		cmd_ptr = cmd_ptr->next;
 	}
 	wait_all_pids(data);

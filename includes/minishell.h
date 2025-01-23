@@ -121,17 +121,17 @@ void				parsing(t_global *data, t_tokens *token, char *line,
 						int tokens_size);
 
 // Exec
-int					ft_pwd(void);
-int					ft_export(t_global *data, char **args);
+int					ft_pwd(int out_fd);
+int					ft_export(t_global *data, char **args, int out_fd);
 int					ft_unset(t_global *data, char **args);
-int					ft_echo(char **args);
-int					ft_env(t_global *data);
+int					ft_echo(char **args, int out_fd);
+int					ft_env(t_global *data, int out_fd);
 void				signals_child(void);
 void				signals(void);
 void				wait_all_pids(t_global *data);
 void				make_env_tab(t_global *data);
 bool				cmd_is_builtin(char *cmd);
-void				exec_builtin(t_global *data, t_cmd *cmd_ptr);
+void				exec_builtin(t_global *data, t_cmd *cmd_ptr, int fd_out);
 void				child_process(t_global *data, t_cmd *cmd_ptr, int fd[2]);
 void				parent_process(t_cmd *cmd_ptr, int fd[2]);
 void				do_cmds(t_global *data);
@@ -150,11 +150,8 @@ void				prepare_exec(t_global *data);
 void				update_oldpwd(t_global *data);
 void				update_pwd(t_global *data, char *path);
 int					ft_cd(t_global *data, char **args);
-int					ft_echo(char **args);
-int					ft_env(t_global *data);
 void				ft_exit(t_global *data, char **args);
 int					get_exit_code(char *arg, bool *error);
-int					print_export(t_global *data);
 char				*ft_getenv(t_global *data, char *name);
 void				update_env(t_global *data, char *name, char *value);
 void				free_tab(char **tab);

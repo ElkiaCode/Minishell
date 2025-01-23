@@ -1,7 +1,10 @@
 #include "../../includes/minishell.h"
 
-static void	print_echo(int count, int i, bool nl, char **args)
+static void	print_echo(int count, bool nl, char **args, int out_fd)
 {
+	int i;
+
+	i = 1;
 	if (!ft_strncmp(args[i], "-n", INT_MAX))
 	{
 		nl = false;
@@ -9,26 +12,25 @@ static void	print_echo(int count, int i, bool nl, char **args)
 	}
 	while (i < count)
 	{
-		printf("%s", args[i]);
+		write(out_fd, args[i], ft_strlen(args[i]));
 		if (i + 1 < count)
-			printf(" ");
+			write(out_fd, " ", 1);
 		i++;
 	}
 	if (nl)
-		printf("\n");
+		write(out_fd, "\n", 1);
 }
 
-int	ft_echo(char **args)
+int	ft_echo(char **args, int out_fd)
 {
-	int		i;
 	int		count;
 	bool	nl;
 
 	count = 0;
+	printf("out fd is %d\n", out_fd);
 	while (args[count])
 		count++;
-	i = 1;
 	nl = true;
-	print_echo(count, i, nl, args);
+	print_echo(count, nl, args, out_fd);
 	return (0);
 }

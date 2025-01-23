@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-int	ft_pwd(void)
+int	ft_pwd(int out_fd)
 {
 	char	pwd[PATH_MAX];
 
@@ -11,7 +11,7 @@ int	ft_pwd(void)
 	}
 	else
 	{
-		ft_putendl_fd(pwd, 1);
+		ft_putendl_fd(pwd, out_fd);
 		return (0);
 	}
 }

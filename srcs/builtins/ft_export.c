@@ -1,16 +1,24 @@
 #include "../../includes/minishell.h"
 
-int	print_export(t_global *data)
+int	print_export(t_global *data, int out_fd)
 {
 	t_env	*tmp;
 
 	tmp = data->env;
 	while (tmp)
 	{
+		write(out_fd, "declare -x ", 11);
+		write(out_fd, tmp->name, ft_strlen(tmp->name));
 		if (tmp->value)
-			printf("declare -x %s=\"%s\"\n", tmp->name, tmp->value);
+		{
+			write(out_fd, "=\"", 2);
+			write(out_fd, tmp->value, ft_strlen(tmp->value));
+			write(out_fd, "\"\n", 2);
+		}
 		else
-			printf("declare -x %s\n", tmp->name);
+		{
+			write(out_fd, "\n", 1);
+		}
 		tmp = tmp->next;
 	}
 	return (0);
@@ -50,7 +58,7 @@ char	**get_name_value(char *arg)
 	return (tmp);
 }
 
-int	ft_export(t_global *data, char **args)
+int	ft_export(t_global *data, char **args, int out_fd)
 {
 	int		i;
 	int		exit_status;
@@ -58,7 +66,7 @@ int	ft_export(t_global *data, char **args)
 
 	i = 0;
 	if (count_args(args) == 1)
-		return (print_export(data));
+		return (print_export(data, out_fd));
 	else
 	{
 		while (args[++i])
