@@ -47,9 +47,8 @@ void	make_env_tab(t_global *data)
 		data->env_tab[i] = ft_strjoin(env_ptr->name, "=");
 		tmp = ft_strjoin(data->env_tab[i], env_ptr->value);
 		free(data->env_tab[i]);
-		data->env_tab[i] = tmp;
+		data->env_tab[i++] = tmp;
 		env_ptr = env_ptr->next;
-		i++;
 	}
 	data->env_tab[i] = NULL;
 }
@@ -132,7 +131,7 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 		exec_builtin(data, cmd_ptr, STDOUT_FILENO);
 	else if (execve(cmd_ptr->cmd_path, cmd_ptr->args, data->env_tab) == -1)
 		exec_error(data, cmd_ptr->args[0]);
-	exit_shell(data, data->status);
+	exit(data->status);
 }
 
 void	parent_process(t_cmd *cmd_ptr, int fd[2])
@@ -195,8 +194,7 @@ int	do_heredoc(t_global data)
 	int		heredoc_fd;
 	char	*line;
 
-	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4",
-			O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	heredoc_fd = open("/tmp/.heredoc", O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (heredoc_fd == -1)
 		return (-1);
 	while (1)
@@ -215,8 +213,8 @@ int	do_heredoc(t_global data)
 	}
 	close(heredoc_fd);
 	free(line);
-	heredoc_fd = open("/tmp/.heredocA9gF3kL7X2rW6pZ4", O_RDONLY);
-	unlink("/tmp/.heredocA9gF3kL7X2rW6pZ4");
+	heredoc_fd = open("/tmp/.heredoc", O_RDONLY);
+	unlink("/tmp/.heredoc");
 	return (heredoc_fd);
 }
 
@@ -418,9 +416,7 @@ void	prepare_exec(t_global *data)
 	t_index	index;
 
 	index.i = -1;
-	if (!data->token)
-		return ;
-	while (++index.i < data->pipe_nb)
+	while (data->token && ++index.i < data->pipe_nb)
 	{
 		if (data->isolate_cmd)
 			free_tab(data->isolate_cmd);

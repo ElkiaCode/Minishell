@@ -2,7 +2,7 @@
 
 static void	print_echo(int count, bool nl, char **args, int out_fd)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!ft_strncmp(args[i], "-n", INT_MAX))
