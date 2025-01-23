@@ -151,7 +151,7 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		//for (int i = 0; cmd_ptr->args[i]; i++)
+		// for (int i = 0; cmd_ptr->args[i]; i++)
 		//	printf("cmd_ptr->args[%d] = %s\n", i, cmd_ptr->args[i]);
 		if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
 			ft_exit(data, cmd_ptr->args);
@@ -175,6 +175,14 @@ void	do_cmds(t_global *data)
 	wait_all_pids(data);
 }
 
+void	write_in_heredoc(char *line, int heredoc_fd)
+{
+	// line = expand_heredoc(data, line);
+	write(heredoc_fd, line, ft_strlen(line));
+	write(heredoc_fd, "\n", 1);
+	free(line);
+}
+
 int	do_heredoc(t_global data)
 {
 	int		heredoc_fd;
@@ -187,12 +195,16 @@ int	do_heredoc(t_global data)
 	while (1)
 	{
 		line = readline("heredoc>");
+		if (!line)
+		{
+			printf("minishell: warning: ");
+			printf("here-document delimited by end-of-file (wanted `%s')\n",
+				data.delimiter);
+			break ;
+		}
 		if (!ft_strncmp(line, data.delimiter, INT_MAX))
 			break ;
-		// line = expand_heredoc(data, line);
-		write(heredoc_fd, line, ft_strlen(line));
-		write(heredoc_fd, "\n", 1);
-		free(line);
+		write_in_heredoc(line, heredoc_fd);
 	}
 	close(heredoc_fd);
 	free(line);
