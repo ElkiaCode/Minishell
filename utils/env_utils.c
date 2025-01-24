@@ -35,6 +35,7 @@ void	update_env(t_global *data, char *name, char *value)
 	full = ft_strjoin(tmp, value);
 	free(tmp);
 	env_add(data, new_env(full));
+	free(full);
 }
 
 char	*ft_getenv(t_global *data, char *name)

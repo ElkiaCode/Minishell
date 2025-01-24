@@ -71,7 +71,7 @@ char	**get_name_value(char *arg)
 		tmp[2] = NULL;
 		return (tmp);
 	}
-	tmp[0] = ft_substr(arg, 0, i - 1);
+	tmp[0] = ft_substr(arg, 0, i);
 	tmp[1] = ft_strdup(arg + i + 1);
 	tmp[2] = NULL;
 	return (tmp);

@@ -203,5 +203,6 @@ size_t				gnl_strlen(const char *str);
 char				*gnl_strdup(const char *s);
 t_cmd				*free_cmd_list(t_cmd *cmd);
 char				*ft_itoa(int n);
+void				free_env_list(t_env *env);
 
 #endif

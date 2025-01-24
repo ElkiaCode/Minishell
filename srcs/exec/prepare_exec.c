@@ -198,9 +198,8 @@ int	do_heredoc(t_global data)
 		line = readline("heredoc>");
 		if (!line)
 		{
-			printf("minishell: warning: ");
-			printf("here-document delimited by end-of-file (wanted `%s')\n",
-				data.delimiter);
+			printf("minishell: warning: here-document delimited ");
+			printf("by end-of-file (wanted `%s')\n", data.delimiter);
 			break ;
 		}
 		if (!ft_strncmp(line, data.delimiter, INT_MAX))
@@ -314,7 +313,7 @@ char	*find_exec(char *cmd, char **paths)
 char	*cmd_path(t_global *data, char *cmd)
 {
 	char	*exec_path;
-	char *tmp;
+	char	*tmp;
 
 	if (!cmd)
 		return (NULL);
