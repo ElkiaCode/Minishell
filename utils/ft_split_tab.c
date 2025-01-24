@@ -116,5 +116,6 @@ char	**ft_split_tab(char **input, char *charset)
 		i++;
 	}
 	strs[total_words] = NULL;
+	free_tab(input);
 	return (strs);
 }

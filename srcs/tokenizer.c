@@ -22,6 +22,7 @@ void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 	j = 0;
 	n = 0;
 	token = malloc_token(token, size, tokens_size);
+	free(size);
 	while (line_tab[n] && j < tokens_size)
 	{
 		if (*line_tab[n] == '|')
@@ -35,5 +36,6 @@ void	tokenizer(t_tokens *token, char **line_tab, int tokens_size, int *size)
 		i++;
 		n++;
 	}
+	free_tab(line_tab);
 	token[j].tokens[i] = NULL;
 }

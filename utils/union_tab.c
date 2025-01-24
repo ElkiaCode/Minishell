@@ -50,5 +50,6 @@ char	**union_tab(char **tab, int size)
 		i++;
 	}
 	result[new_size] = NULL;
+	free_tab(tab);
 	return (result);
 }
