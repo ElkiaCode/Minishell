@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-void get_exit_status(t_global *data, int status)
+void	get_exit_status(t_global *data, int status)
 {
 	if (WIFSIGNALED(status))
 	{
