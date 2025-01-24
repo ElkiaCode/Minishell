@@ -49,6 +49,7 @@ SRC =	srcs/main.c \
 		utils/exit_shell.c \
 		utils/final_expander.c \
 		utils/ft_strndup.c \
+		utils/free_tab.c \
 		utils/gnl/get_next_line.c \
 		srcs/exec/prepare_exec.c \
 		srcs/builtins/ft_cd.c \

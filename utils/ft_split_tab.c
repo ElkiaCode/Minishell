@@ -50,42 +50,37 @@ static size_t	ft_countwords(char *str, char *sep)
 	return (count);
 }
 
-void	free_tab(char **tab)
+static void	handle_word(char **strs, char *str, size_t *word_idx, int *i)
 {
-	size_t	i;
+	int	len;
 
-	i = 0;
-	while (tab && tab[i])
-		free(tab[i++]);
-	free(tab);
+	len = 0;
+	while (str[*i + len] && !is_sep(str[*i + len], " "))
+		len++;
+	strs[*word_idx] = malloc(sizeof(char) * (len + 1));
+	if (!strs[*word_idx])
+	{
+		free_tab(strs);
+		return ;
+	}
+	ft_strncpy(strs[*word_idx], &str[*i], len);
+	strs[*word_idx][len] = '\0';
+	*i += len;
+	(*word_idx)++;
 }
 
 static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (str[i] != '\0')
 	{
 		if (!is_sep(str[i], charset))
-		{
-			j = 0;
-			while (str[i + j] && !is_sep(str[i + j], charset))
-				j++;
-			strs[*word_idx] = malloc(sizeof(char) * (j + 1));
-			if (!strs[*word_idx])
-			{
-				free_tab(strs);
-				return ;
-			}
-			ft_strncpy(strs[*word_idx], &str[i], j);
-			strs[*word_idx][j] = '\0';
-			i += j;
-		}
+			handle_word(strs, str, word_idx, &i);
 		else
 		{
-			strs[*word_idx] = malloc(sizeof(char) * (2));
+			strs[*word_idx] = malloc(sizeof(char) * 2);
 			if (!strs[*word_idx])
 			{
 				free_tab(strs);
@@ -94,8 +89,8 @@ static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 			strs[*word_idx][0] = str[i];
 			strs[*word_idx][1] = '\0';
 			i++;
+			(*word_idx)++;
 		}
-		(*word_idx)++;
 	}
 }
 
