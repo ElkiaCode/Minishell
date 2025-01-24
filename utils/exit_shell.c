@@ -32,6 +32,8 @@ void	free_all(t_global *data)
 		free_env_list(data->env);
 	if (data->env_tab)
 		free_tab(data->env_tab);
+	if (data->cmds)
+		data->cmds = free_cmd_list(data->cmds);
 }
 
 void	exit_shell(t_global *data, int exit_code)

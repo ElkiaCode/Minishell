@@ -12,13 +12,29 @@
 
 #include "../includes/minishell.h"
 
+static char	*merge_tokens(char **tab, int *i, int size)
+{
+	char	*merged;
+	char	*temp;
+
+	merged = strdup(tab[*i]);
+	while (*i + 1 < size && ft_strncmp(tab[*i + 1], tab[*i], 1) == 0)
+	{
+		temp = malloc(ft_strlen(merged) + 2);
+		ft_strncpy(temp, merged, ft_strlen(merged));
+		ft_strcat(temp, tab[*i + 1]);
+		free(merged);
+		merged = temp;
+		(*i)++;
+	}
+	return (merged);
+}
+
 char	**union_tab(char **tab, int size)
 {
 	char	**result;
 	int		i;
 	int		new_size;
-	char	*merged;
-	char	*temp;
 
 	i = 0;
 	new_size = 0;
@@ -28,19 +44,7 @@ char	**union_tab(char **tab, int size)
 	while (i < size)
 	{
 		if (ft_strncmp(tab[i], ">", 1) == 0 || ft_strncmp(tab[i], "<", 1) == 0)
-		{
-			merged = strdup(tab[i]);
-			while (i + 1 < size && ft_strncmp(tab[i + 1], tab[i], 1) == 0)
-			{
-				temp = malloc(ft_strlen(merged) + 2);
-				ft_strncpy(temp, merged, ft_strlen(merged));
-				ft_strcat(temp, tab[i + 1]);
-				free(merged);
-				merged = temp;
-				i++;
-			}
-			result[new_size++] = merged;
-		}
+			result[new_size++] = merge_tokens(tab, &i, size);
 		else
 			result[new_size++] = ft_strdup(tab[i]);
 		i++;

@@ -16,10 +16,6 @@ void	wait_all_pids(t_global *data)
 				if (WEXITSTATUS(tmp) > data->status)
 					data->status = WEXITSTATUS(tmp);
 		}
-		if (cmd_ptr->infile_fd > 0)
-			close(cmd_ptr->infile_fd);
-		if (cmd_ptr->outfile_fd > 0)
-			close(cmd_ptr->outfile_fd);
 		cmd_ptr = cmd_ptr->next;
 	}
 }
@@ -389,6 +385,10 @@ t_cmd	*free_cmd_list(t_cmd *cmd)
 	while (cmd)
 	{
 		tmp = cmd->next;
+		if (cmd->infile_fd > 0)
+			close(cmd->infile_fd);
+		if (cmd->outfile_fd > 0)
+			close(cmd->outfile_fd);
 		free_tab(cmd->args);
 		free(cmd->cmd_path);
 		free(cmd);

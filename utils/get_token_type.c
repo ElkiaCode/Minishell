@@ -31,6 +31,25 @@ static int	ft_is_cmd(char *cmd)
 	return (0);
 }
 
+int	determine_token_type(char *token)
+{
+	if (ft_strncmp(token, "<<", 2) == 0)
+		return (T_DLESS);
+	else if (ft_strncmp(token, ">>", 2) == 0)
+		return (T_DGREAT);
+	else if (ft_strncmp(token, "<", 1) == 0)
+		return (T_RLESS);
+	else if (ft_strncmp(token, ">", 1) == 0)
+		return (T_RGREAT);
+	else if (token[0] == '\'')
+		return (T_S_QUOTE);
+	else if (token[0] == '"')
+		return (T_D_QUOTE);
+	else if (ft_is_cmd(token) == 1)
+		return (T_CMD);
+	return (T_ERR);
+}
+
 t_tokens	*get_token_type(t_tokens *token, int token_size)
 {
 	int	i;
@@ -42,23 +61,8 @@ t_tokens	*get_token_type(t_tokens *token, int token_size)
 		j = -1;
 		while (token[i].tokens[++j])
 		{
-			if (ft_strncmp(token[i].tokens[j], "<<", 2) == 0)
-				token[i].type[j] = T_DLESS;
-			else if (ft_strncmp(token[i].tokens[j], ">>", 2) == 0)
-				token[i].type[j] = T_DGREAT;
-			else if (ft_strncmp(token[i].tokens[j], "<", 1) == 0)
-				token[i].type[j] = T_RLESS;
-			else if (ft_strncmp(token[i].tokens[j], ">", 1) == 0)
-				token[i].type[j] = T_RGREAT;
-			else if (token[i].tokens[j][0] == '\'')
-				token[i].type[j] = T_S_QUOTE;
-			else if (token[i].tokens[j][0] == '"')
-				token[i].type[j] = T_D_QUOTE;
-			else if (ft_is_cmd(token[i].tokens[j]) == 1)
-				token[i].type[j] = T_CMD;
-			else
-				token[i].type[j] = T_ERR;
-			if (token[i].type[0] == T_ERR)
+			token[i].type[j] = determine_token_type(token[i].tokens[j]);
+			if (j == 0 && token[i].type[0] == T_ERR)
 				token[i].type[0] = T_CMD;
 		}
 	}
