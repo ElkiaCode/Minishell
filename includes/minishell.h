@@ -202,5 +202,6 @@ char				*gnl_strjoin(char *s1, const char *s2);
 size_t				gnl_strlen(const char *str);
 char				*gnl_strdup(const char *s);
 t_cmd				*free_cmd_list(t_cmd *cmd);
+char				*ft_itoa(int n);
 
 #endif

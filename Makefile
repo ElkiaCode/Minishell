@@ -61,6 +61,7 @@ SRC =	srcs/main.c \
 		srcs/builtins/ft_unset.c \
 		srcs/signals/signals.c \
 		utils/gnl/get_next_line_utils.c \
+		utils/ft_itoa.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}

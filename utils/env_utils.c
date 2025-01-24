@@ -42,6 +42,8 @@ char	*ft_getenv(t_global *data, char *name)
 	t_env	*tmp;
 	char	*res;
 
+	if (!ft_strncmp(name, "?", 1))
+		return (ft_itoa(data->status));
 	tmp = data->env;
 	while (tmp)
 	{
