@@ -324,9 +324,13 @@ char	*cmd_path(t_global *data, char *cmd)
 		perror(cmd);
 		return (NULL);
 	}
+	exec_path = NULL;
 	tmp = ft_getenv(data, "PATH");
-	exec_path = find_exec(cmd, ft_split(tmp, ":"));
-	free(tmp);
+	if (tmp)
+	{
+		exec_path = find_exec(cmd, ft_split(tmp, ":"));
+		free(tmp);
+	}
 	return (exec_path);
 }
 
