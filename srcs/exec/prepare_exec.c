@@ -1,5 +1,27 @@
 #include "../../includes/minishell.h"
 
+void get_exit_status(t_global *data, int status)
+{
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGSEGV)
+		{
+			printf("Segmentation fault (core dumped)\n");
+			data->status = 139;
+		}
+		else if (WTERMSIG(status) == SIGINT)
+			data->status = 130;
+		else if (WTERMSIG(status) == SIGQUIT)
+		{
+			printf("Quit (core dumped)\n");
+			data->status = 131;
+		}
+	}
+	else if (WIFEXITED(status))
+		if (WEXITSTATUS(status) > data->status)
+			data->status = WEXITSTATUS(status);
+}
+
 void	wait_all_pids(t_global *data)
 {
 	t_cmd	*cmd_ptr;
@@ -11,11 +33,7 @@ void	wait_all_pids(t_global *data)
 	{
 		pid = waitpid(-1, &tmp, 0);
 		if (pid == g_signal_pid)
-		{
-			if (WIFEXITED(tmp))
-				if (WEXITSTATUS(tmp) > data->status)
-					data->status = WEXITSTATUS(tmp);
-		}
+			get_exit_status(data, tmp);
 		cmd_ptr = cmd_ptr->next;
 	}
 }
