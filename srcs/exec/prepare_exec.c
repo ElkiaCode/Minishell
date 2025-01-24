@@ -308,13 +308,13 @@ char	*find_exec(char *cmd, char **paths)
 		i++;
 	}
 	free_tab(paths);
-	perror(cmd);
 	return (NULL);
 }
 
 char	*cmd_path(t_global *data, char *cmd)
 {
 	char	*exec_path;
+	char *tmp;
 
 	if (!cmd)
 		return (NULL);
@@ -325,7 +325,9 @@ char	*cmd_path(t_global *data, char *cmd)
 		perror(cmd);
 		return (NULL);
 	}
-	exec_path = find_exec(cmd, ft_split(ft_getenv(data, "PATH"), ":"));
+	tmp = ft_getenv(data, "PATH");
+	exec_path = find_exec(cmd, ft_split(tmp, ":"));
+	free(tmp);
 	return (exec_path);
 }
 
