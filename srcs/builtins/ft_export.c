@@ -45,6 +45,7 @@ int	is_valid_export(char *arg)
 		return (0);
 	if (!ft_isalpha(arg[i]) && arg[i] != '_')
 		return (0);
+	i = -1;
 	while (arg[++i])
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '=')
