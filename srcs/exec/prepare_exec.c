@@ -177,9 +177,9 @@ void	do_cmds(t_global *data)
 	wait_all_pids(data);
 }
 
-void	write_in_heredoc(char *line, int heredoc_fd)
+void	write_in_heredoc(t_global *data, char *line, int heredoc_fd)
 {
-	// line = expand_heredoc(data, line);
+	line = final_expander(data, line);
 	write(heredoc_fd, line, ft_strlen(line));
 	write(heredoc_fd, "\n", 1);
 	free(line);
@@ -205,7 +205,7 @@ int	do_heredoc(t_global data)
 		}
 		if (!ft_strncmp(line, data.delimiter, INT_MAX))
 			break ;
-		write_in_heredoc(line, heredoc_fd);
+		write_in_heredoc(&data, line, heredoc_fd);
 	}
 	close(heredoc_fd);
 	free(line);
