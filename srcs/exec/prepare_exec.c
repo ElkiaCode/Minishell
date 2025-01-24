@@ -249,6 +249,7 @@ int	prepare_outfile(t_global *data, char *file, int type)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
+		fd = open("/dev/null", O_WRONLY);
 		perror(file);
 		data->status = 1;
 	}
