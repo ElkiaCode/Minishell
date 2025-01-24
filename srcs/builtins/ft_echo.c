@@ -12,16 +12,27 @@
 
 #include "../../includes/minishell.h"
 
+static void	check_option(char *arg, int *i, bool *nl)
+{
+	int	j;
+
+	j = 1;
+	while (arg[j] == 'n')
+		j++;
+	if (arg[j] == '\0')
+	{
+		*nl = false;
+		(*i)++;
+	}
+}
+
 static void	print_echo(int count, bool nl, char **args, int out_fd)
 {
 	int	i;
 
 	i = 1;
-	if (!ft_strncmp(args[i], "-n", INT_MAX))
-	{
-		nl = false;
-		i++;
-	}
+	if (args[i][0] == '-')
+		check_option(args[i], &i, &nl);
 	while (i < count)
 	{
 		write(out_fd, args[i], ft_strlen(args[i]));
