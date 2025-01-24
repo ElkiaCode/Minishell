@@ -297,7 +297,7 @@ char	*find_exec(char *cmd, char **paths)
 		tmp = ft_strjoin(paths[i], "/");
 		exec_path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (!access(exec_path, X_OK))
+		if (!access(exec_path, F_OK))
 		{
 			free_tab(paths);
 			return (exec_path);
@@ -317,7 +317,7 @@ char	*cmd_path(t_global *data, char *cmd)
 
 	if (!cmd)
 		return (NULL);
-	if (!access(cmd, X_OK) && !is_directory(data, cmd))
+	if (!access(cmd, F_OK) && !is_directory(data, cmd))
 		return (ft_strdup(cmd));
 	if (!data->env)
 	{
