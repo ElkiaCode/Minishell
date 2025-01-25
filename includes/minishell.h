@@ -6,7 +6,7 @@
 /*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:41:53 by lpolizzi          #+#    #+#             */
-/*   Updated: 2025/01/18 14:41:54 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/01/25 23:12:28 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void				parsing(t_global *data, t_tokens *token, char *line,
 						int tokens_size);
 
 // Exec
+int					ft_rand(char **args);
 int					ft_pwd(int out_fd);
 int					ft_export(t_global *data, char **args, int out_fd);
 int					ft_unset(t_global *data, char **args);
@@ -210,5 +211,7 @@ char				*gnl_strdup(const char *s);
 t_cmd				*free_cmd_list(t_cmd *cmd);
 char				*ft_itoa(int n);
 void				free_env_list(t_env *env);
+int					ft_atoi(const char *str);
+int					ft_isdigit(int c);
 
 #endif

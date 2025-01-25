@@ -22,6 +22,7 @@ void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 		data->stop_exec = true;
 		return ;
 	}
+	add_history(line);
 	line_tab = split_command(line);
 	line_tab = ft_split_tab(line_tab, "<>|");
 	line_tab = union_tab(line_tab, 0);

@@ -50,5 +50,4 @@ void	init_value(t_global **global)
 	(*global)->pipe_nb = pipe_nb((*global)->cmd);
 	(*global)->token = malloc(sizeof(t_tokens) * ((*global)->pipe_nb + 1));
 	init_tokens((*global)->token, (*global)->pipe_nb);
-	add_history((*global)->cmd);
 }

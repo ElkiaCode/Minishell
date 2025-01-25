@@ -19,11 +19,13 @@ void	get_signal_status(t_global *data, int status)
 	i = -1;
 	data->status = 128 + status;
 	while (signal_messages[++i].signal)
+	{
 		if (signal_messages[i].signal == status)
 		{
 			printf("%s", signal_messages[i].message);
 			break ;
 		}
+	}
 }
 
 void	wait_all_pids(t_global *data)
@@ -93,6 +95,10 @@ bool	cmd_is_builtin(char *cmd)
 		return (true);
 	else if (!ft_strncmp(cmd, "exit", INT_MAX))
 		return (true);
+	else if (!ft_strncmp(cmd, "bob", INT_MAX))
+		return (true);
+	else if (!ft_strncmp(cmd, "rand", INT_MAX))
+		return (true);
 	return (false);
 }
 
@@ -114,6 +120,10 @@ void	exec_builtin(t_global *data, t_cmd *cmd_ptr, int fd_out)
 		data->status = ft_env(data, fd_out);
 	else if (!ft_strncmp(cmd_ptr->args[0], "exit", INT_MAX))
 		ft_exit(data, cmd_ptr->args);
+	else if (!ft_strncmp(cmd_ptr->args[0], "bob", INT_MAX))
+		printf("Le Bricoleur\n");
+	else if (!ft_strncmp(cmd_ptr->args[0], "rand", INT_MAX))
+		data->status = ft_rand(cmd_ptr->args);
 }
 
 void	exec_error(t_global *data, char *cmd)

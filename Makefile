@@ -6,7 +6,7 @@
 #    By: hulefevr <hulefevr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 09:14:16 by cparodi           #+#    #+#              #
-#    Updated: 2025/01/23 12:24:38 by hulefevr         ###   ########.fr        #
+#    Updated: 2025/01/25 23:07:17 by lpolizzi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,8 @@ SRC =	srcs/main.c \
 		srcs/signals/signals.c \
 		utils/gnl/get_next_line_utils.c \
 		utils/ft_itoa.c \
+		srcs/builtins/ft_rand.c \
+		utils/ft_atoi.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
