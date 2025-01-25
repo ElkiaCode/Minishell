@@ -1,105 +1,30 @@
 #include "../../includes/minishell.h"
 
-void	get_signal_status4(t_global *data, int status)
-{
-	if (status == SIGXFSZ)
-	{
-		printf("File size limit exceeded (core dumped)\n");
-		data->status = 153;
-	}
-	else if (status == SIGSYS)
-	{
-		printf("Bad system call (core dumped)\n");
-		data->status = 159;
-	}
-	else
-		data->status = 128;
-}
-
-void	get_signal_status3(t_global *data, int status)
-{
-	if (status == SIGPIPE)
-	{
-		printf("Broken pipe\n");
-		data->status = 141;
-	}
-	else if (status == SIGALRM)
-		data->status = 142;
-	else if (status == SIGTERM)
-	{
-		printf("Terminated\n");
-		data->status = 143;
-	}
-	else if (status == SIGPOLL)
-		data->status = 150;
-	else if (status == SIGXCPU)
-	{
-		printf("CPU time limit exceeded (core dumped)\n");
-		data->status = 152;
-	}
-	else
-		get_signal_status4(data, status);
-}
-
-void	get_signal_status2(t_global *data, int status)
-{
-	if (status == SIGBUS)
-	{
-		printf("Bus error (core dumped)\n");
-		data->status = 135;
-	}
-	else if (status == SIGFPE)
-	{
-		printf("Floating point exception (core dumped)\n");
-		data->status = 136;
-	}
-	else if (status == SIGKILL)
-		data->status = 137;
-	else if (status == SIGUSR1)
-		data->status = 138;
-	else if (status == SIGUSR2)
-		data->status = 140;
-	else if (status == SIGSEGV)
-	{
-		printf("Segmentation fault (core dumped)\n");
-		data->status = 139;
-	}
-	else
-		get_signal_status3(data, status);
-}
-
 void	get_signal_status(t_global *data, int status)
 {
-	if (status == SIGHUP)
-		data->status = 129;
-	else if (status == SIGINT)
-		data->status = 130;
+	data->status = 128 + status;
+	if (status == SIGXFSZ)
+		printf("File size limit exceeded (core dumped)\n");
+	else if (status == SIGSYS)
+		printf("Bad system call (core dumped)\n");
+	else if (status == SIGPIPE)
+		printf("Broken pipe\n");
+	else if (status == SIGTERM)
+		printf("Terminated\n");
+	else if (status == SIGXCPU)
+		printf("CPU time limit exceeded (core dumped)\n");
+	else if (status == SIGBUS)
+		printf("Bus error (core dumped)\n");
+	else if (status == SIGFPE)
+		printf("Floating point exception (core dumped)\n");
+	else if (status == SIGSEGV)
+		printf("Segmentation fault (core dumped)\n");
 	else if (status == SIGQUIT)
-	{
 		printf("Quit (core dumped)\n");
-		data->status = 131;
-	}
 	else if (status == SIGILL)
-	{
 		printf("Illegal instruction (core dumped)\n");
-		data->status = 132;
-	}
 	else if (status == SIGABRT)
-	{
 		printf("Aborted (core dumped)\n");
-		data->status = 134;
-	}
-	else
-		get_signal_status2(data, status);
-}
-
-void	get_exit_status(t_global *data, int status)
-{
-	if (WIFSIGNALED(status))
-		get_signal_status(data, WTERMSIG(status));
-	else if (WIFEXITED(status))
-		if (WEXITSTATUS(status) > data->status)
-			data->status = WEXITSTATUS(status);
 }
 
 void	wait_all_pids(t_global *data)
@@ -113,7 +38,13 @@ void	wait_all_pids(t_global *data)
 	{
 		pid = waitpid(-1, &tmp, 0);
 		if (pid == g_signal_pid)
-			get_exit_status(data, tmp);
+		{
+			if (WIFSIGNALED(status))
+				get_signal_status(data, WTERMSIG(status));
+			else if (WIFEXITED(status))
+				if (WEXITSTATUS(status) > data->status)
+					data->status = WEXITSTATUS(status);
+		}
 		cmd_ptr = cmd_ptr->next;
 	}
 }
