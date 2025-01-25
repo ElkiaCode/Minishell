@@ -9,8 +9,6 @@ void	get_signal_status(t_global *data, int status)
 		printf("Bad system call (core dumped)\n");
 	else if (status == SIGPIPE)
 		printf("Broken pipe\n");
-	else if (status == SIGTERM)
-		printf("Terminated\n");
 	else if (status == SIGXCPU)
 		printf("CPU time limit exceeded (core dumped)\n");
 	else if (status == SIGBUS)
