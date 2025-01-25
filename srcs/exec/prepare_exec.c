@@ -28,13 +28,13 @@ void	get_signal_status(t_global *data, int status)
 void	wait_all_pids(t_global *data)
 {
 	t_cmd	*cmd_ptr;
-	int		tmp;
+	int		status;
 	pid_t	pid;
 
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		pid = waitpid(-1, &tmp, 0);
+		pid = waitpid(-1, &status, 0);
 		if (pid == g_signal_pid)
 		{
 			if (WIFSIGNALED(status))
