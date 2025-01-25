@@ -2,27 +2,31 @@
 
 void	get_signal_status(t_global *data, int status)
 {
+	static const t_signal_message	signal_messages[] = {
+	{SIGXFSZ, "File size limit exceeded (core dumped)\n"},
+	{SIGSYS, "Bad system call (core dumped)\n"},
+	{SIGPIPE, "Broken pipe\n"},
+	{SIGTERM, "Terminated\n"},
+	{SIGXCPU, "CPU time limit exceeded (core dumped)\n"},
+	{SIGBUS, "Bus error (core dumped)\n"},
+	{SIGFPE, "Floating point exception (core dumped)\n"},
+	{SIGSEGV, "Segmentation fault (core dumped)\n"},
+	{SIGQUIT, "Quit (core dumped)\n"},
+	{SIGILL, "Illegal instruction (core dumped)\n"},
+	{SIGABRT, "Aborted (core dumped)\n"},
+	{0, NULL}};
+	int								i;
+
+	i = -1;
 	data->status = 128 + status;
-	if (status == SIGXFSZ)
-		printf("File size limit exceeded (core dumped)\n");
-	else if (status == SIGSYS)
-		printf("Bad system call (core dumped)\n");
-	else if (status == SIGPIPE)
-		printf("Broken pipe\n");
-	else if (status == SIGXCPU)
-		printf("CPU time limit exceeded (core dumped)\n");
-	else if (status == SIGBUS)
-		printf("Bus error (core dumped)\n");
-	else if (status == SIGFPE)
-		printf("Floating point exception (core dumped)\n");
-	else if (status == SIGSEGV)
-		printf("Segmentation fault (core dumped)\n");
-	else if (status == SIGQUIT)
-		printf("Quit (core dumped)\n");
-	else if (status == SIGILL)
-		printf("Illegal instruction (core dumped)\n");
-	else if (status == SIGABRT)
-		printf("Aborted (core dumped)\n");
+	while (signal_messages[++i].signal)
+	{
+		if (signal_messages[i].signal == status)
+		{
+			printf("%s", signal_messages[i].message);
+			break ;
+		}
+	}
 }
 
 void	wait_all_pids(t_global *data)
@@ -382,9 +386,7 @@ void	cmd_cpy(t_global *data, t_cmd *cmd)
 t_cmd	*cmd_new(t_global *data)
 {
 	t_cmd	*cmd;
-	int		i;
 
-	i = 0;
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);

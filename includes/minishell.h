@@ -43,6 +43,12 @@ extern pid_t		g_signal_pid;
 
 // structs
 
+typedef struct s_signal_message
+{
+	int				signal;
+	const char		*message;
+}					t_signal_message;
+
 typedef struct s_index
 {
 	int				i;

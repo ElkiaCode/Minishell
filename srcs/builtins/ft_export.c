@@ -81,7 +81,6 @@ char	**get_name_value(char *arg)
 int	ft_export(t_global *data, char **args, int out_fd)
 {
 	int		i;
-	int		exit_status;
 	char	**tmp;
 
 	i = 0;
@@ -95,12 +94,12 @@ int	ft_export(t_global *data, char **args, int out_fd)
 			if (!is_valid_export(tmp[0]))
 			{
 				ft_putendl_fd("export: invalid identifier\n", 2);
-				exit_status = 1;
+				return (1);
 			}
 			else
 				update_env(data, tmp[0], tmp[1]);
 			free_tab(tmp);
 		}
 	}
-	return (1);
+	return (0);
 }
