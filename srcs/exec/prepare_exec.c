@@ -2,12 +2,12 @@
 
 void	get_signal_status4(t_global *data, int status)
 {
-	if (WTERMSIG(status) == SIGXFSZ)
+	if (status == SIGXFSZ)
 	{
 		printf("File size limit exceeded (core dumped)\n");
 		data->status = 153;
 	}
-	else if (WTERMSIG(status) == SIGSYS)
+	else if (status == SIGSYS)
 	{
 		printf("Bad system call (core dumped)\n");
 		data->status = 159;
@@ -18,21 +18,21 @@ void	get_signal_status4(t_global *data, int status)
 
 void	get_signal_status3(t_global *data, int status)
 {
-	if (WTERMSIG(status) == SIGPIPE)
+	if (status == SIGPIPE)
 	{
 		printf("Broken pipe\n");
 		data->status = 141;
 	}
-	else if (WTERMSIG(status) == SIGALRM)
+	else if (status == SIGALRM)
 		data->status = 142;
-	else if (WTERMSIG(status) == SIGTERM)
+	else if (status == SIGTERM)
 	{
 		printf("Terminated\n");
 		data->status = 143;
 	}
-	else if (WTERMSIG(status) == SIGPOLL)
+	else if (status == SIGPOLL)
 		data->status = 150;
-	else if (WTERMSIG(status) == SIGXCPU)
+	else if (status == SIGXCPU)
 	{
 		printf("CPU time limit exceeded (core dumped)\n");
 		data->status = 152;
@@ -43,23 +43,23 @@ void	get_signal_status3(t_global *data, int status)
 
 void	get_signal_status2(t_global *data, int status)
 {
-	if (WTERMSIG(status) == SIGBUS)
+	if (status == SIGBUS)
 	{
 		printf("Bus error (core dumped)\n");
 		data->status = 135;
 	}
-	else if (WTERMSIG(status) == SIGFPE)
+	else if (status == SIGFPE)
 	{
 		printf("Floating point exception (core dumped)\n");
 		data->status = 136;
 	}
-	else if (WTERMSIG(status) == SIGKILL)
+	else if (status == SIGKILL)
 		data->status = 137;
-	else if (WTERMSIG(status) == SIGUSR1)
+	else if (status == SIGUSR1)
 		data->status = 138;
-	else if (WTERMSIG(status) == SIGUSR2)
+	else if (status == SIGUSR2)
 		data->status = 140;
-	else if (WTERMSIG(status) == SIGSEGV)
+	else if (status == SIGSEGV)
 	{
 		printf("Segmentation fault (core dumped)\n");
 		data->status = 139;
@@ -70,21 +70,21 @@ void	get_signal_status2(t_global *data, int status)
 
 void	get_signal_status(t_global *data, int status)
 {
-	if (WTERMSIG(status) == SIGHUP)
+	if (status == SIGHUP)
 		data->status = 129;
-	else if (WTERMSIG(status) == SIGINT)
+	else if (status == SIGINT)
 		data->status = 130;
-	else if (WTERMSIG(status) == SIGQUIT)
+	else if (status == SIGQUIT)
 	{
 		printf("Quit (core dumped)\n");
 		data->status = 131;
 	}
-	else if (WTERMSIG(status) == SIGILL)
+	else if (status == SIGILL)
 	{
 		printf("Illegal instruction (core dumped)\n");
 		data->status = 132;
 	}
-	else if (WTERMSIG(status) == SIGABRT)
+	else if (status == SIGABRT)
 	{
 		printf("Aborted (core dumped)\n");
 		data->status = 134;
@@ -96,7 +96,7 @@ void	get_signal_status(t_global *data, int status)
 void	get_exit_status(t_global *data, int status)
 {
 	if (WIFSIGNALED(status))
-		get_signal_status(data, status);
+		get_signal_status(data, WTERMSIG(status));
 	else if (WIFEXITED(status))
 		if (WEXITSTATUS(status) > data->status)
 			data->status = WEXITSTATUS(status);
