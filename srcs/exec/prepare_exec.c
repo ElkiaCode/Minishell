@@ -6,7 +6,6 @@ void	get_signal_status(t_global *data, int status)
 	{SIGXFSZ, "File size limit exceeded (core dumped)\n"},
 	{SIGSYS, "Bad system call (core dumped)\n"},
 	{SIGPIPE, "Broken pipe\n"},
-	{SIGTERM, "Terminated\n"},
 	{SIGXCPU, "CPU time limit exceeded (core dumped)\n"},
 	{SIGBUS, "Bus error (core dumped)\n"},
 	{SIGFPE, "Floating point exception (core dumped)\n"},
@@ -20,13 +19,11 @@ void	get_signal_status(t_global *data, int status)
 	i = -1;
 	data->status = 128 + status;
 	while (signal_messages[++i].signal)
-	{
 		if (signal_messages[i].signal == status)
 		{
 			printf("%s", signal_messages[i].message);
 			break ;
 		}
-	}
 }
 
 void	wait_all_pids(t_global *data)
