@@ -53,6 +53,11 @@ int	ft_cd(t_global *data, char **args)
 {
 	int	status;
 
+	if (count_args(args) > 2)
+	{
+		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+		return (1);
+	}
 	if (count_args(args) == 2)
 	{
 		status = chdir(args[1]);

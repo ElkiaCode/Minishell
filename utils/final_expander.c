@@ -18,7 +18,7 @@ static char	*get_env_name(t_global *data, char *name)
 
 	result = ft_getenv(data, name);
 	if (result)
-		return (ft_strdup(result));
+		return (result);
 	return (ft_strdup(""));
 }
 
