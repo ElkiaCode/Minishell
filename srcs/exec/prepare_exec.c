@@ -477,6 +477,7 @@ void	prepare_exec(t_global *data)
 		data->isolate_infile = -2;
 		data->isolate_outfile = -2;
 	}
+	free_tokens(data->token, data->pipe_nb);
 	do_cmds(data);
 	data->cmds = free_cmd_list(data->cmds);
 }

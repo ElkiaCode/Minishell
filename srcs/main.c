@@ -6,7 +6,7 @@
 /*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 22:33:47 by lpolizzi          #+#    #+#             */
-/*   Updated: 2025/01/23 22:33:53 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/01/26 11:21:32 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	main(int ac, char **av, char **env)
 			prepare_exec(global);
 		free(global->cmd);
 		global->stop_exec = false;
+		free(global->token);
 	}
 	return (0);
 }

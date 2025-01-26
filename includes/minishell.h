@@ -6,7 +6,7 @@
 /*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:41:53 by lpolizzi          #+#    #+#             */
-/*   Updated: 2025/01/25 23:12:28 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/01/26 11:15:22 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,5 +213,6 @@ char				*ft_itoa(int n);
 void				free_env_list(t_env *env);
 int					ft_atoi(const char *str);
 int					ft_isdigit(int c);
+void				free_tokens(t_tokens *token, int pipe_nb);
 
 #endif
