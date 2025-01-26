@@ -32,5 +32,8 @@ void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 	get_args(data, &token, tokens_size);
 	token = search_for_args(token, tokens_size);
 	if (final_parser(token, tokens_size) == 1)
+	{
+		data->stop_exec = true;
 		return ;
+	}
 }

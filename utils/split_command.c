@@ -75,7 +75,7 @@ char	**split_command(char *str)
 	i = 0;
 	n = 0;
 	wc = word_count(str);
-	result = (char **)malloc(sizeof(char *) * (wc + 2));
+	result = (char **)malloc(sizeof(char *) * (wc + 1));
 	if (!result)
 		return (NULL);
 	while (str[i])

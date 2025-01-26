@@ -19,7 +19,7 @@ static int	is_sep(char c, char *charset)
 	i = 0;
 	while (charset[i])
 	{
-		if (c == charset[i] || c == '\0')
+		if (c == charset[i])
 			return (1);
 		i++;
 	}
@@ -53,10 +53,20 @@ static size_t	ft_countwords(char *str, char *sep)
 static void	handle_word(char **strs, char *str, size_t *word_idx, int *i)
 {
 	int	len;
-
+	char temp;
+	
 	len = 0;
 	while (str[*i + len] && !is_sep(str[*i + len], " "))
+	{
+		if (str[*i + len] == '"' || str[*i + len] == '\'')
+		{
+			temp = str[*i + len];
+			len++;
+			while (str[*i + len] != temp)
+				len++;
+		}
 		len++;
+	}
 	strs[*word_idx] = malloc(sizeof(char) * (len + 1));
 	if (!strs[*word_idx])
 	{
