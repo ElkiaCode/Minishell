@@ -158,7 +158,7 @@ void				update_oldpwd(t_global *data);
 void				update_pwd(t_global *data, char *path);
 int					ft_cd(t_global *data, char **args);
 void				ft_exit(t_global *data, char **args);
-int					get_exit_code(char *arg, bool *error);
+int					get_exit_code(char *arg);
 char				*ft_getenv(t_global *data, char *name);
 void				update_env(t_global *data, char *name, char *value);
 void				free_tab(char **tab);

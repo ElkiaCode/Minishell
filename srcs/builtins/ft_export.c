@@ -78,28 +78,35 @@ char	**get_name_value(char *arg)
 	return (tmp);
 }
 
+int	process_export_arg(t_global *data, char *arg, int i)
+{
+	char	**tmp;
+
+	tmp = get_name_value(arg);
+	if (!is_valid_export(tmp[0]))
+	{
+		if (i == 1)
+		{
+			ft_putendl_fd("export: not a valid identifier\n", 2);
+			free_tab(tmp);
+			return (1);
+		}
+	}
+	update_env(data, tmp[0], tmp[1]);
+	free_tab(tmp);
+	return (0);
+}
+
 int	ft_export(t_global *data, char **args, int out_fd)
 {
-	int		i;
-	char	**tmp;
+	int	i;
 
 	i = 0;
 	if (count_args(args) == 1)
 		return (print_export(data, out_fd));
-	else
-	{
-		while (args[++i])
-		{
-			tmp = get_name_value(args[i]);
-			if (!is_valid_export(tmp[0]))
-			{
-				ft_putendl_fd("export: invalid identifier\n", 2);
-				return (1);
-			}
-			else
-				update_env(data, tmp[0], tmp[1]);
-			free_tab(tmp);
-		}
-	}
+	while (args[++i])
+		if (process_export_arg(data, args[i], i) && i == 1)
+			return (1);
 	return (0);
 }
+

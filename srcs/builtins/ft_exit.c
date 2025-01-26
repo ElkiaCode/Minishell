@@ -12,52 +12,51 @@
 
 #include "../../includes/minishell.h"
 
-int	get_exit_code(char *arg, bool *error)
+int	get_exit_code(char *arg)
 {
 	unsigned long long	exit_code;
 	int					i;
 	int					sign;
-	int					len_remove;
 
 	i = 0;
 	sign = 1;
 	exit_code = 0;
-	while (arg[i] && ((arg[i] >= 9 && arg[i] <= 13) || arg[i] != 32))
+	while ((arg[i] <= 13 && arg[i] >= 9) || arg[i] == 32)
 		i++;
 	if (arg[i] == '-' || arg[i] == '+')
 		if (arg[i++] == '-')
 			sign = -1;
-	len_remove = i;
-	while (arg[i] && (arg[i] >= '0' && arg[i] <= '9'))
-		exit_code = exit_code * 10 + (arg[i++] - '0');
-	while (arg[i] && ((arg[i] >= 9 && arg[i] <= 13) || arg[i] != 32))
-	{
-		i++;
-		len_remove++;
-	}
-	if (arg[i] || i - len_remove > 20 || ((sign == 1 && exit_code > LONG_MAX)
-			|| (sign == -1 && (exit_code - 1) > 9223372036854775808ull)))
-		*error = true;
+	while (arg[i] >= '0' && arg[i] <= '9')
+		exit_code = exit_code * 10 + arg[i++] - '0';
 	return ((int)(exit_code * sign) % 256);
+}
+
+bool check_numeric(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg[i] == '-' || arg[i] == '+')
+		i++;
+	while (arg[i])
+		if (!ft_isdigit(arg[i++]))
+			return (0);
+	return (1);
 }
 
 void	ft_exit(t_global *data, char **args)
 {
 	int		exit_code;
-	bool	error;
 
 	exit_code = 0;
-	error = false;
 	if (count_args(args) == 1)
 		exit_shell(data, data->status);
 	if (args[1])
 	{
-		exit_code = get_exit_code(args[1], &error);
-		if (error)
+		exit_code = get_exit_code(args[1]);
+		if (!check_numeric(args[1]))
 		{
-			ft_putstr_fd("exit: ", 2);
-			ft_putstr_fd(args[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
+			ft_putstr_fd("exit: numeric argument required\n", 2);
 			exit_shell(data, 2);
 		}
 	}

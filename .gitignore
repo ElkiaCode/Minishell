@@ -2,4 +2,4 @@
 *.o
 .gitattributes
 minishell
-CCC.xtx
+minishell_tester
