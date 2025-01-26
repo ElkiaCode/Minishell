@@ -214,5 +214,5 @@ void				free_env_list(t_env *env);
 int					ft_atoi(const char *str);
 int					ft_isdigit(int c);
 void				free_tokens(t_tokens *token, int pipe_nb);
-void	print_test(t_tokens *token, int tokens_size);
+void				print_test(t_tokens *token, int tokens_size);
 #endif

@@ -109,4 +109,3 @@ int	ft_export(t_global *data, char **args, int out_fd)
 			return (1);
 	return (0);
 }
-

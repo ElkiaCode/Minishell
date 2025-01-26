@@ -21,7 +21,6 @@ static int	error_input(char *line)
 	i = -1;
 	s_quote = false;
 	d_quote = false;
-
 	while (line && line[++i])
 	{
 		if (line[i] == '\'' && !d_quote)
@@ -40,7 +39,6 @@ static int	error_input(char *line)
 		return (1);
 	return (0);
 }
-
 
 int	check_error(char *line)
 {

@@ -31,7 +31,7 @@ int	get_exit_code(char *arg)
 	return ((int)(exit_code * sign) % 256);
 }
 
-bool check_numeric(char *arg)
+bool	check_numeric(char *arg)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ bool check_numeric(char *arg)
 
 void	ft_exit(t_global *data, char **args)
 {
-	int		exit_code;
+	int	exit_code;
 
 	exit_code = 0;
 	if (count_args(args) == 1)
