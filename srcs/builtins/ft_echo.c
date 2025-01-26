@@ -52,6 +52,11 @@ int	ft_echo(char **args, int out_fd)
 	count = 0;
 	while (args[count])
 		count++;
+	if (count == 1)
+	{
+		write(out_fd, "\n", 1);
+		return (0);
+	}
 	nl = true;
 	print_echo(count, nl, args, out_fd);
 	return (0);
