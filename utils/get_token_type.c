@@ -33,13 +33,13 @@ static int	ft_is_cmd(char *cmd)
 
 int	determine_token_type(char *token)
 {
-	if (ft_strncmp(token, "<<", 2) == 0)
+	if (ft_strlen(token) == 2 && ft_strncmp(token, "<<", 2) == 0)
 		return (T_DLESS);
-	else if (ft_strncmp(token, ">>", 2) == 0)
+	else if (ft_strlen(token) == 2 && ft_strncmp(token, ">>", 2) == 0)
 		return (T_DGREAT);
-	else if (ft_strncmp(token, "<", 1) == 0)
+	else if (ft_strlen(token) == 1 && ft_strncmp(token, "<", 1) == 0)
 		return (T_RLESS);
-	else if (ft_strncmp(token, ">", 1) == 0)
+	else if (ft_strlen(token) == 1 && ft_strncmp(token, ">", 1) == 0)
 		return (T_RGREAT);
 	else if (token[0] == '\'')
 		return (T_S_QUOTE);

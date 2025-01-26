@@ -64,6 +64,7 @@ SRC =	srcs/main.c \
 		utils/ft_itoa.c \
 		srcs/builtins/ft_rand.c \
 		utils/ft_atoi.c \
+		utils/print_test.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
