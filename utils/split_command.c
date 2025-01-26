@@ -39,28 +39,31 @@ static int	word_count(char *str)
 
 static void	handle_word(char *str, char **result, int *i, int *n)
 {
-	int	j;
+	int		start;
+	char	quote;
 
 	while (str[*i] && str[*i] == ' ')
 		(*i)++;
-	j = *i;
-	if (str[*i] == '"' || str[*i] == '\'')
+	start = *i;
+	while (str[*i] && str[*i] != ' ')
 	{
-		(*i)++;
-		while (str[*i] && str[*i] != str[j])
+		if (str[*i] == '"' || str[*i] == '\'')
+		{
+			quote = str[*i];
 			(*i)++;
-		(*i)++;
-	}
-	else
-	{
-		while (str[*i] && str[*i] != ' ')
+			while (str[*i] && str[*i] != quote)
+				(*i)++;
+			if (str[*i] == quote)
+				(*i)++;
+		}
+		else
 			(*i)++;
 	}
-	if (*i > j)
+	if (*i > start)
 	{
-		result[*n] = (char *)malloc(sizeof(char) * ((*i - j) + 1));
-		ft_strncpy(result[*n], &str[j], *i - j);
-		result[*n][*i - j] = '\0';
+		result[*n] = (char *)malloc(sizeof(char) * ((*i - start) + 1));
+		ft_strncpy(result[*n], &str[start], *i - start);
+		result[*n][*i - start] = '\0';
 		(*n)++;
 	}
 }

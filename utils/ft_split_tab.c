@@ -62,10 +62,11 @@ static void	handle_word(char **strs, char *str, size_t *word_idx, int *i)
 		{
 			temp = str[*i + len];
 			len++;
-			while (str[*i + len] != temp)
+			while (str[*i + len] && str[*i + len] != temp)
 				len++;
 		}
-		len++;
+		if (str[*i + len])
+			len++;
 	}
 	strs[*word_idx] = malloc(sizeof(char) * (len + 1));
 	if (!strs[*word_idx])
