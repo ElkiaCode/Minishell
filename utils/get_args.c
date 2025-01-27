@@ -39,7 +39,6 @@ static void	process_token(t_global *data, t_tokens *token, t_tokens *result,
 	{
 		new_token = process_double_quote(data, token->tokens[i]);
 		fill_result(result, new_token, result->token_size++, T_ARG);
-		free(new_token);
 	}
 	else if (token->type[i] == T_S_QUOTE)
 	{
@@ -50,8 +49,8 @@ static void	process_token(t_global *data, t_tokens *token, t_tokens *result,
 	{
 		new_token = process_double_quote(data, token->tokens[i]);
 		fill_result(result, new_token, result->token_size++, token->type[i]);
-		free(new_token);
 	}
+	free(new_token);
 }
 
 t_tokens	*get_args_app(t_global *data, t_tokens *token)
