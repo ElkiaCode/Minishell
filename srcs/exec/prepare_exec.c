@@ -318,7 +318,11 @@ int	is_directory(t_global *data, char *cmd)
 
 	tmp_fd = open(cmd, O_WRONLY);
 	if (tmp_fd < 0 && errno == EISDIR)
+	{
+		perror(cmd);
 		data->status = 1;
+		return (1);
+	}
 	close(tmp_fd);
 	return (0);
 }
@@ -335,7 +339,7 @@ char	*find_exec(char *cmd, char **paths)
 		tmp = ft_strjoin(paths[i], "/");
 		exec_path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (!access(exec_path, F_OK))
+		if (!access(exec_path, X_OK))
 		{
 			free_tab(paths);
 			return (exec_path);
@@ -355,13 +359,12 @@ char	*cmd_path(t_global *data, char *cmd)
 
 	if (!cmd)
 		return (NULL);
-	if (!access(cmd, F_OK) && !is_directory(data, cmd))
+	if (is_directory(data, cmd))
+		return (NULL);
+	else if (!access(cmd, X_OK))
 		return (ft_strdup(cmd));
 	if (!data->env)
-	{
-		perror(cmd);
-		return (NULL);
-	}
+		return (ft_strdup(cmd));
 	exec_path = NULL;
 	tmp = ft_getenv(data, "PATH");
 	if (tmp)
