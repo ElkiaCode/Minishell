@@ -206,7 +206,7 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		if (!cmd_ptr->cmd_path[0])
+		if (!cmd_ptr->cmd_path || !cmd_ptr->cmd_path[0])
 		{
 			cmd_ptr = cmd_ptr->next;
 			continue ;
