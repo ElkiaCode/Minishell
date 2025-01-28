@@ -150,10 +150,10 @@ void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	close(fd[0]);
 	if (cmd_ptr->infile_fd > 0)
 		dup2(cmd_ptr->infile_fd, STDIN_FILENO);
-	if (cmd_ptr->next)
-		dup2(fd[1], STDOUT_FILENO);
-	else if (cmd_ptr->outfile_fd > 0)
+	if (cmd_ptr->outfile_fd > 0)
 		dup2(cmd_ptr->outfile_fd, STDOUT_FILENO);
+	else if (cmd_ptr->next)
+		dup2(fd[1], STDOUT_FILENO);
 	close(fd[1]);
 	if (data->env_tab)
 	{
@@ -184,12 +184,14 @@ void	pipe_and_fork(t_global *data, t_cmd *cmd_ptr, int fd[2])
 	if (pipe(fd) == -1)
 	{
 		data->status = 1;
+		perror(NULL);
 		return ;
 	}
 	g_signal_pid = fork();
 	if (g_signal_pid < 0)
 	{
 		data->status = 1;
+		perror(NULL);
 		return ;
 	}
 	else if (g_signal_pid == 0)
