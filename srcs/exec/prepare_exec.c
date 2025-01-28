@@ -359,9 +359,7 @@ char	*cmd_path(t_global *data, char *cmd)
 
 	if (!cmd)
 		return (NULL);
-	if (is_directory(data, cmd))
-		return (NULL);
-	else if (!access(cmd, X_OK))
+	else if (!access(cmd, X_OK) && !is_directory(data, cmd))
 		return (ft_strdup(cmd));
 	if (!data->env)
 		return (ft_strdup(cmd));
