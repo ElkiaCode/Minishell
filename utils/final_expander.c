@@ -56,8 +56,19 @@ static char	*expand_variable(t_global *data, char *token, int *i)
 	char	*name;
 
 	j = *i + 1;
-	while (token[j] && (ft_isalnum(token[j]) || token[j] == '_'
-			|| token[j] == '?'))
+	if (!token[j] || token[j] == ' ' || token[j] == '"' || token[j] == '\'')
+	{
+		name = ft_strdup("$");
+		*i = j;
+		return (name);
+	}
+	if (token[j] == '?')
+	{
+		name = ft_getenv(data, "?");
+		*i = j + 1;
+		return (name);
+	}
+	while (token[j] && (ft_isalnum(token[j]) || token[j] == '_'))
 		j++;
 	temp = ft_strndup(&token[*i + 1], j - (*i + 1));
 	name = get_env_name(data, temp);

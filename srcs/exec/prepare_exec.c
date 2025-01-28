@@ -2,18 +2,16 @@
 
 void	get_signal_status(t_global *data, int status)
 {
-	static const t_signal_message	signal_messages[] = {
-	{SIGXFSZ, "File size limit exceeded (core dumped)\n"},
-	{SIGSYS, "Bad system call (core dumped)\n"},
-	{SIGPIPE, "Broken pipe\n"},
-	{SIGXCPU, "CPU time limit exceeded (core dumped)\n"},
-	{SIGBUS, "Bus error (core dumped)\n"},
-	{SIGFPE, "Floating point exception (core dumped)\n"},
-	{SIGSEGV, "Segmentation fault (core dumped)\n"},
-	{SIGQUIT, "Quit (core dumped)\n"},
-	{SIGILL, "Illegal instruction (core dumped)\n"},
-	{SIGABRT, "Aborted (core dumped)\n"},
-	{0, NULL}};
+	static const t_signal_message	signal_messages[] = {{SIGXFSZ,
+			"File size limit exceeded (core dumped)\n"}, {SIGSYS,
+			"Bad system call (core dumped)\n"}, {SIGPIPE, "Broken pipe\n"},
+			{SIGXCPU, "CPU time limit exceeded (core dumped)\n"}, {SIGBUS,
+			"Bus error (core dumped)\n"}, {SIGFPE,
+			"Floating point exception (core dumped)\n"}, {SIGSEGV,
+			"Segmentation fault (core dumped)\n"}, {SIGQUIT,
+			"Quit (core dumped)\n"}, {SIGILL,
+			"Illegal instruction (core dumped)\n"}, {SIGABRT,
+			"Aborted (core dumped)\n"}, {0, NULL}};
 	int								i;
 
 	i = -1;
@@ -130,14 +128,17 @@ void	exec_error(t_global *data, char *cmd)
 {
 	if (errno == ENOENT)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1)))
+			perror(cmd);
+		else
+		{
+			ft_putstr_fd(cmd, STDERR_FILENO);
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		}
 		data->status = 127;
 	}
 	else if (errno == EACCES)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(cmd, STDERR_FILENO);
 		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		data->status = 126;
@@ -205,7 +206,12 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		if (cmd_ptr == data->cmds && !cmd_ptr->next
+		if (!cmd_ptr->cmd_path[0])
+		{
+			cmd_ptr = cmd_ptr->next;
+			continue ;
+		}
+		else if (cmd_ptr == data->cmds && !cmd_ptr->next
 			&& cmd_is_builtin(cmd_ptr->args[0]))
 			exec_builtin(data, cmd_ptr, cmd_ptr->outfile_fd);
 		else
@@ -257,6 +263,7 @@ int	prepare_infile(t_global *data, char *file, int type)
 	int	old_fd;
 
 	old_fd = data->isolate_infile;
+	fd = 0;
 	if (type == T_I_FILE)
 	{
 		fd = open(file, O_RDONLY);
@@ -264,6 +271,7 @@ int	prepare_infile(t_global *data, char *file, int type)
 		{
 			perror(file);
 			fd = open("/dev/null", O_RDONLY);
+			data->status = 1;
 		}
 	}
 	if (type == T_HEREDOC)
@@ -320,7 +328,7 @@ int	is_directory(t_global *data, char *cmd)
 	if (tmp_fd < 0 && errno == EISDIR)
 	{
 		perror(cmd);
-		data->status = 1;
+		data->status = 126;
 		return (1);
 	}
 	close(tmp_fd);
@@ -359,15 +367,20 @@ char	*cmd_path(t_global *data, char *cmd)
 
 	if (!cmd)
 		return (NULL);
-	else if (!access(cmd, X_OK) && !is_directory(data, cmd))
-		return (ft_strdup(cmd));
-	if (!data->env)
+	if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
+		&& is_directory(data, cmd))
+		return (ft_strdup(""));
+	else if (!access(cmd, X_OK))
 		return (ft_strdup(cmd));
 	exec_path = NULL;
 	tmp = ft_getenv(data, "PATH");
+	if (!data->env || !tmp)
+		return (ft_strdup(cmd));
 	if (tmp)
 	{
 		exec_path = find_exec(cmd, ft_split(tmp, ":"));
+		if (!exec_path && is_directory(data, cmd))
+			exec_path = ft_strjoin(cmd, "/");
 		free(tmp);
 	}
 	return (exec_path);
@@ -461,6 +474,7 @@ void	prepare_exec(t_global *data)
 	index.i = -1;
 	while (data->token && ++index.i < data->pipe_nb)
 	{
+		data->status = 0;
 		if (data->isolate_cmd)
 			free_tab(data->isolate_cmd);
 		data->isolate_cmd = malloc(sizeof(char *)
