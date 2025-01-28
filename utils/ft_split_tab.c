@@ -30,6 +30,7 @@ static size_t	ft_countwords(char *str, char *sep)
 {
 	size_t	i;
 	size_t	count;
+	char quote;
 
 	i = 0;
 	count = 0;
@@ -39,7 +40,19 @@ static size_t	ft_countwords(char *str, char *sep)
 		{
 			count++;
 			while (str[i] && !is_sep(str[i], sep))
+			{
+				if (str[i] == '"' || str[i] == '\'')
+				{
+					quote = str[i];
+					i++;
+					while (str[i] && str[i] != quote)
+						i++;
+					if (str[i] == quote)
+						i++;
+				}
+				if (str[i])
 				i++;
+			}
 		}
 		else
 		{
