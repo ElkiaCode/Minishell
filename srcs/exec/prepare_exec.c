@@ -305,7 +305,7 @@ int	prepare_outfile(t_global *data, char *file, int type)
 
 void	treat_token(t_global *data, char *token, int type, t_index *index)
 {
-	if (type == T_CMD || type == T_ARG || type == T_ERR)
+	if ((type == T_CMD || type == T_ARG || type == T_ERR) && token[0])
 		data->isolate_cmd[index->k++] = ft_strdup(token);
 	else if (type == T_HEREDOC)
 	{
@@ -461,8 +461,8 @@ int	count_cmd_size(t_tokens token)
 	i = -1;
 	size = 0;
 	while (token.tokens && token.tokens[++i])
-		if (token.type[i] == T_CMD || token.type[i] == T_ARG
-			|| token.type[i] == T_ERR)
+		if ((token.type[i] == T_CMD || token.type[i] == T_ARG
+			|| token.type[i] == T_ERR) && token.tokens[i][0])
 			size++;
 	return (size);
 }
