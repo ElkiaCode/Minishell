@@ -2,16 +2,18 @@
 
 void	get_signal_status(t_global *data, int status)
 {
-	static const t_signal_message	signal_messages[] = {{SIGXFSZ,
-			"File size limit exceeded (core dumped)\n"}, {SIGSYS,
-			"Bad system call (core dumped)\n"}, {SIGPIPE, "Broken pipe\n"},
-			{SIGXCPU, "CPU time limit exceeded (core dumped)\n"}, {SIGBUS,
-			"Bus error (core dumped)\n"}, {SIGFPE,
-			"Floating point exception (core dumped)\n"}, {SIGSEGV,
-			"Segmentation fault (core dumped)\n"}, {SIGQUIT,
-			"Quit (core dumped)\n"}, {SIGILL,
-			"Illegal instruction (core dumped)\n"}, {SIGABRT,
-			"Aborted (core dumped)\n"}, {0, NULL}};
+	static const t_signal_message	signal_messages[] = {
+	{SIGXFSZ, "File size limit exceeded (core dumped)\n"},
+	{SIGSYS, "Bad system call (core dumped)\n"},
+	{SIGPIPE, "Broken pipe\n"},
+	{SIGXCPU, "CPU time limit exceeded (core dumped)\n"},
+	{SIGBUS, "Bus error (core dumped)\n"},
+	{SIGFPE, "Floating point exception (core dumped)\n"},
+	{SIGSEGV, "Segmentation fault (core dumped)\n"},
+	{SIGQUIT, "Quit (core dumped)\n"},
+	{SIGILL, "Illegal instruction (core dumped)\n"},
+	{SIGABRT, "Aborted (core dumped)\n"},
+	{0, NULL}};
 	int								i;
 
 	i = -1;
@@ -467,7 +469,7 @@ int	count_cmd_size(t_tokens token)
 	size = 0;
 	while (token.tokens && token.tokens[++i])
 		if ((token.type[i] == T_CMD || token.type[i] == T_ARG
-			|| token.type[i] == T_ERR) && token.tokens[i][0])
+				|| token.type[i] == T_ERR) && token.tokens[i][0])
 			size++;
 	return (size);
 }
