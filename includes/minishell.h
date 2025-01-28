@@ -96,6 +96,7 @@ typedef struct s_cmd
 	char			**args;
 	int				infile_fd;
 	int				outfile_fd;
+	bool			skip_cmd;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -111,6 +112,7 @@ typedef struct s_global
 	char			*delimiter;
 	int				status;
 	bool			stop_exec;
+	bool			isolate_skip;
 	t_tokens		*token;
 	t_cmd			*cmds;
 }					t_global;

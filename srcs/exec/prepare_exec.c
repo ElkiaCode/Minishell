@@ -208,7 +208,7 @@ void	do_cmds(t_global *data)
 	cmd_ptr = data->cmds;
 	while (cmd_ptr)
 	{
-		if (!cmd_ptr->cmd_path || !cmd_ptr->cmd_path[0])
+		if (!cmd_ptr->cmd_path || !cmd_ptr->cmd_path[0] || cmd_ptr->skip_cmd)
 		{
 			cmd_ptr = cmd_ptr->next;
 			continue ;
@@ -221,6 +221,7 @@ void	do_cmds(t_global *data)
 		cmd_ptr = cmd_ptr->next;
 	}
 	wait_all_pids(data);
+	data->cmds = free_cmd_list(data->cmds);
 }
 
 void	write_in_heredoc(t_global *data, char *line, int heredoc_fd)
@@ -274,6 +275,7 @@ int	prepare_infile(t_global *data, char *file, int type)
 			perror(file);
 			fd = open("/dev/null", O_RDONLY);
 			data->status = 1;
+			data->isolate_skip = true;
 		}
 	}
 	if (type == T_HEREDOC)
@@ -404,6 +406,7 @@ void	cmd_cpy(t_global *data, t_cmd *cmd)
 	cmd->args[i] = NULL;
 	cmd->infile_fd = data->isolate_infile;
 	cmd->outfile_fd = data->isolate_outfile;
+	cmd->skip_cmd = data->isolate_skip;
 }
 
 t_cmd	*cmd_new(t_global *data)
@@ -469,16 +472,28 @@ int	count_cmd_size(t_tokens token)
 	return (size);
 }
 
+void	reset_isolate(t_global *data)
+{
+	if (data->isolate_cmd)
+	{
+		free_tab(data->isolate_cmd);
+		data->isolate_cmd = NULL;
+	}
+	data->isolate_infile = -2;
+	data->isolate_outfile = -2;
+	data->isolate_skip = 0;
+}
+
 void	prepare_exec(t_global *data)
 {
 	t_index	index;
 
 	index.i = -1;
+	data->isolate_cmd = NULL;
 	while (data->token && ++index.i < data->pipe_nb)
 	{
 		data->status = 0;
-		if (data->isolate_cmd)
-			free_tab(data->isolate_cmd);
+		reset_isolate(data);
 		data->isolate_cmd = malloc(sizeof(char *)
 				* (count_cmd_size(data->token[index.i]) + 1));
 		if (!data->isolate_cmd)
@@ -491,10 +506,8 @@ void	prepare_exec(t_global *data)
 			treat_token(data, data->token[index.i].tokens[index.j],
 				data->token[index.i].type[index.j], &index);
 		cmd_add_back(&data->cmds, cmd_new(data));
-		data->isolate_infile = -2;
-		data->isolate_outfile = -2;
 	}
 	free_tokens(data->token, data->pipe_nb);
 	do_cmds(data);
-	data->cmds = free_cmd_list(data->cmds);
+	reset_isolate(data);
 }
