@@ -149,7 +149,7 @@ int					prepare_infile(t_global *data, char *file, int type);
 int					prepare_outfile(t_global *data, char *file, int type);
 void				treat_token(t_global *data, char *token, int type,
 						t_index *index);
-int					is_directory(t_global *data, char *cmd);
+int					is_directory(t_global *data, char *cmd, bool msg);
 char				*find_exec(char *cmd, char **paths);
 char				*cmd_path(t_global *data, char *cmd);
 void				cmd_cpy(t_global *data, t_cmd *cmd);
@@ -218,5 +218,6 @@ int					ft_isdigit(int c);
 void				free_tokens(t_tokens *token, int pipe_nb);
 void				print_test(t_tokens *token, int tokens_size);
 void				handle_sigint(int code);
+bool				is_file(char *cmd);
 
 #endif

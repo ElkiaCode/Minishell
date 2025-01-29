@@ -128,24 +128,22 @@ void	exec_builtin(t_global *data, t_cmd *cmd_ptr, int fd_out)
 
 void	exec_error(t_global *data, char *cmd)
 {
-	if (errno == ENOENT)
-	{
-		if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
-			&& data->status == 0)
-			perror(cmd);
-		else
-		{
-			ft_putstr_fd(cmd, STDERR_FILENO);
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		}
-		data->status = 127;
-	}
-	else if (errno == EACCES && data->status == 0)
+	if (errno == EACCES && data->status == 0 && !is_file(cmd))
 	{
 		ft_putstr_fd(cmd, STDERR_FILENO);
 		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		data->status = 126;
+		return ;
 	}
+	else if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
+			&& data->status == 0)
+			perror(cmd);
+	else
+	{
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	}
+	data->status = 127;
 }
 
 void	child_process(t_global *data, t_cmd *cmd_ptr, int fd[2])
@@ -327,14 +325,28 @@ void	treat_token(t_global *data, char *token, int type, t_index *index)
 		data->isolate_outfile = prepare_outfile(data, token, type);
 }
 
-int	is_directory(t_global *data, char *cmd)
+bool	is_file(char *cmd)
+{
+	int	tmp_fd;
+
+	tmp_fd = open(cmd, O_RDONLY);
+	if (tmp_fd >= 0)
+	{
+		close(tmp_fd);
+		return (true);
+	}
+	return (false);
+}
+
+int	is_directory(t_global *data, char *cmd, bool msg)
 {
 	int	tmp_fd;
 
 	tmp_fd = open(cmd, O_WRONLY);
 	if (tmp_fd < 0 && errno == EISDIR && data->status == 0)
 	{
-		perror(cmd);
+		if (msg)
+			perror(cmd);
 		data->status = 126;
 		return (1);
 	}
@@ -375,7 +387,7 @@ char	*cmd_path(t_global *data, char *cmd)
 	if (!cmd)
 		return (NULL);
 	if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
-		&& is_directory(data, cmd))
+		&& is_directory(data, cmd, 1))
 		return (ft_strdup(""));
 	else if (!access(cmd, X_OK))
 		return (ft_strdup(cmd));
