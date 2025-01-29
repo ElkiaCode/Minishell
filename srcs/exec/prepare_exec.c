@@ -177,7 +177,7 @@ void	parent_process(t_cmd *cmd_ptr, int fd[2])
 	close(fd[1]);
 	if (cmd_ptr->infile_fd > 0)
 		close(cmd_ptr->infile_fd);
-	if (cmd_ptr->next)
+	if (cmd_ptr->next && cmd_ptr->next->infile_fd < 0)
 		cmd_ptr->next->infile_fd = dup(fd[0]);
 	close(fd[0]);
 }

@@ -217,4 +217,6 @@ int					ft_atoi(const char *str);
 int					ft_isdigit(int c);
 void				free_tokens(t_tokens *token, int pipe_nb);
 void				print_test(t_tokens *token, int tokens_size);
+void				handle_sigint(int code);
+
 #endif

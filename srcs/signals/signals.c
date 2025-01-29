@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-static void	handle_sigint(int code)
+void	handle_sigint(int code)
 {
 	(void)code;
 	printf("\n");
