@@ -386,8 +386,8 @@ char	*cmd_path(t_global *data, char *cmd)
 	if (tmp)
 	{
 		exec_path = find_exec(cmd, ft_split(tmp, ":"));
-		if (!exec_path && is_directory(data, cmd))
-			exec_path = ft_strjoin(cmd, "/");
+		if (!exec_path && ft_strncmp(cmd, "./", 2) && ft_strncmp(cmd, "/", 1))
+			exec_path = ft_strjoin(cmd, "./");
 		free(tmp);
 	}
 	return (exec_path);
