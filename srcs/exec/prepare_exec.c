@@ -130,7 +130,8 @@ void	exec_error(t_global *data, char *cmd)
 {
 	if (errno == ENOENT)
 	{
-		if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1)))
+		if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
+			&& data->status == 0)
 			perror(cmd);
 		else
 		{
@@ -139,7 +140,7 @@ void	exec_error(t_global *data, char *cmd)
 		}
 		data->status = 127;
 	}
-	else if (errno == EACCES)
+	else if (errno == EACCES && data->status == 0)
 	{
 		ft_putstr_fd(cmd, STDERR_FILENO);
 		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
@@ -275,7 +276,6 @@ int	prepare_infile(t_global *data, char *file, int type)
 		if (fd == -1)
 		{
 			perror(file);
-			fd = open("/dev/null", O_RDONLY);
 			data->status = 1;
 			data->isolate_skip = true;
 		}
@@ -300,9 +300,9 @@ int	prepare_outfile(t_global *data, char *file, int type)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		fd = open("/dev/null", O_WRONLY);
 		perror(file);
 		data->status = 1;
+		data->isolate_skip = true;
 	}
 	if (old_fd != -2)
 		close(old_fd);
@@ -313,16 +313,17 @@ void	treat_token(t_global *data, char *token, int type, t_index *index)
 {
 	if ((type == T_CMD || type == T_ARG || type == T_ERR) && token[0])
 		data->isolate_cmd[index->k++] = ft_strdup(token);
-	else if (type == T_HEREDOC)
+	else if (type == T_HEREDOC && data->isolate_skip == false)
 	{
 		if (data->delimiter)
 			free(data->delimiter);
 		data->delimiter = ft_strdup(data->token[index->i].tokens[index->j]);
 		data->isolate_infile = prepare_infile(data, token, type);
 	}
-	else if (type == T_I_FILE)
+	else if (type == T_I_FILE && data->isolate_skip == false)
 		data->isolate_infile = prepare_infile(data, token, type);
-	else if (type == T_OD_FILE || type == T_OR_FILE)
+	else if ((type == T_OD_FILE || type == T_OR_FILE)
+		&& data->isolate_skip == false)
 		data->isolate_outfile = prepare_outfile(data, token, type);
 }
 
@@ -331,7 +332,7 @@ int	is_directory(t_global *data, char *cmd)
 	int	tmp_fd;
 
 	tmp_fd = open(cmd, O_WRONLY);
-	if (tmp_fd < 0 && errno == EISDIR)
+	if (tmp_fd < 0 && errno == EISDIR && data->status == 0)
 	{
 		perror(cmd);
 		data->status = 126;
