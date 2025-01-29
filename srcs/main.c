@@ -18,14 +18,25 @@ int	pipe_nb(char *line)
 {
 	int	i;
 	int	nb;
+	char quote;
 
 	i = 0;
 	nb = 1;
 	while (line[i])
 	{
+		if (line[i] == '"' || line[i] == '\'')
+		{
+			quote = line[i];
+			i++;
+			while (line[i] && line[i] != quote)
+				i++;
+			if (line[i] == quote)
+				i++;
+		}
 		if (line[i] == '|')
 			nb++;
-		i++;
+		if (line[i])
+			i++;
 	}
 	return (nb);
 }
