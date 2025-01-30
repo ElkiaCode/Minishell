@@ -30,7 +30,7 @@ static size_t	ft_countwords(char *str, char *sep)
 {
 	size_t	i;
 	size_t	count;
-	char quote;
+	char	quote;
 
 	i = 0;
 	count = 0;
@@ -39,18 +39,15 @@ static size_t	ft_countwords(char *str, char *sep)
 		if (!is_sep(str[i], sep))
 		{
 			count++;
-			while (str[i] && !is_sep(str[i], sep))
+			while (str[i] && (!is_sep(str[i], sep) || quote))
 			{
-				if (str[i] == '"' || str[i] == '\'')
+				if ((str[i] == '"' || str[i] == '\'') && (!quote || str[i] == quote))
 				{
-					quote = str[i];
-					i++;
-					while (str[i] && str[i] != quote)
-						i++;
-					if (str[i] == quote)
-						i++;
+					if (quote)
+						quote = 0;
+					else
+						quote = str[i];
 				}
-				if (str[i])
 				i++;
 			}
 		}
@@ -63,23 +60,22 @@ static size_t	ft_countwords(char *str, char *sep)
 	return (count);
 }
 
-static void	handle_word(char **strs, char *str, size_t *word_idx, int *i)
+static void	handle_word(char **strs, char *str, size_t *word_idx, int *i, char *charset)
 {
-	int	len;
-	char temp;
-	
+	int		len;
+	char	quote = 0;
+
 	len = 0;
-	while (str[*i + len] && !is_sep(str[*i + len], " "))
+	while (str[*i + len] && (!is_sep(str[*i + len], charset) || quote))
 	{
-		if (str[*i + len] == '"' || str[*i + len] == '\'')
+		if ((str[*i + len] == '"' || str[*i + len] == '\'') && (!quote || str[*i + len] == quote))
 		{
-			temp = str[*i + len];
-			len++;
-			while (str[*i + len] && str[*i + len] != temp)
-				len++;
+			if (quote)
+				quote = 0;
+			else
+				quote = str[*i + len];
 		}
-		if (str[*i + len])
-			len++;
+		len++;
 	}
 	strs[*word_idx] = malloc(sizeof(char) * (len + 1));
 	if (!strs[*word_idx])
@@ -101,7 +97,7 @@ static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 	while (str[i] != '\0')
 	{
 		if (!is_sep(str[i], charset))
-			handle_word(strs, str, word_idx, &i);
+			handle_word(strs, str, word_idx, &i, charset);
 		else
 		{
 			strs[*word_idx] = malloc(sizeof(char) * 2);
@@ -143,3 +139,4 @@ char	**ft_split_tab(char **input, char *charset)
 	free_tab(input);
 	return (strs);
 }
+
