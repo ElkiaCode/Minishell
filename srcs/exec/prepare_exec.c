@@ -136,8 +136,8 @@ void	exec_error(t_global *data, char *cmd)
 		return ;
 	}
 	else if ((!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
-		&& data->status == 0)
-		perror(cmd);
+			&& data->status == 0)
+			perror(cmd);
 	else
 	{
 		ft_putstr_fd(cmd, STDERR_FILENO);
@@ -212,8 +212,6 @@ void	do_cmds(t_global *data)
 		if (!cmd_ptr->cmd_path || !cmd_ptr->cmd_path[0] || cmd_ptr->skip_cmd)
 		{
 			cmd_ptr = cmd_ptr->next;
-			if (cmd_ptr && cmd_ptr->infile_fd < 0)
-				cmd_ptr->infile_fd = open("/dev/null", O_RDONLY);
 			continue ;
 		}
 		else if (cmd_ptr == data->cmds && !cmd_ptr->next

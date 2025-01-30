@@ -28,26 +28,36 @@ static int	is_sep(char c, char *charset)
 
 static size_t	ft_countwords(char *str, char *sep)
 {
+	size_t	i;
 	size_t	count;
-	char	quote;
+	char quote;
 
+	i = 0;
 	count = 0;
-	while (*str)
+	while (str[i])
 	{
-		while (*str && is_sep(*str, sep))
-			str++;
-		if (*str)
-			count++;
-		while (*str && !is_sep(*str, sep))
+		if (!is_sep(str[i], sep))
 		{
-			if (*str == '"' || *str == '\'')
+			count++;
+			while (str[i] && !is_sep(str[i], sep))
 			{
-				quote = *str++;
-				while (*str && *str != quote)
-					str++;
+				if (str[i] == '"' || str[i] == '\'')
+				{
+					quote = str[i];
+					i++;
+					while (str[i] && str[i] != quote)
+						i++;
+					if (str[i] == quote)
+						i++;
+				}
+				if (str[i])
+				i++;
 			}
-			if (*str)
-				str++;
+		}
+		else
+		{
+			count++;
+			i++;
 		}
 	}
 	return (count);
@@ -55,9 +65,9 @@ static size_t	ft_countwords(char *str, char *sep)
 
 static void	handle_word(char **strs, char *str, size_t *word_idx, int *i)
 {
-	int		len;
-	char	temp;
-
+	int	len;
+	char temp;
+	
 	len = 0;
 	while (str[*i + len] && !is_sep(str[*i + len], " "))
 	{
