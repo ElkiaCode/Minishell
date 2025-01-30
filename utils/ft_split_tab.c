@@ -70,11 +70,6 @@ static void	handle_word(char **strs, char *str, size_t *word_idx, int *i,
 		len++;
 	}
 	strs[*word_idx] = malloc(sizeof(char) * (len + 1));
-	if (!strs[*word_idx])
-	{
-		free_tab(strs);
-		return ;
-	}
 	ft_strncpy(strs[*word_idx], &str[*i], len);
 	strs[*word_idx][len] = '\0';
 	*i += len;
