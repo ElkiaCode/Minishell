@@ -65,6 +65,7 @@ SRC =	srcs/main.c \
 		srcs/builtins/ft_rand.c \
 		utils/ft_atoi.c \
 		utils/print_test.c \
+		utils/is_sep.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
@@ -87,7 +88,7 @@ _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
 
-FILE_TOTAL	= 50
+FILE_TOTAL	= 60
 
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}

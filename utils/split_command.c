@@ -37,13 +37,18 @@ static int	word_count(char *str)
 	return (wc);
 }
 
+static void	skip_spaces(char *str, int *i)
+{
+	while (str[*i] && str[*i] == ' ')
+		(*i)++;
+}
+
 static void	handle_word(char *str, char **result, int *i, int *n)
 {
 	int		start;
 	char	quote;
 
-	while (str[*i] && str[*i] == ' ')
-		(*i)++;
+	skip_spaces(str, i);
 	start = *i;
 	while (str[*i] && str[*i] != ' ')
 	{

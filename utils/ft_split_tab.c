@@ -12,18 +12,12 @@
 
 #include "../includes/minishell.h"
 
-static int	is_sep(char c, char *charset)
+static void	update_quote_status(char c, char *quote)
 {
-	int	i;
-
-	i = 0;
-	while (charset[i])
-	{
-		if (c == charset[i])
-			return (1);
-		i++;
-	}
-	return (0);
+	if (*quote == 0 && (c == '"' || c == '\''))
+		*quote = c;
+	else if (*quote == c)
+		*quote = 0;
 }
 
 static size_t	ft_countwords(char *str, char *sep)
@@ -34,6 +28,7 @@ static size_t	ft_countwords(char *str, char *sep)
 
 	i = 0;
 	count = 0;
+	quote = 0;
 	while (str[i])
 	{
 		if (!is_sep(str[i], sep))
@@ -41,13 +36,7 @@ static size_t	ft_countwords(char *str, char *sep)
 			count++;
 			while (str[i] && (!is_sep(str[i], sep) || quote))
 			{
-				if ((str[i] == '"' || str[i] == '\'') && (!quote || str[i] == quote))
-				{
-					if (quote)
-						quote = 0;
-					else
-						quote = str[i];
-				}
+				update_quote_status(str[i], &quote);
 				i++;
 			}
 		}
@@ -59,6 +48,7 @@ static size_t	ft_countwords(char *str, char *sep)
 	}
 	return (count);
 }
+
 
 static void	handle_word(char **strs, char *str, size_t *word_idx, int *i, char *charset)
 {
@@ -139,4 +129,3 @@ char	**ft_split_tab(char **input, char *charset)
 	free_tab(input);
 	return (strs);
 }
-
