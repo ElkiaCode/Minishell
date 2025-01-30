@@ -6,7 +6,7 @@
 /*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:41:53 by lpolizzi          #+#    #+#             */
-/*   Updated: 2025/01/26 11:15:22 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:39:40 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int					prepare_infile(t_global *data, char *file, int type);
 int					prepare_outfile(t_global *data, char *file, int type);
 void				treat_token(t_global *data, char *token, int type,
 						t_index *index);
-int					is_directory(t_global *data, char *cmd, bool msg);
+bool				is_directory(t_global *data, char *cmd, bool msg);
 char				*find_exec(char *cmd, char **paths);
 char				*cmd_path(t_global *data, char *cmd);
 void				cmd_cpy(t_global *data, t_cmd *cmd);
@@ -220,5 +220,6 @@ void				print_test(t_tokens *token, int tokens_size);
 void				handle_sigint(int code);
 bool				is_file(char *cmd);
 int					is_sep(char c, char *charset);
+int					count_cmd_size(t_tokens token);
 
 #endif

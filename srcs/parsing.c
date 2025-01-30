@@ -36,5 +36,4 @@ void	parsing(t_global *data, t_tokens *token, char *line, int tokens_size)
 		data->stop_exec = true;
 		return ;
 	}
-	// print_test(token, tokens_size);
 }

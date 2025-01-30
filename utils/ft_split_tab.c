@@ -49,16 +49,18 @@ static size_t	ft_countwords(char *str, char *sep)
 	return (count);
 }
 
-
-static void	handle_word(char **strs, char *str, size_t *word_idx, int *i, char *charset)
+static void	handle_word(char **strs, char *str, size_t *word_idx, int *i,
+		char *charset)
 {
 	int		len;
-	char	quote = 0;
+	char	quote;
 
+	quote = 0;
 	len = 0;
 	while (str[*i + len] && (!is_sep(str[*i + len], charset) || quote))
 	{
-		if ((str[*i + len] == '"' || str[*i + len] == '\'') && (!quote || str[*i + len] == quote))
+		if ((str[*i + len] == '"' || str[*i + len] == '\'') && (!quote || str[*i
+				+ len] == quote))
 		{
 			if (quote)
 				quote = 0;

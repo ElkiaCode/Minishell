@@ -6,7 +6,7 @@
 #    By: hulefevr <hulefevr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/30 09:14:16 by cparodi           #+#    #+#              #
-#    Updated: 2025/01/25 23:07:17 by lpolizzi         ###   ########.fr        #
+#    Updated: 2025/01/30 20:40:28 by lpolizzi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,15 +64,21 @@ SRC =	srcs/main.c \
 		utils/ft_itoa.c \
 		srcs/builtins/ft_rand.c \
 		utils/ft_atoi.c \
-		utils/print_test.c \
 		utils/is_sep.c \
+		srcs/builtins/exec_builtins.c \
+		srcs/exec/exec_cmds.c \
+		srcs/exec/handle_redirections.c \
+		srcs/exec/wait_all_pid.c \
+		utils/cmd_utils.c \
+		utils/env_utils2.c \
+		utils/path_utils.c \
 
 SOURCES =		${SRC}
 OBJECTS =		${SOURCES:.c=.o}
 
 # Variables
 CC		= cc
-CFLAGS	= -Wall -Wextra -g3 -fsanitize=address,undefined,leak
+CFLAGS	= -Wall -Wextra -Werror #-g3 -fsanitize=address,undefined,leak
 LDFLAGS = -lreadline
 RM		= rm -f
 
@@ -88,7 +94,7 @@ _GREEN		= \e[1;4;32m
 
 FILE_COUNT	= 0
 
-FILE_TOTAL	= 60
+FILE_TOTAL	= 58
 
 BAR_SIZE	= ${shell expr 100 \* ${FILE_COUNT} / ${FILE_TOTAL}}
 BAR_LOAD	= ${shell expr 23 \* ${FILE_COUNT} / ${FILE_TOTAL}}
@@ -100,7 +106,6 @@ all:		${EXE}
 ${EXE}:		${OBJECTS} bobby
 		@${CC} ${CFLAGS} ${OBJECTS} -o ${EXE} ${LDFLAGS}
 		@echo "\n\n${GREEN}[✓] - ${_GREEN}Minishell${GREEN} Successfully Compiled!${RESET}"
-		@${RM} ${OBJECTS}
 
 %.o:		%.c
 		@${eval FILE_COUNT = ${shell expr ${FILE_COUNT} + 1}}

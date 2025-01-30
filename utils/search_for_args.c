@@ -14,13 +14,17 @@
 
 static void	handle_redirections(t_tokens *token, int i, int j)
 {
-	if (token[i].type[j] == T_DLESS && (token[i].type[j + 1] == T_ERR || token[i].type[j + 1] == T_ARG))
+	if (token[i].type[j] == T_DLESS && (token[i].type[j + 1] == T_ERR
+			|| token[i].type[j + 1] == T_ARG))
 		token[i].type[j + 1] = T_HEREDOC;
-	else if (token[i].type[j] == T_RLESS && (token[i].type[j + 1] == T_ERR || token[i].type[j + 1] == T_ARG))
+	else if (token[i].type[j] == T_RLESS && (token[i].type[j + 1] == T_ERR
+			|| token[i].type[j + 1] == T_ARG))
 		token[i].type[j + 1] = T_I_FILE;
-	else if (token[i].type[j] == T_RGREAT && (token[i].type[j + 1] == T_ERR || token[i].type[j + 1] == T_ARG))
+	else if (token[i].type[j] == T_RGREAT && (token[i].type[j + 1] == T_ERR
+			|| token[i].type[j + 1] == T_ARG))
 		token[i].type[j + 1] = T_OR_FILE;
-	else if (token[i].type[j] == T_DGREAT && (token[i].type[j + 1] == T_ERR || token[i].type[j + 1] == T_ARG))
+	else if (token[i].type[j] == T_DGREAT && (token[i].type[j + 1] == T_ERR
+			|| token[i].type[j + 1] == T_ARG))
 		token[i].type[j + 1] = T_OD_FILE;
 }
 

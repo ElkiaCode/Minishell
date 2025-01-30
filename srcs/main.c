@@ -16,9 +16,9 @@ pid_t	g_signal_pid;
 
 int	pipe_nb(char *line)
 {
-	int	i;
-	int	nb;
-	char quote;
+	int		i;
+	int		nb;
+	char	quote;
 
 	i = 0;
 	nb = 1;
