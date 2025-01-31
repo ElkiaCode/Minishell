@@ -60,7 +60,7 @@ static void	handle_word(char **strs, char *str, size_t *word_idx, int *i,
 	while (str[*i + len] && (!is_sep(str[*i + len], charset) || quote))
 	{
 		if ((str[*i + len] == '"' || str[*i + len] == '\'') && (!quote || str[*i
-				+ len] == quote))
+					+ len] == quote))
 		{
 			if (quote)
 				quote = 0;
