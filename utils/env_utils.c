@@ -47,6 +47,8 @@ char	*ft_getenv(t_global *data, char *name)
 		return (ft_itoa(data->status));
 	if (!ft_strncmp(name, "0", INT_MAX))
 		return (ft_strdup("Fricking BricoShell MF!!!!"));
+	if (!ft_strncmp(name, "RANDOM", INT_MAX))
+		return (ft_itoa(ft_random_env()));
 	tmp = data->env;
 	while (tmp)
 	{

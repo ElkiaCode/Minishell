@@ -12,6 +12,22 @@
 
 #include "../../includes/minishell.h"
 
+unsigned int	ft_random_env(void)
+{
+	int				fd;
+	unsigned int	random;
+
+	fd = open("/dev/random", O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putendl_fd("Error while trying to open /dev/random.", STDERR_FILENO);
+		return (-1);
+	}
+	read(fd, &random, sizeof(random));
+	close(fd);
+	return (random % 32767);
+}
+
 int	check_rand_args(char **args)
 {
 	int	i;
