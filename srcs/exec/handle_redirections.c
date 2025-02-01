@@ -70,7 +70,7 @@ int	prepare_infile(t_global *data, char *file, int type)
 	}
 	if (type == T_HEREDOC)
 		fd = do_heredoc(*data);
-	if (old_fd != -2)
+	if (old_fd > 0)
 		close(old_fd);
 	return (fd);
 }
@@ -92,7 +92,7 @@ int	prepare_outfile(t_global *data, char *file, int type)
 		data->status = 1;
 		data->isolate_skip = true;
 	}
-	if (old_fd != -2)
+	if (old_fd > 0)
 		close(old_fd);
 	return (fd);
 }
