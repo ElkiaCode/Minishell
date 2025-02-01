@@ -37,36 +37,38 @@ static int	word_count(char *str)
 	return (wc);
 }
 
-static void	skip_spaces(char *str, int *i)
+static int	skip_quotes(char *str, int *i)
 {
-	while (str[*i] && str[*i] == ' ')
+	char	quote;
+
+	if (str[*i] == '"' || str[*i] == '\'')
+	{
+		quote = str[*i];
 		(*i)++;
+		while (str[*i] && str[*i] != quote)
+			(*i)++;
+		if (str[*i] == quote)
+			(*i)++;
+		return (1);
+	}
+	return (0);
 }
 
 static void	handle_word(char *str, char **result, int *i, int *n)
 {
-	int		start;
-	char	quote;
+	int	start;
 
-	skip_spaces(str, i);
+	while (str[*i] && str[*i] == ' ')
+		(*i)++;
 	start = *i;
 	while (str[*i] && str[*i] != ' ')
 	{
-		if (str[*i] == '"' || str[*i] == '\'')
-		{
-			quote = str[*i];
-			(*i)++;
-			while (str[*i] && str[*i] != quote)
-				(*i)++;
-			if (str[*i] == quote)
-				(*i)++;
-		}
-		else
+		if (!skip_quotes(str, i))
 			(*i)++;
 	}
 	if (*i > start)
 	{
-		result[*n] = (char *)malloc(sizeof(char) * ((*i - start) + 1));
+		result[*n] = malloc(sizeof(char) * ((*i - start) + 1));
 		ft_strncpy(result[*n], &str[start], *i - start);
 		result[*n][*i - start] = '\0';
 		(*n)++;

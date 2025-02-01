@@ -49,15 +49,14 @@ static size_t	ft_countwords(char *str, char *sep)
 	return (count);
 }
 
-static void	handle_word(char **strs, char *str, size_t *word_idx, int *i,
-		char *charset)
+static void	handle_word(char **strs, char *str, size_t *word_idx, int *i)
 {
 	int		len;
 	char	quote;
 
 	quote = 0;
 	len = 0;
-	while (str[*i + len] && (!is_sep(str[*i + len], charset) || quote))
+	while (str[*i + len] && (!is_sep(str[*i + len], "<>|") || quote))
 	{
 		if ((str[*i + len] == '"' || str[*i + len] == '\'') && (!quote || str[*i
 					+ len] == quote))
@@ -84,7 +83,7 @@ static void	make_split(char **strs, char *str, char *charset, size_t *word_idx)
 	while (str[i] != '\0')
 	{
 		if (!is_sep(str[i], charset))
-			handle_word(strs, str, word_idx, &i, charset);
+			handle_word(strs, str, word_idx, &i);
 		else
 		{
 			strs[*word_idx] = malloc(sizeof(char) * 2);
