@@ -33,7 +33,7 @@ int	do_heredoc(t_global data)
 		return (-1);
 	while (1)
 	{
-		line = readline("\x1b[34;1mheredoc>\x1b[39;49m\x1b[22m ");
+		line = readline("\x1b[36;1mheredoc>\x1b[39;49m\x1b[22m ");
 		if (!line)
 		{
 			printf("minishell: warning: here-document delimited ");
