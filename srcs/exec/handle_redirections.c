@@ -14,7 +14,7 @@
 
 void	write_in_heredoc(t_global *data, char *line, int heredoc_fd)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = final_expander(data, line);
 	write(heredoc_fd, tmp, ft_strlen(tmp));
@@ -33,7 +33,7 @@ int	do_heredoc(t_global data)
 		return (-1);
 	while (1)
 	{
-		line = readline("\x1b[34;1mheredoc\x1b[36;1m>\x1b[39;49m\x1b[22m ");
+		line = readline("\x1b[34;1mheredoc>\x1b[39;49m\x1b[22m ");
 		if (!line)
 		{
 			printf("minishell: warning: here-document delimited ");

@@ -44,7 +44,7 @@ void	make_struct_null(t_global *global)
 
 void	init_value(t_global **global)
 {
-	(*global)->cmd = readline("\x1b[34;1mbricoshell\x1b[36;1m>\x1b[39;49m\x1b[22m ");
+	(*global)->cmd = readline("\x1b[34;1mbricoshell>\x1b[39;49m\x1b[22m ");
 	if (!(*global)->cmd)
 		exit_shell(*global, EXIT_SUCCESS);
 	(*global)->pipe_nb = pipe_nb((*global)->cmd);
