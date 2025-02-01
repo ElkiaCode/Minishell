@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-unsigned int	ft_random_env(void)
+unsigned int	read_random(bool *error)
 {
 	int				fd;
 	unsigned int	random;
@@ -21,10 +21,22 @@ unsigned int	ft_random_env(void)
 	if (fd == -1)
 	{
 		ft_putendl_fd("Error while trying to open /dev/random.", STDERR_FILENO);
-		return (-1);
+		*error = true;
+		return (0);
 	}
 	read(fd, &random, sizeof(random));
 	close(fd);
+	return (random);
+}
+
+int	ft_random_env(void)
+{
+	unsigned int	random;
+	bool	error;
+
+	random = read_random(&error);
+	if (error)
+		return (-1);
 	return (random % 32767);
 }
 
@@ -57,9 +69,9 @@ int	check_rand_args(char **args)
 int	ft_rand(char **args)
 {
 	int		nb;
-	int		fd;
-	char	buf[1];
-	char	*tmp;
+	unsigned int	random;
+	char *tmp;
+	bool	error;
 
 	if (check_rand_args(args) == -1)
 		return (1);
@@ -69,10 +81,10 @@ int	ft_rand(char **args)
 		ft_putendl_fd("rand: value out of range", STDERR_FILENO);
 		return (1);
 	}
-	fd = open("/dev/random", O_RDONLY);
-	read(fd, buf, 1);
-	close(fd);
-	tmp = ft_itoa(buf[0] % nb);
+	random = read_random(&error);
+	if (error)
+		return (1);
+	tmp = ft_itoa(random % nb);
 	ft_putendl_fd(tmp, STDOUT_FILENO);
 	free(tmp);
 	return (0);
