@@ -83,9 +83,9 @@ int	prepare_outfile(t_global *data, char *file, int type)
 	old_fd = data->isolate_outfile;
 	fd = 0;
 	if (type == T_OD_FILE)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (type == T_OR_FILE)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (type == T_OR_FILE)
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror(file);
