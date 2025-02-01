@@ -220,6 +220,6 @@ void				handle_sigint(int code);
 bool				is_file(char *cmd);
 int					is_sep(char c, char *charset);
 int					count_cmd_size(t_tokens token);
-int		ft_random_env(void);
+int					ft_random_env(void);
 
 #endif

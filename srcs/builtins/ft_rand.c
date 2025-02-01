@@ -32,7 +32,7 @@ unsigned int	read_random(bool *error)
 int	ft_random_env(void)
 {
 	unsigned int	random;
-	bool	error;
+	bool			error;
 
 	random = read_random(&error);
 	if (error)
@@ -68,10 +68,10 @@ int	check_rand_args(char **args)
 
 int	ft_rand(char **args)
 {
-	int		nb;
+	int				nb;
 	unsigned int	random;
-	char *tmp;
-	bool	error;
+	char			*tmp;
+	bool			error;
 
 	if (check_rand_args(args) == -1)
 		return (1);
